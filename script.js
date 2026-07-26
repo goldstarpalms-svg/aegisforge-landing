@@ -1,4 +1,4 @@
-const SUPABASE_URL = 'https://rxwtjoibzaskkmxintzw.supabase.co';
+theconst SUPABASE_URL = 'https://rxwtjoibzaskkmxintzw.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ4d3Rqb2liemFza2tteGludHp3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUwMTkyNTcsImV4cCI6MjEwMDU5NTI1N30.el-h7Hg9oqfIvTadVJCa_X-myTDNVqgV9YfMceB4edo';
 
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -359,3 +359,404 @@ function announceToScreenReader(message) {
 // ============================================
 console.log('✅ AegisForge AI landing page fully initialized');
 console.log('📊 All features loaded successfully');
+
+// ============================================
+// SCANNER API INTEGRATION
+// ============================================
+
+// Backend API URL
+const BACKEND_API_URL = 'https://aegisforge-backend.onrender.com';
+
+// Get scanner elements
+const scannerForm = document.getElementById('scannerForm');
+const scannerUrl = document.getElementById('scannerUrl');
+const scanButton = document.getElementById('scanButton');
+const scanProgress = document.getElementById('scanProgress');
+const scanStatus = document.getElementById('scanStatus');
+const scanPercentage = document.getElementById('scanPercentage');
+const scanProgressFill = document.getElementById('scanProgressFill');
+const scanResults = document.getElementById('scanResults');
+const scanSteps = document.querySelectorAll('.scan-step');
+
+// Scan steps for progress display
+const scanStepsList = [
+    { id: 'ssl', name: 'Checking SSL Certificate', percent: 15 },
+    { id: 'headers', name: 'Analyzing Security Headers', percent: 30 },
+    { id: 'tech', name: 'Detecting Technology Stack', percent: 50 },
+    { id: 'cookies', name: 'Analyzing Cookies', percent: 65 },
+    { id: 'cdn', name: 'Checking CDN & Infrastructure', percent: 80 },
+    { id: 'performance', name: 'Measuring Performance', percent: 95 }
+];
+
+// Handle scanner form submission
+if (scannerForm) {
+    scannerForm.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        await performScan();
+    });
+}
+
+async function performScan() {
+    const url = scannerUrl.value.trim();
+    
+    if (!url) {
+        showScanError('Please enter a valid URL');
+        return;
+    }
+    
+    // Reset UI
+    scanResults.classList.remove('active');
+    scanResults.innerHTML = '';
+    scanProgress.classList.add('active');
+    scanButton.classList.add('loading');
+    scanButton.disabled = true;
+    scannerUrl.disabled = true;
+    
+    // Reset progress
+    scanProgressFill.style.width = '0%';
+    scanPercentage.textContent = '0%';
+    scanStatus.textContent = 'Initializing scan...';
+    
+    // Reset all steps
+    scanSteps.forEach(step => {
+        step.classList.remove('active', 'completed');
+    });
+    
+    // Animate progress steps
+    let currentStep = 0;
+    const stepInterval = setInterval(() => {
+        if (currentStep < scanStepsList.length) {
+            const step = scanStepsList[currentStep];
+            
+            // Mark previous as completed
+            if (currentStep > 0) {
+                const prevStepEl = document.querySelector(`.scan-step[data-step="${scanStepsList[currentStep - 1].id}"]`);
+                if (prevStepEl) {
+                    prevStepEl.classList.remove('active');
+                    prevStepEl.classList.add('completed');
+                }
+            }
+            
+            // Mark current as active
+            const currentStepEl = document.querySelector(`.scan-step[data-step="${step.id}"]`);
+            if (currentStepEl) {
+                currentStepEl.classList.add('active');
+            }
+            
+            scanStatus.textContent = step.name;
+            scanPercentage.textContent = step.percent + '%';
+            scanProgressFill.style.width = step.percent + '%';
+            
+            currentStep++;
+        }
+    }, 800);
+    
+    try {
+        // Call the backend API
+        const response = await fetch(`${BACKEND_API_URL}/scan`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ url: url })
+        });
+        
+        if (!response.ok) {
+            throw new Error(`Server responded with ${response.status}`);
+        }
+        
+        const data = await response.json();
+        
+        // Clear step interval
+        clearInterval(stepInterval);
+        
+        // Complete all steps
+        scanSteps.forEach(step => {
+            step.classList.remove('active');
+            step.classList.add('completed');
+        });
+        
+        // Complete progress
+        scanStatus.textContent = 'Scan complete!';
+        scanPercentage.textContent = '100%';
+        scanProgressFill.style.width = '100%';
+        
+        // Wait a moment then display results
+        setTimeout(() => {
+            displayScanResults(data);
+            scanProgress.classList.remove('active');
+            scanButton.classList.remove('loading');
+            scanButton.disabled = false;
+            scannerUrl.disabled = false;
+        }, 1000);
+        
+    } catch (error) {
+        clearInterval(stepInterval);
+        console.error('Scan error:', error);
+        
+        scanProgress.classList.remove('active');
+        scanButton.classList.remove('loading');
+        scanButton.disabled = false;
+        scannerUrl.disabled = false;
+        
+        showScanError(
+            'Scan failed. This can happen if the website is unreachable or blocking scans. Please try another URL or wait a moment and try again.'
+        );
+    }
+}
+
+function showScanError(message) {
+    scanResults.innerHTML = `
+        <div class="scan-error">
+            <strong>⚠️ Scan Error</strong>
+            ${message}
+        </div>
+    `;
+    scanResults.classList.add('active');
+}
+
+function displayScanResults(data) {
+    const riskScore = data.risk_score || {};
+    const checks = data.checks || {};
+    const recommendations = data.recommendations || [];
+    
+    const grade = (riskScore.grade || 'F').toLowerCase();
+    const score = riskScore.score || 0;
+    
+    let html = `
+        <!-- Overall Score -->
+        <div class="results-score-container">
+            <div class="score-circle-wrapper">
+                <div class="score-circle grade-${grade}">
+                    <div>
+                        <div class="score-number">${score}</div>
+                        <div class="score-max">/100</div>
+                    </div>
+                </div>
+            </div>
+            <div class="grade-badge grade-${grade}">${(riskScore.grade || 'F').toUpperCase()}</div>
+            <div class="score-status">${riskScore.status || 'Unknown'}</div>
+            <p class="score-summary">${riskScore.summary || 'Analysis complete'}</p>
+            <div class="scanned-url">🌐 ${data.url}</div>
+        </div>
+        
+        <!-- Category Results -->
+        <div class="results-categories">
+            ${generateCategoryCards(checks)}
+        </div>
+    `;
+    
+    // Add recommendations if any
+    if (recommendations && recommendations.length > 0) {
+        html += `
+            <div class="recommendations-section">
+                <div class="recommendations-header">
+                    <div class="recommendations-title">
+                        🎯 AI Recommendations
+                    </div>
+                    <div class="recommendations-count">${recommendations.length} issue${recommendations.length !== 1 ? 's' : ''}</div>
+                </div>
+                ${recommendations.map(rec => generateRecommendationCard(rec)).join('')}
+            </div>
+        `;
+    }
+    
+    // Add detailed results (collapsible)
+    html += `
+        <div class="detailed-results">
+            <button class="detailed-toggle" onclick="toggleDetailedResults(this)">
+                <span>📊 View Detailed Technical Results</span>
+                <span class="detailed-toggle-icon">▼</span>
+            </button>
+            <div class="detailed-content">
+                ${generateDetailedResults(checks)}
+            </div>
+        </div>
+        
+        <!-- Call to Action -->
+        <div class="results-actions">
+            <div class="results-cta-text">
+                <strong>💚 Love this scanner?</strong> Join our waitlist to save reports, get monthly re-scans, and access advanced features!
+            </div>
+            <a href="#waitlist" class="results-btn primary">
+                🚀 Join Waitlist
+            </a>
+            <button onclick="resetScanner()" class="results-btn secondary">
+                🔄 Scan Another Site
+            </button>
+        </div>
+    `;
+    
+    scanResults.innerHTML = html;
+    scanResults.classList.add('active');
+    
+    // Smooth scroll to results
+    setTimeout(() => {
+        scanResults.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 300);
+}
+
+function generateCategoryCards(checks) {
+    const categories = [
+        { key: 'ssl', icon: '🔒', name: 'SSL/TLS' },
+        { key: 'headers', icon: '📋', name: 'Headers' },
+        { key: 'reachability', icon: '📡', name: 'Uptime' },
+        { key: 'tech_stack', icon: '🔍', name: 'Tech' },
+        { key: 'cookies', icon: '🍪', name: 'Cookies' },
+        { key: 'cdn', icon: '🌍', name: 'CDN' },
+        { key: 'https_enforcement', icon: '🛡️', name: 'HTTPS' },
+        { key: 'performance', icon: '⚡', name: 'Speed' }
+    ];
+    
+    return categories.map(cat => {
+        const check = checks[cat.key] || {};
+        let score = check.score;
+        
+        if (cat.key === 'cookies') {
+            score = check.security_score || 0;
+        }
+        
+        if (score === undefined) score = 0;
+        
+        let scoreClass = 'low';
+        let status = 'Poor';
+        
+        if (score >= 80) {
+            scoreClass = 'high';
+            status = 'Great';
+        } else if (score >= 60) {
+            scoreClass = 'medium';
+            status = 'Fair';
+        }
+        
+        return `
+            <div class="category-card">
+                <div class="category-icon">${cat.icon}</div>
+                <div class="category-name">${cat.name}</div>
+                <div class="category-score ${scoreClass}">${score}</div>
+                <div class="category-status">${status}</div>
+            </div>
+        `;
+    }).join('');
+}
+
+function generateRecommendationCard(rec) {
+    const priority = (rec.priority || 'low').toLowerCase();
+    
+    return `
+        <div class="recommendation-item ${priority}">
+            <div class="recommendation-header">
+                <div>
+                    <div class="recommendation-category">${rec.category || 'General'}</div>
+                </div>
+                <div class="recommendation-priority ${priority}">${rec.priority || 'low'}</div>
+            </div>
+            <div class="recommendation-issue">${rec.issue || 'Issue detected'}</div>
+            <div class="recommendation-fix">${rec.fix || 'Review and address this issue'}</div>
+        </div>
+    `;
+}
+
+function generateDetailedResults(checks) {
+    let html = '';
+    
+    for (const [key, check] of Object.entries(checks)) {
+        if (!check || typeof check !== 'object') continue;
+        
+        const displayName = key.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+        
+        html += `
+            <div class="detail-check">
+                <div class="detail-check-header">
+                    <div class="detail-check-title">${displayName}</div>
+                    <div class="detail-check-score">Score: ${check.score || 'N/A'}/100</div>
+                </div>
+                <div class="detail-data">
+                    ${generateDetailItems(check)}
+                </div>
+            </div>
+        `;
+    }
+    
+    return html;
+}
+
+function generateDetailItems(data) {
+    let html = '';
+    
+    for (const [key, value] of Object.entries(data)) {
+        if (key === 'score' || key === 'error') continue;
+        
+        let displayValue = value;
+        let valueClass = '';
+        
+        if (typeof value === 'boolean') {
+            displayValue = value ? '✓ Yes' : '✗ No';
+            valueClass = value ? 'success' : 'danger';
+        } else if (Array.isArray(value)) {
+            if (value.length === 0) {
+                displayValue = 'None';
+            } else if (typeof value[0] === 'string') {
+                displayValue = value.slice(0, 5).join(', ');
+                if (value.length > 5) displayValue += ` (+${value.length - 5} more)`;
+            } else {
+                displayValue = `${value.length} items`;
+            }
+        } else if (typeof value === 'object' && value !== null) {
+            const entries = Object.entries(value);
+            if (entries.length === 0) {
+                displayValue = 'None';
+            } else {
+                displayValue = entries.slice(0, 3).map(([k, v]) => `${k}: ${v}`).join(', ');
+            }
+        } else if (typeof value === 'number') {
+            displayValue = value;
+            if (key.includes('score')) {
+                valueClass = value >= 80 ? 'success' : value >= 60 ? 'warning' : 'danger';
+            }
+        } else if (typeof value === 'string') {
+            if (value.length > 60) {
+                displayValue = value.substring(0, 60) + '...';
+            }
+        }
+        
+        const displayKey = key.replace(/_/g, ' ');
+        
+        html += `
+            <div class="detail-item">
+                <span class="detail-key">${displayKey}</span>
+                <span class="detail-value ${valueClass}">${displayValue}</span>
+            </div>
+        `;
+    }
+    
+    return html;
+}
+
+function toggleDetailedResults(button) {
+    button.classList.toggle('active');
+    const content = button.nextElementSibling;
+    content.classList.toggle('active');
+}
+
+function resetScanner() {
+    scannerUrl.value = '';
+    scanResults.classList.remove('active');
+    scanResults.innerHTML = '';
+    scannerUrl.focus();
+    
+    // Scroll back to scanner
+    document.getElementById('scanner').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// Add example URL suggestion on focus
+if (scannerUrl) {
+    scannerUrl.addEventListener('focus', function() {
+        if (!this.value) {
+            this.placeholder = 'e.g., github.com, wikipedia.org, your-website.com';
+        }
+    });
+}
+
+console.log('%c⚡ AegisForge AI Scanner Ready!', 'font-size: 20px; font-weight: bold; color: #00ffc8;');
+console.log('%c🛡️ Enter any URL to see enterprise-grade security analysis', 'font-size: 14px; color: #a0a0b0;');
