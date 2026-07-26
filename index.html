@@ -8,6 +8,17 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <!-- Loading Animation -->
+    <div class="loader" id="loader">
+        <div class="loader-content">
+            <div class="loader-icon">⚡</div>
+            <div class="loader-text">AegisForge<span class="ai-text">AI</span></div>
+            <div class="loader-bar">
+                <div class="loader-progress"></div>
+            </div>
+        </div>
+    </div>
+
     <!-- Animated Background -->
     <div class="bg-grid"></div>
     <div class="bg-glow"></div>
@@ -47,6 +58,33 @@
             <a href="#waitlist" class="btn-primary">Join Waitlist →</a>
             <a href="#how-it-works" class="btn-secondary">See How It Works</a>
         </div>
+        
+        <!-- Countdown Timer -->
+        <div class="countdown-container">
+            <div class="countdown-label">🚀 LAUNCHING IN</div>
+            <div class="countdown-grid">
+                <div class="countdown-item">
+                    <div class="countdown-number" id="days">00</div>
+                    <div class="countdown-text">Days</div>
+                </div>
+                <div class="countdown-separator">:</div>
+                <div class="countdown-item">
+                    <div class="countdown-number" id="hours">00</div>
+                    <div class="countdown-text">Hours</div>
+                </div>
+                <div class="countdown-separator">:</div>
+                <div class="countdown-item">
+                    <div class="countdown-number" id="minutes">00</div>
+                    <div class="countdown-text">Minutes</div>
+                </div>
+                <div class="countdown-separator">:</div>
+                <div class="countdown-item">
+                    <div class="countdown-number" id="seconds">00</div>
+                    <div class="countdown-text">Seconds</div>
+                </div>
+            </div>
+        </div>
+        
         <div class="hero-stats">
             <div class="stat">
                 <div class="stat-number">10x</div>
@@ -313,7 +351,7 @@
                         <span class="faq-icon">+</span>
                     </button>
                     <div class="faq-answer">
-                        <p>AegisForge AI is an all-in-one autonomous platform that uses artificial intelligence to build, secure, and deploy your digital products. Think of it as having an entire tech team (developers, security experts, and DevOps engineers) available 24/7 in one platform. Whether you need a mobile app, website, or want to protect your existing systems from cyber threats, AegisForge handles it all.</p>
+                        <p>AegisForge AI is an all-in-one autonomous platform that uses artificial intelligence to build, secure, and deploy your digital products. Think of it as having an entire tech team (developers, security experts, and DevOps engineers) available 24/7 in one platform.</p>
                     </div>
                 </div>
                 
@@ -323,7 +361,7 @@
                         <span class="faq-icon">+</span>
                     </button>
                     <div class="faq-answer">
-                        <p>We're in active development right now! The Cybersecurity Scanner will launch first, followed by other modules throughout the year. By joining our waitlist, you'll get early access before public launch AND lock in founder-tier pricing forever. Early supporters get exclusive perks that won't be available later.</p>
+                        <p>We're in active development right now! The Cybersecurity Scanner will launch first, followed by other modules throughout the year. By joining our waitlist, you'll get early access before public launch AND lock in founder-tier pricing forever.</p>
                     </div>
                 </div>
                 
@@ -333,7 +371,7 @@
                         <span class="faq-icon">+</span>
                     </button>
                     <div class="faq-answer">
-                        <p><strong>Absolutely not!</strong> That's the whole point. AegisForge is built for everyone — from complete beginners with just an idea, to experienced developers looking to work 10x faster. You describe what you want in plain English, and our AI handles all the technical complexity. If you can write a text message, you can build with AegisForge.</p>
+                        <p><strong>Absolutely not!</strong> That's the whole point. AegisForge is built for everyone — from complete beginners with just an idea, to experienced developers looking to work 10x faster. You describe what you want in plain English, and our AI handles all the technical complexity.</p>
                     </div>
                 </div>
                 
@@ -343,7 +381,7 @@
                         <span class="faq-icon">+</span>
                     </button>
                     <div class="faq-answer">
-                        <p>Security isn't just our product — it's our foundation. We use enterprise-grade encryption, zero-trust architecture, and follow strict data protection standards. Your projects and data are encrypted at every layer, both in transit and at rest. We never sell, share, or use your data for anything other than providing you with our services. Your intellectual property remains 100% yours.</p>
+                        <p>Security isn't just our product — it's our foundation. We use enterprise-grade encryption, zero-trust architecture, and follow strict data protection standards. Your projects and data are encrypted at every layer. Your intellectual property remains 100% yours.</p>
                     </div>
                 </div>
                 
@@ -353,7 +391,7 @@
                         <span class="faq-icon">+</span>
                     </button>
                     <div class="faq-answer">
-                        <p>We're committed to making AegisForge accessible to everyone. There will always be a <strong>free tier</strong> for beginners and hobbyists. Paid plans start at just <strong>$29/month</strong> for Pro, $99/month for Business, and custom Enterprise plans. Waitlist members get exclusive founder pricing that's significantly discounted — forever. Compare that to hiring a developer at $80,000+ per year!</p>
+                        <p>We're committed to making AegisForge accessible to everyone. There will always be a <strong>free tier</strong>. Paid plans start at just <strong>$29/month</strong> for Pro, $99/month for Business, and custom Enterprise plans. Waitlist members get exclusive founder pricing - forever.</p>
                     </div>
                 </div>
                 
@@ -363,7 +401,7 @@
                         <span class="faq-icon">+</span>
                     </button>
                     <div class="faq-answer">
-                        <p>Three things: <strong>First</strong>, we're the only platform that combines app building, cybersecurity, deployment, and AI assistance in one place. <strong>Second</strong>, our Prediction AI actually stops cyberattacks BEFORE they happen — most tools only detect problems after damage is done. <strong>Third</strong>, we're built for real people, not just developers. Everyone from students to enterprise CEOs can use AegisForge effectively.</p>
+                        <p>Three things: <strong>First</strong>, we combine app building, cybersecurity, deployment, and AI assistance in one place. <strong>Second</strong>, our Prediction AI stops cyberattacks BEFORE they happen. <strong>Third</strong>, we're built for real people, not just developers.</p>
                     </div>
                 </div>
                 
@@ -373,7 +411,7 @@
                         <span class="faq-icon">+</span>
                     </button>
                     <div class="faq-answer">
-                        <p>Yes, and here's why: Every line of code AegisForge generates goes through rigorous security scanning, best-practice validation, and quality checks. Our AI is trained on millions of production-grade codebases and follows industry standards. Plus, you always get the full source code — meaning you own it, can review it, modify it, and take it anywhere. You're never locked in.</p>
+                        <p>Yes! Every line of code goes through rigorous security scanning and quality checks. Our AI is trained on millions of production-grade codebases. Plus, you always get the full source code — meaning you own it, can modify it, and take it anywhere. You're never locked in.</p>
                     </div>
                 </div>
                 
@@ -383,7 +421,7 @@
                         <span class="faq-icon">+</span>
                     </button>
                     <div class="faq-answer">
-                        <p>It's simple! Just enter your email in our waitlist below. You'll be among the first to know when we launch, get exclusive early access before the public, and lock in special founder-tier pricing. We're only accepting the first 1000 people at these special rates, so don't wait too long!</p>
+                        <p>It's simple! Just enter your email in our waitlist below. You'll be among the first to know when we launch, get exclusive early access before the public, and lock in special founder-tier pricing. Only the first 1000 people get these special rates!</p>
                     </div>
                 </div>
             </div>
@@ -522,10 +560,33 @@
                 <a href="#story">Our Story</a>
                 <a href="#faq">FAQ</a>
                 <a href="#contact">Contact</a>
+                <a href="terms.html">Terms</a>
+                <a href="privacy.html">Privacy</a>
             </div>
             <p>© 2025 AegisForge AI. Building the future of secure software.</p>
+            <p class="footer-love">Made with 💚 for founders everywhere</p>
         </div>
     </footer>
+
+    <!-- Back to Top Button -->
+    <button class="back-to-top" id="backToTop" title="Back to top">
+        ↑
+    </button>
+
+    <!-- Cookie Consent Banner -->
+    <div class="cookie-banner" id="cookieBanner">
+        <div class="cookie-content">
+            <div class="cookie-icon">🍪</div>
+            <div class="cookie-text">
+                <strong>We use cookies</strong>
+                <p>We use cookies to enhance your experience. By continuing to visit this site, you agree to our use of cookies.</p>
+            </div>
+            <div class="cookie-buttons">
+                <button class="cookie-btn accept" id="acceptCookies">Accept All</button>
+                <a href="privacy.html" class="cookie-btn learn-more">Learn More</a>
+            </div>
+        </div>
+    </div>
 
     <script src="script.js"></script>
 </body>
