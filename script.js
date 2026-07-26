@@ -760,3 +760,285 @@ if (scannerUrl) {
 
 console.log('%c⚡ AegisForge AI Scanner Ready!', 'font-size: 20px; font-weight: bold; color: #00ffc8;');
 console.log('%c🛡️ Enter any URL to see enterprise-grade security analysis', 'font-size: 14px; color: #a0a0b0;');
+
+// ============================================
+// SCANNER API INTEGRATION
+// ============================================
+
+const BACKEND_API_URL = 'https://aegisforge-backend.onrender.com';
+
+const scannerForm = document.getElementById('scannerForm');
+const scannerUrl = document.getElementById('scannerUrl');
+const scanButton = document.getElementById('scanButton');
+const scanProgress = document.getElementById('scanProgress');
+const scanStatus = document.getElementById('scanStatus');
+const scanPercentage = document.getElementById('scanPercentage');
+const scanProgressFill = document.getElementById('scanProgressFill');
+const scanResults = document.getElementById('scanResults');
+const scanSteps = document.querySelectorAll('.scan-step');
+
+const scanStepsList = [
+    { id: 'ssl', name: 'Checking SSL Certificate', percent: 15 },
+    { id: 'headers', name: 'Analyzing Security Headers', percent: 30 },
+    { id: 'tech', name: 'Detecting Technology Stack', percent: 50 },
+    { id: 'cookies', name: 'Analyzing Cookies', percent: 65 },
+    { id: 'cdn', name: 'Checking CDN & Infrastructure', percent: 80 },
+    { id: 'performance', name: 'Measuring Performance', percent: 95 }
+];
+
+if (scannerForm) {
+    scannerForm.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        await performScan();
+    });
+}
+
+async function performScan() {
+    const url = scannerUrl.value.trim();
+    
+    if (!url) {
+        showScanError('Please enter a valid URL');
+        return;
+    }
+    
+    scanResults.classList.remove('active');
+    scanResults.innerHTML = '';
+    scanProgress.classList.add('active');
+    scanButton.classList.add('loading');
+    scanButton.disabled = true;
+    scannerUrl.disabled = true;
+    
+    scanProgressFill.style.width = '0%';
+    scanPercentage.textContent = '0%';
+    scanStatus.textContent = 'Scanner starting up (may take 30-60s first time)...';
+    
+    scanSteps.forEach(step => {
+        step.classList.remove('active', 'completed');
+    });
+    
+    let wakeupTime = 0;
+    const wakeupInterval = setInterval(() => {
+        wakeupTime++;
+        if (wakeupTime <= 30) {
+            scanStatus.textContent = `Scanner starting up... (${wakeupTime}s)`;
+            scanProgressFill.style.width = Math.min((wakeupTime / 30) * 20, 20) + '%';
+            scanPercentage.textContent = Math.min(Math.round((wakeupTime / 30) * 20), 20) + '%';
+        }
+    }, 1000);
+    
+    try {
+        const response = await fetch(`${BACKEND_API_URL}/scan`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ url: url })
+        });
+        
+        clearInterval(wakeupInterval);
+        
+        if (!response.ok) {
+            throw new Error(`Server responded with ${response.status}`);
+        }
+        
+        const data = await response.json();
+        
+        let currentStep = 0;
+        const stepInterval = setInterval(() => {
+            if (currentStep < scanStepsList.length) {
+                const step = scanStepsList[currentStep];
+                
+                if (currentStep > 0) {
+                    const prevStepEl = document.querySelector(`.scan-step[data-step="${scanStepsList[currentStep - 1].id}"]`);
+                    if (prevStepEl) {
+                        prevStepEl.classList.remove('active');
+                        prevStepEl.classList.add('completed');
+                    }
+                }
+                
+                const currentStepEl = document.querySelector(`.scan-step[data-step="${step.id}"]`);
+                if (currentStepEl) {
+                    currentStepEl.classList.add('active');
+                }
+                
+                scanStatus.textContent = step.name;
+                scanPercentage.textContent = step.percent + '%';
+                scanProgressFill.style.width = step.percent + '%';
+                
+                currentStep++;
+            } else {
+                clearInterval(stepInterval);
+            }
+        }, 300);
+        
+        setTimeout(() => {
+            clearInterval(stepInterval);
+            
+            scanSteps.forEach(step => {
+                step.classList.remove('active');
+                step.classList.add('completed');
+            });
+            
+            scanStatus.textContent = 'Scan complete!';
+            scanPercentage.textContent = '100%';
+            scanProgressFill.style.width = '100%';
+            
+            setTimeout(() => {
+                displayScanResults(data);
+                scanProgress.classList.remove('active');
+                scanButton.classList.remove('loading');
+                scanButton.disabled = false;
+                scannerUrl.disabled = false;
+            }, 800);
+        }, 1500);
+        
+    } catch (error) {
+        clearInterval(wakeupInterval);
+        console.error('Scan error:', error);
+        
+        scanProgress.classList.remove('active');
+        scanButton.classList.remove('loading');
+        scanButton.disabled = false;
+        scannerUrl.disabled = false;
+        
+        let errorMessage = 'Something went wrong. Please try again.';
+        
+        if (error.message.includes('Failed to fetch')) {
+            errorMessage = 'Cannot connect to scanner. Please wait 30 seconds and try again.';
+        } else if (error.message.includes('500')) {
+            errorMessage = 'The website might be blocking our scanner. Try another URL.';
+        }
+        
+        showScanError(errorMessage);
+    }
+}
+
+function showScanError(message) {
+    scanResults.innerHTML = `<div class="scan-error"><strong>Scan Error</strong>${message}</div>`;
+    scanResults.classList.add('active');
+}
+
+function displayScanResults(data) {
+    const riskScore = data.risk_score || {};
+    const checks = data.checks || {};
+    const recommendations = data.recommendations || [];
+    
+    const grade = (riskScore.grade || 'F').toLowerCase();
+    const score = riskScore.score || 0;
+    
+    let html = `
+        <div class="results-score-container">
+            <div class="score-circle-wrapper">
+                <div class="score-circle grade-${grade}">
+                    <div>
+                        <div class="score-number">${score}</div>
+                        <div class="score-max">/100</div>
+                    </div>
+                </div>
+            </div>
+            <div class="grade-badge grade-${grade}">${(riskScore.grade || 'F').toUpperCase()}</div>
+            <div class="score-status">${riskScore.status || 'Unknown'}</div>
+            <p class="score-summary">${riskScore.summary || 'Analysis complete'}</p>
+            <div class="scanned-url">${data.url}</div>
+        </div>
+        <div class="results-categories">
+            ${generateCategoryCards(checks)}
+        </div>
+    `;
+    
+    if (recommendations && recommendations.length > 0) {
+        html += `
+            <div class="recommendations-section">
+                <div class="recommendations-header">
+                    <div class="recommendations-title">AI Recommendations</div>
+                    <div class="recommendations-count">${recommendations.length} issue${recommendations.length !== 1 ? 's' : ''}</div>
+                </div>
+                ${recommendations.map(rec => generateRecommendationCard(rec)).join('')}
+            </div>
+        `;
+    }
+    
+    html += `
+        <div class="results-actions">
+            <div class="results-cta-text"><strong>Love this scanner?</strong> Join our waitlist for advanced features!</div>
+            <a href="#waitlist" class="results-btn primary">Join Waitlist</a>
+            <button onclick="resetScanner()" class="results-btn secondary">Scan Another Site</button>
+        </div>
+    `;
+    
+    scanResults.innerHTML = html;
+    scanResults.classList.add('active');
+    
+    setTimeout(() => {
+        scanResults.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 300);
+}
+
+function generateCategoryCards(checks) {
+    const categories = [
+        { key: 'ssl', icon: '🔒', name: 'SSL/TLS' },
+        { key: 'headers', icon: '📋', name: 'Headers' },
+        { key: 'reachability', icon: '📡', name: 'Uptime' },
+        { key: 'tech_stack', icon: '🔍', name: 'Tech' },
+        { key: 'cookies', icon: '🍪', name: 'Cookies' },
+        { key: 'cdn', icon: '🌍', name: 'CDN' },
+        { key: 'https_enforcement', icon: '🛡️', name: 'HTTPS' },
+        { key: 'performance', icon: '⚡', name: 'Speed' }
+    ];
+    
+    return categories.map(cat => {
+        const check = checks[cat.key] || {};
+        let score = check.score;
+        
+        if (cat.key === 'cookies') {
+            score = check.security_score || 0;
+        }
+        
+        if (score === undefined) score = 0;
+        
+        let scoreClass = 'low';
+        let status = 'Poor';
+        
+        if (score >= 80) {
+            scoreClass = 'high';
+            status = 'Great';
+        } else if (score >= 60) {
+            scoreClass = 'medium';
+            status = 'Fair';
+        }
+        
+        return `
+            <div class="category-card">
+                <div class="category-icon">${cat.icon}</div>
+                <div class="category-name">${cat.name}</div>
+                <div class="category-score ${scoreClass}">${score}</div>
+                <div class="category-status">${status}</div>
+            </div>
+        `;
+    }).join('');
+}
+
+function generateRecommendationCard(rec) {
+    const priority = (rec.priority || 'low').toLowerCase();
+    
+    return `
+        <div class="recommendation-item ${priority}">
+            <div class="recommendation-header">
+                <div>
+                    <div class="recommendation-category">${rec.category || 'General'}</div>
+                </div>
+                <div class="recommendation-priority ${priority}">${rec.priority || 'low'}</div>
+            </div>
+            <div class="recommendation-issue">${rec.issue || 'Issue detected'}</div>
+            <div class="recommendation-fix">${rec.fix || 'Review this issue'}</div>
+        </div>
+    `;
+}
+
+function resetScanner() {
+    scannerUrl.value = '';
+    scanResults.classList.remove('active');
+    scanResults.innerHTML = '';
+    scannerUrl.focus();
+    document.getElementById('scanner').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
