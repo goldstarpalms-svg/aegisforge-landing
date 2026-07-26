@@ -31,37 +31,89 @@
                 <span class="logo-text">AegisForge<span class="ai-text">AI</span></span>
             </div>
             <div class="nav-links">
+                <a href="#scanner">Free Scan</a>
                 <a href="#how-it-works">How It Works</a>
                 <a href="#modules">Modules</a>
                 <a href="#story">Our Story</a>
                 <a href="#faq">FAQ</a>
-                <a href="#contact">Contact</a>
                 <a href="#waitlist" class="nav-cta">Join Waitlist</a>
             </div>
         </div>
     </nav>
 
-    <!-- Hero Section -->
+    <!-- Hero Section with Scanner -->
     <section class="hero">
         <div class="hero-badge">
             <span class="pulse-dot"></span>
-            Coming Soon - Join Early Access
+            🎉 FREE Security Scanner - Try Now!
         </div>
         <h1 class="hero-title">
             Build <span class="gradient-text">Secure Apps</span><br>
             with <span class="gradient-text">Autonomous AI</span>
         </h1>
         <p class="hero-subtitle">
-            The world's first AI platform that builds, deploys, and secures your applications automatically. From idea to launch in minutes.
+            The world's first AI platform that builds, deploys, and secures your applications automatically. Try our free security scanner below!
         </p>
-        <div class="hero-buttons">
-            <a href="#waitlist" class="btn-primary">Join Waitlist →</a>
-            <a href="#how-it-works" class="btn-secondary">See How It Works</a>
+        
+        <!-- FREE SECURITY SCANNER -->
+        <div class="scanner-container" id="scanner">
+            <div class="scanner-header">
+                <div class="scanner-badge">
+                    🛡️ FREE SECURITY SCAN
+                </div>
+                <h3 class="scanner-title">Analyze Any Website in Seconds</h3>
+                <p class="scanner-subtitle">Get instant AI-powered security analysis with actionable recommendations</p>
+            </div>
+            
+            <form class="scanner-form" id="scannerForm">
+                <div class="scanner-input-group">
+                    <input 
+                        type="text" 
+                        id="scannerUrl" 
+                        placeholder="Enter website URL (e.g., google.com)" 
+                        required
+                    >
+                    <button type="submit" id="scanButton">
+                        <span class="scan-btn-text">🔍 Scan Now</span>
+                        <span class="scan-btn-loading">⚡ Scanning...</span>
+                    </button>
+                </div>
+                <div class="scanner-features">
+                    <span class="scanner-feature">✓ Instant Analysis</span>
+                    <span class="scanner-feature">✓ AI-Powered</span>
+                    <span class="scanner-feature">✓ 100% Free</span>
+                    <span class="scanner-feature">✓ No Signup Required</span>
+                </div>
+            </form>
+            
+            <!-- Scan Progress -->
+            <div class="scan-progress" id="scanProgress">
+                <div class="scan-progress-header">
+                    <div class="scan-status" id="scanStatus">Initializing scan...</div>
+                    <div class="scan-percentage" id="scanPercentage">0%</div>
+                </div>
+                <div class="scan-progress-bar">
+                    <div class="scan-progress-fill" id="scanProgressFill"></div>
+                </div>
+                <div class="scan-steps" id="scanSteps">
+                    <div class="scan-step" data-step="ssl">🔒 SSL Certificate</div>
+                    <div class="scan-step" data-step="headers">📋 Security Headers</div>
+                    <div class="scan-step" data-step="tech">🔍 Tech Stack</div>
+                    <div class="scan-step" data-step="cookies">🍪 Cookies</div>
+                    <div class="scan-step" data-step="cdn">🌍 CDN Check</div>
+                    <div class="scan-step" data-step="performance">⚡ Performance</div>
+                </div>
+            </div>
+            
+            <!-- Scan Results -->
+            <div class="scan-results" id="scanResults">
+                <!-- Results will be inserted here dynamically -->
+            </div>
         </div>
         
         <!-- Countdown Timer -->
         <div class="countdown-container">
-            <div class="countdown-label">🚀 LAUNCHING IN</div>
+            <div class="countdown-label">🚀 FULL PLATFORM LAUNCHING IN</div>
             <div class="countdown-grid">
                 <div class="countdown-item">
                     <div class="countdown-number" id="days">00</div>
@@ -140,7 +192,7 @@
             <a href="#waitlist" class="btn-primary">Get Early Access →</a>
         </div>
     </section>
-
+    
     <!-- Modules Section -->
     <section id="modules" class="modules">
         <div class="modules-header">
@@ -177,10 +229,10 @@
             </div>
             
             <div class="module-card featured">
-                <div class="module-status available">🔥 COMING FIRST</div>
+                <div class="module-status available">✅ LIVE NOW</div>
                 <div class="module-icon">🛡️</div>
                 <h3>Cybersecurity Scanner</h3>
-                <p>Enterprise-grade security testing with AI-powered threat prediction. Find vulnerabilities before hackers do.</p>
+                <p>Enterprise-grade security testing with AI-powered threat prediction. Try it FREE above!</p>
                 <ul class="module-features">
                     <li>✓ Vulnerability Detection</li>
                     <li>✓ AI Threat Prediction</li>
@@ -271,7 +323,7 @@
             </div>
         </div>
     </section>
-    
+
     <!-- Founder Story Section -->
     <section id="story" class="story-section">
         <div class="story-container">
@@ -351,17 +403,27 @@
                         <span class="faq-icon">+</span>
                     </button>
                     <div class="faq-answer">
-                        <p>AegisForge AI is an all-in-one autonomous platform that uses artificial intelligence to build, secure, and deploy your digital products. Think of it as having an entire tech team (developers, security experts, and DevOps engineers) available 24/7 in one platform.</p>
+                        <p>AegisForge AI is an all-in-one autonomous platform that uses artificial intelligence to build, secure, and deploy your digital products. Try our FREE security scanner above to see it in action!</p>
                     </div>
                 </div>
                 
                 <div class="faq-item">
                     <button class="faq-question">
-                        <span>When will AegisForge launch?</span>
+                        <span>Is the security scanner really free?</span>
                         <span class="faq-icon">+</span>
                     </button>
                     <div class="faq-answer">
-                        <p>We're in active development right now! The Cybersecurity Scanner will launch first, followed by other modules throughout the year. By joining our waitlist, you'll get early access before public launch AND lock in founder-tier pricing forever.</p>
+                        <p><strong>Yes, 100% free!</strong> No signup required. Enter any website URL and get instant AI-powered security analysis. This is a preview of what's coming with our full platform.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span>When will the full platform launch?</span>
+                        <span class="faq-icon">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>We're in active development right now! Join our waitlist to get early access and lock in founder-tier pricing forever. Early supporters get exclusive perks that won't be available later.</p>
                     </div>
                 </div>
                 
@@ -371,7 +433,7 @@
                         <span class="faq-icon">+</span>
                     </button>
                     <div class="faq-answer">
-                        <p><strong>Absolutely not!</strong> That's the whole point. AegisForge is built for everyone — from complete beginners with just an idea, to experienced developers looking to work 10x faster. You describe what you want in plain English, and our AI handles all the technical complexity.</p>
+                        <p><strong>Absolutely not!</strong> That's the whole point. AegisForge is built for everyone. If you can write a text message, you can build with AegisForge.</p>
                     </div>
                 </div>
                 
@@ -381,7 +443,7 @@
                         <span class="faq-icon">+</span>
                     </button>
                     <div class="faq-answer">
-                        <p>Security isn't just our product — it's our foundation. We use enterprise-grade encryption, zero-trust architecture, and follow strict data protection standards. Your projects and data are encrypted at every layer. Your intellectual property remains 100% yours.</p>
+                        <p>Security isn't just our product — it's our foundation. We use enterprise-grade encryption, zero-trust architecture, and follow strict data protection standards. Your intellectual property remains 100% yours.</p>
                     </div>
                 </div>
                 
@@ -391,27 +453,17 @@
                         <span class="faq-icon">+</span>
                     </button>
                     <div class="faq-answer">
-                        <p>We're committed to making AegisForge accessible to everyone. There will always be a <strong>free tier</strong>. Paid plans start at just <strong>$29/month</strong> for Pro, $99/month for Business, and custom Enterprise plans. Waitlist members get exclusive founder pricing - forever.</p>
+                        <p>We're committed to accessibility. There will always be a <strong>free tier</strong>. Paid plans start at just <strong>$29/month</strong> for Pro. Waitlist members get exclusive founder pricing - forever.</p>
                     </div>
                 </div>
                 
                 <div class="faq-item">
                     <button class="faq-question">
-                        <span>What makes AegisForge different from other AI tools?</span>
+                        <span>What makes AegisForge different?</span>
                         <span class="faq-icon">+</span>
                     </button>
                     <div class="faq-answer">
-                        <p>Three things: <strong>First</strong>, we combine app building, cybersecurity, deployment, and AI assistance in one place. <strong>Second</strong>, our Prediction AI stops cyberattacks BEFORE they happen. <strong>Third</strong>, we're built for real people, not just developers.</p>
-                    </div>
-                </div>
-                
-                <div class="faq-item">
-                    <button class="faq-question">
-                        <span>Can I really trust AI to build my apps?</span>
-                        <span class="faq-icon">+</span>
-                    </button>
-                    <div class="faq-answer">
-                        <p>Yes! Every line of code goes through rigorous security scanning and quality checks. Our AI is trained on millions of production-grade codebases. Plus, you always get the full source code — meaning you own it, can modify it, and take it anywhere. You're never locked in.</p>
+                        <p>Three things: We combine app building, cybersecurity, deployment, and AI in one place. Our Prediction AI stops attacks BEFORE they happen. And we're built for real people, not just developers.</p>
                     </div>
                 </div>
                 
@@ -421,99 +473,14 @@
                         <span class="faq-icon">+</span>
                     </button>
                     <div class="faq-answer">
-                        <p>It's simple! Just enter your email in our waitlist below. You'll be among the first to know when we launch, get exclusive early access before the public, and lock in special founder-tier pricing. Only the first 1000 people get these special rates!</p>
+                        <p>Simple! Just enter your email in the waitlist below. You'll get early access, exclusive updates, and founder-tier pricing. Only the first 1000 people get these special rates!</p>
                     </div>
                 </div>
             </div>
             
             <div class="faq-cta">
-                <p class="faq-tagline">Still have questions? Reach out to us below!</p>
-                <a href="#contact" class="btn-primary">Contact Us →</a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Contact Section -->
-    <section id="contact" class="contact-section">
-        <div class="contact-container">
-            <div class="contact-header">
-                <div class="contact-badge">📬 GET IN TOUCH</div>
-                <h2 class="section-title">Let's <span class="gradient-text">Connect</span></h2>
-                <p class="section-subtitle">Have questions, partnership ideas, or just want to say hi? We'd love to hear from you.</p>
-            </div>
-            
-            <div class="contact-grid">
-                <div class="contact-card">
-                    <div class="contact-icon">📧</div>
-                    <h3>Email Us</h3>
-                    <p>Drop us a message anytime</p>
-                    <a href="mailto:goldstarpalms@gmail.com" class="contact-link">goldstarpalms@gmail.com</a>
-                    <div class="contact-note">We respond within 24 hours</div>
-                </div>
-                
-                <div class="contact-card">
-                    <div class="contact-icon">💼</div>
-                    <h3>Business Inquiries</h3>
-                    <p>Partnerships & investments</p>
-                    <a href="mailto:goldstarpalms@gmail.com" class="contact-link">Business Inquiries</a>
-                    <div class="contact-note">For enterprise & partnerships</div>
-                </div>
-                
-                <div class="contact-card">
-                    <div class="contact-icon">🌍</div>
-                    <h3>Location</h3>
-                    <p>Building globally</p>
-                    <div class="contact-link">Worldwide 🌐</div>
-                    <div class="contact-note">Serving founders everywhere</div>
-                </div>
-            </div>
-            
-            <div class="social-section">
-                <h3 class="social-title">Follow Our Journey</h3>
-                <p class="social-subtitle">Join our community and be part of the movement</p>
-                
-                <div class="social-links">
-                    <a href="#" class="social-link twitter" title="Twitter/X">
-                        <div class="social-icon">𝕏</div>
-                        <div class="social-name">Twitter</div>
-                        <div class="social-handle">Coming Soon</div>
-                    </a>
-                    
-                    <a href="#" class="social-link linkedin" title="LinkedIn">
-                        <div class="social-icon">in</div>
-                        <div class="social-name">LinkedIn</div>
-                        <div class="social-handle">Coming Soon</div>
-                    </a>
-                    
-                    <a href="#" class="social-link instagram" title="Instagram">
-                        <div class="social-icon">📷</div>
-                        <div class="social-name">Instagram</div>
-                        <div class="social-handle">Coming Soon</div>
-                    </a>
-                    
-                    <a href="#" class="social-link discord" title="Discord">
-                        <div class="social-icon">💬</div>
-                        <div class="social-name">Discord</div>
-                        <div class="social-handle">Coming Soon</div>
-                    </a>
-                    
-                    <a href="#" class="social-link youtube" title="YouTube">
-                        <div class="social-icon">▶️</div>
-                        <div class="social-name">YouTube</div>
-                        <div class="social-handle">Coming Soon</div>
-                    </a>
-                    
-                    <a href="#" class="social-link github" title="GitHub">
-                        <div class="social-icon">🐙</div>
-                        <div class="social-name">GitHub</div>
-                        <div class="social-handle">Coming Soon</div>
-                    </a>
-                </div>
-            </div>
-            
-            <div class="contact-cta">
-                <p class="contact-tagline">Can't wait to launch? Skip the line - join the waitlist now!</p>
-                <a href="#waitlist" class="btn-primary">Join Waitlist →</a>
+                <p class="faq-tagline">Still have questions? Try our FREE scanner above or join the waitlist!</p>
+                <a href="#scanner" class="btn-primary">Try Free Scanner →</a>
             </div>
         </div>
     </section>
@@ -555,11 +522,11 @@
                 <span>AegisForge<span class="ai-text">AI</span></span>
             </div>
             <div class="footer-links">
+                <a href="#scanner">Free Scanner</a>
                 <a href="#how-it-works">How It Works</a>
                 <a href="#modules">Modules</a>
                 <a href="#story">Our Story</a>
                 <a href="#faq">FAQ</a>
-                <a href="#contact">Contact</a>
                 <a href="terms.html">Terms</a>
                 <a href="privacy.html">Privacy</a>
             </div>
@@ -590,4 +557,4 @@
 
     <script src="script.js"></script>
 </body>
-                        </html>
+    </html>
