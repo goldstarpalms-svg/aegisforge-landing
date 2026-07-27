@@ -131,12 +131,11 @@
             messageEl.textContent = '';
         });
 
-        form.addEventListener('submit', async (e) => {
+        form.addEventListener('submit', async function(e) {
             e.preventDefault();
             
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
-            const originalBtnText = btn.textContent;
             
             btn.disabled = true;
             btn.textContent = 'Please wait...';
@@ -154,28 +153,25 @@
                 if (result.error) {
                     messageEl.textContent = result.error.message;
                     messageEl.style.color = '#ef4444';
-                    btn.disabled = false;
-                    btn.textContent = originalBtnText;
                 } else {
                     if (isLogin) {
                         messageEl.textContent = 'Login successful!';
                         messageEl.style.color = '#00ffc8';
-                        setTimeout(() => {
+                        setTimeout(function() {
                             window.location.href = 'dashboard.html';
-                        }, 600);
+                        }, 800);
                     } else {
-                        messageEl.innerHTML = '✅ Account created! Check your email to confirm.';
+                        messageEl.innerHTML = '✅ Account created! Check your email.';
                         messageEl.style.color = '#00ffc8';
-                        btn.disabled = false;
-                        btn.textContent = originalBtnText;
                     }
                 }
             } catch (err) {
-                messageEl.textContent = 'Something went wrong. Please try again.';
+                messageEl.textContent = 'Something went wrong.';
                 messageEl.style.color = '#ef4444';
-                btn.disabled = false;
-                btn.textContent = originalBtnText;
             }
+            
+            btn.disabled = false;
+            btn.textContent = isLogin ? 'Sign In' : 'Create Account';
         });
     </script>
 </body>

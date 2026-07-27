@@ -14,11 +14,11 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
 const BACKEND_API_URL = 'https://aegisforge-backend.onrender.com';
 
 // ============================================
-// WAITLIST FORM - Simple & Reliable
+// WAITLIST FORM - Very Simple
 // ============================================
 const waitlistForm = document.getElementById('waitlistForm');
 if (waitlistForm) {
-    waitlistForm.addEventListener('submit', async function(e) {
+    waitlistForm.addEventListener('submit', function(e) {
         e.preventDefault();
         
         const emailInput = document.getElementById('emailInput');
@@ -27,36 +27,28 @@ if (waitlistForm) {
         
         if (!email) return;
 
-        // Show processing state
         formMessage.textContent = 'Sending...';
         formMessage.style.color = '#888';
-        emailInput.disabled = true;
 
-        try {
-            const response = await fetch(`${BACKEND_API_URL}/waitlist`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ email: email })
-            });
-
+        fetch('https://aegisforge-backend.onrender.com/waitlist', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email: email })
+        })
+        .then(function(response) {
             if (response.ok) {
-                formMessage.innerHTML = '🎉 <strong>Success!</strong> Check your email for the welcome message!';
+                formMessage.innerHTML = '🎉 Success! Check your email.';
                 formMessage.style.color = '#00ffc8';
                 emailInput.value = '';
             } else {
-                const errorData = await response.json().catch(() => ({}));
-                formMessage.textContent = errorData.detail || 'Something went wrong. Please try again.';
+                formMessage.textContent = 'Error. Try again.';
                 formMessage.style.color = '#ef4444';
             }
-        } catch (error) {
-            console.error('Waitlist error:', error);
-            formMessage.textContent = 'Connection error. Please try again.';
+        })
+        .catch(function() {
+            formMessage.textContent = 'Connection error.';
             formMessage.style.color = '#ef4444';
-        } finally {
-            emailInput.disabled = false;
-        }
+        });
     });
 }
 
