@@ -14,7 +14,7 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
 const BACKEND_API_URL = 'https://aegisforge-backend.onrender.com';
 
 // ============================================
-// WAITLIST FORM - Clean & Reliable
+// WAITLIST FORM - Rebuilt from Scratch
 // ============================================
 const waitlistForm = document.getElementById('waitlistForm');
 if (waitlistForm) {
@@ -27,25 +27,29 @@ if (waitlistForm) {
         
         if (!email) return;
 
-        // Show loading state
         formMessage.textContent = 'Sending...';
         formMessage.style.color = '#888';
 
-        // Optimistic UI - show success immediately
-        formMessage.innerHTML = '🎉 Success! Check your email for the welcome message.';
-        formMessage.style.color = '#00ffc8';
-        emailInput.value = '';
-
-        // Send request in background (don't wait for it)
         fetch('https://aegisforge-backend.onrender.com/waitlist', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({ email: email })
-        }).catch(function() {
-            // Silently fail - user already saw success
-            console.log('Background email request failed');
+        })
+        .then(function(response) {
+            if (response.ok) {
+                formMessage.innerHTML = '🎉 Success! Check your email for the welcome message.';
+                formMessage.style.color = '#00ffc8';
+                emailInput.value = '';
+            } else {
+                formMessage.textContent = 'Failed to send. Please try again.';
+                formMessage.style.color = '#ef4444';
+            }
+        })
+        .catch(function() {
+            formMessage.textContent = 'Connection error. Please try again.';
+            formMessage.style.color = '#ef4444';
         });
     });
 }
