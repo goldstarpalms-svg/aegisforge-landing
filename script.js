@@ -14,7 +14,7 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
 const BACKEND_API_URL = 'https://aegisforge-backend.onrender.com';
 
 // ============================================
-// WAITLIST FORM - Very Simple
+// WAITLIST FORM - Clean & Reliable
 // ============================================
 const waitlistForm = document.getElementById('waitlistForm');
 if (waitlistForm) {
@@ -27,26 +27,29 @@ if (waitlistForm) {
         
         if (!email) return;
 
+        // Show loading state
         formMessage.textContent = 'Sending...';
         formMessage.style.color = '#888';
 
         fetch('https://aegisforge-backend.onrender.com/waitlist', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: {
+                'Content-Type': 'application/json'
+            },
             body: JSON.stringify({ email: email })
         })
-        .then(function(response) {
-            if (response.ok) {
-                formMessage.innerHTML = '🎉 Success! Check your email.';
+        .then(function(res) {
+            if (res.ok) {
+                formMessage.innerHTML = '🎉 Success! Check your email for the welcome message.';
                 formMessage.style.color = '#00ffc8';
                 emailInput.value = '';
             } else {
-                formMessage.textContent = 'Error. Try again.';
+                formMessage.textContent = 'Something went wrong. Please try again.';
                 formMessage.style.color = '#ef4444';
             }
         })
         .catch(function() {
-            formMessage.textContent = 'Connection error.';
+            formMessage.textContent = 'Connection error. Please try again.';
             formMessage.style.color = '#ef4444';
         });
     });
