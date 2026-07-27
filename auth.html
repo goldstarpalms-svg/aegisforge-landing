@@ -135,31 +135,49 @@
             e.preventDefault();
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
-            messageEl.textContent = 'Processing...';
+            const originalBtnText = btn.textContent;
+            
+            btn.disabled = true;
+            btn.textContent = 'Processing...';
+            messageEl.textContent = '';
             messageEl.style.color = '#888';
 
             try {
                 let result;
+                
                 if (isLogin) {
                     result = await supabase.auth.signInWithPassword({ email, password });
                 } else {
                     result = await supabase.auth.signUp({ email, password });
                 }
 
+                console.log("Supabase result:", result);
+
                 if (result.error) {
                     messageEl.textContent = result.error.message;
                     messageEl.style.color = '#ef4444';
+                    btn.disabled = false;
+                    btn.textContent = originalBtnText;
                 } else {
-                    messageEl.textContent = isLogin ? 'Login successful! Redirecting...' : 'Account created! Check your email to confirm.';
-                    messageEl.style.color = '#00ffc8';
-                    
-                    setTimeout(() => {
-                        window.location.href = 'dashboard.html';
-                    }, 1200);
+                    if (isLogin) {
+                        messageEl.textContent = 'Login successful! Redirecting...';
+                        messageEl.style.color = '#00ffc8';
+                        setTimeout(() => {
+                            window.location.href = 'dashboard.html';
+                        }, 1000);
+                    } else {
+                        messageEl.innerHTML = 'Account created! Please check your email to confirm your account.';
+                        messageEl.style.color = '#00ffc8';
+                        btn.disabled = false;
+                        btn.textContent = originalBtnText;
+                    }
                 }
             } catch (err) {
-                messageEl.textContent = 'Something went wrong. Try again.';
+                console.error("Auth error:", err);
+                messageEl.textContent = 'Something went wrong. Please try again.';
                 messageEl.style.color = '#ef4444';
+                btn.disabled = false;
+                btn.textContent = originalBtnText;
             }
         });
     </script>
