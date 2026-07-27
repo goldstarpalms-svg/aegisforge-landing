@@ -14,11 +14,11 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
 const BACKEND_API_URL = 'https://aegisforge-backend.onrender.com';
 
 // ============================================
-// WAITLIST FORM - Rebuilt from Scratch
+// WAITLIST FORM - Original Version (Supabase)
 // ============================================
 const waitlistForm = document.getElementById('waitlistForm');
 if (waitlistForm) {
-    waitlistForm.addEventListener('submit', function(e) {
+    waitlistForm.addEventListener('submit', async function(e) {
         e.preventDefault();
         
         const emailInput = document.getElementById('emailInput');
@@ -26,31 +26,31 @@ if (waitlistForm) {
         const email = emailInput.value.trim();
         
         if (!email) return;
-
-        formMessage.textContent = 'Sending...';
-        formMessage.style.color = '#888';
-
-        fetch('https://aegisforge-backend.onrender.com/waitlist', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ email: email })
-        })
-        .then(function(response) {
-            if (response.ok) {
-                formMessage.innerHTML = '🎉 Success! Check your email for the welcome message.';
+        
+        try {
+            const response = await fetch(`${SUPABASE_URL}/rest/v1/waitlist`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'apikey': SUPABASE_ANON_KEY,
+                    'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+                    'Prefer': 'return=minimal'
+                },
+                body: JSON.stringify({ email: email })
+            });
+            
+            if (response.ok || response.status === 201) {
+                formMessage.textContent = '🎉 Success! You are on the waitlist!';
                 formMessage.style.color = '#00ffc8';
                 emailInput.value = '';
             } else {
-                formMessage.textContent = 'Failed to send. Please try again.';
+                formMessage.textContent = '❌ Something went wrong. Try again.';
                 formMessage.style.color = '#ef4444';
             }
-        })
-        .catch(function() {
-            formMessage.textContent = 'Connection error. Please try again.';
+        } catch (error) {
+            formMessage.textContent = '❌ Connection error. Try again.';
             formMessage.style.color = '#ef4444';
-        });
+        }
     });
 }
 
