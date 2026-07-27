@@ -14,7 +14,7 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
 const BACKEND_API_URL = 'https://aegisforge-backend.onrender.com';
 
 // ============================================
-// WAITLIST FORM
+// WAITLIST FORM - Supabase + Backend Email
 // ============================================
 const waitlistForm = document.getElementById('waitlistForm');
 if (waitlistForm) {
@@ -26,9 +26,16 @@ if (waitlistForm) {
         const email = emailInput.value.trim();
         
         if (!email) return;
+
+        formMessage.textContent = 'Processing...';
+        formMessage.style.color = '#888';
         
+        let supabaseSuccess = false;
+        let backendSuccess = false;
+
         try {
-            const response = await fetch(`${SUPABASE_URL}/rest/v1/waitlist`, {
+            // Job 1: Save to Supabase
+            const supabaseResponse = await fetch(`${SUPABASE_URL}/rest/v1/waitlist`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -39,16 +46,31 @@ if (waitlistForm) {
                 body: JSON.stringify({ email: email })
             });
             
-            if (response.ok || response.status === 201) {
-                formMessage.textContent = '🎉 Success! You are on the waitlist!';
+            supabaseSuccess = supabaseResponse.ok || supabaseResponse.status === 201;
+
+            // Job 2: Send welcome email via Backend (Resend)
+            const backendResponse = await fetch(`${BACKEND_API_URL}/waitlist`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ email: email })
+            });
+
+            backendSuccess = backendResponse.ok;
+
+            // Final feedback
+            if (supabaseSuccess || backendSuccess) {
+                formMessage.textContent = '🎉 Success! Check your email for confirmation.';
                 formMessage.style.color = '#00ffc8';
                 emailInput.value = '';
             } else {
-                formMessage.textContent = '❌ Something went wrong. Try again.';
+                formMessage.textContent = '❌ Something went wrong. Please try again.';
                 formMessage.style.color = '#ef4444';
             }
         } catch (error) {
-            formMessage.textContent = '❌ Connection error. Try again.';
+            console.error('Waitlist error:', error);
+            formMessage.textContent = '❌ Connection error. Please try again later.';
             formMessage.style.color = '#ef4444';
         }
     });
