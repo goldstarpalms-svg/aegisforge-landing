@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard • AegisForge AI</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .dashboard {
+            padding-top: 100px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding-left: 20px;
+            padding-right: 20px;
+        }
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+        }
+        .welcome-text h1 {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+        .welcome-text p {
+            color: #a0a0b0;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            margin-bottom: 50px;
+        }
+        .stat-card {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 16px;
+            padding: 24px;
+        }
+        .stat-card h3 {
+            font-size: 14px;
+            color: #888;
+            margin-bottom: 8px;
+        }
+        .stat-card .value {
+            font-size: 32px;
+            font-weight: 800;
+            color: #00ffc8;
+        }
+        .section-title-small {
+            font-size: 20px;
+            margin-bottom: 20px;
+            color: #ffffff;
+        }
+        .scan-history {
+            background: rgba(255,255,255,0.02);
+            border-radius: 16px;
+            border: 1px solid rgba(255,255,255,0.06);
+            padding: 30px;
+        }
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #666;
+        }
+        .nav-user {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .user-avatar {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, #00ffc8, #00a8ff);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: #0a0a0f;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <span class="logo-icon">⚡</span>
+                <span class="logo-text">AegisForge<span class="ai-text">AI</span></span>
+            </div>
+            <div class="nav-links">
+                <a href="index.html#scanner">Scanner</a>
+                <a href="index.html#modules">Modules</a>
+                <a href="index.html#roadmap">Roadmap</a>
+                <a href="#dashboard" class="nav-cta">Dashboard</a>
+            </div>
+            <div class="nav-user">
+                <div class="user-avatar">U</div>
+                <span style="font-size:13px; color:#888;">user@example.com</span>
+            </div>
+        </div>
+    </nav>
+
+    <div class="dashboard">
+        <!-- Header -->
+        <div class="dashboard-header">
+            <div class="welcome-text">
+                <h1>Welcome back, User 👋</h1>
+                <p>Here's what's happening with your projects today.</p>
+            </div>
+            <a href="index.html#scanner" class="btn-primary">New Security Scan</a>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h3>Total Scans</h3>
+                <div class="value">12</div>
+            </div>
+            <div class="stat-card">
+                <h3>Average Security Score</h3>
+                <div class="value">87</div>
+            </div>
+            <div class="stat-card">
+                <h3>Projects Created</h3>
+                <div class="value">3</div>
+            </div>
+            <div class="stat-card">
+                <h3>Threats Prevented</h3>
+                <div class="value">24</div>
+            </div>
+        </div>
+
+        <!-- Recent Scans -->
+        <div>
+            <h2 class="section-title-small">Recent Security Scans</h2>
+            <div class="scan-history">
+                <div class="empty-state">
+                    <div style="font-size:48px; margin-bottom:16px;">🛡️</div>
+                    <h3 style="color:#fff; margin-bottom:8px;">No scans yet</h3>
+                    <p style="margin-bottom:24px;">Your security scans will appear here once you run them.</p>
+                    <a href="index.html#scanner" class="btn-primary">Run Your First Scan</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Coming Soon Message -->
+        <div style="margin-top:60px; text-align:center; padding:40px; background:rgba(0,255,200,0.03); border-radius:16px; border:1px solid rgba(0,255,200,0.15);">
+            <h3 style="margin-bottom:12px;">🚀 Full Dashboard Coming Soon</h3>
+            <p style="color:#a0a0b0; max-width:500px; margin:0 auto;">
+                Soon you'll be able to manage projects, view AI-generated apps, track deployments, and access all AegisForge modules from this dashboard.
+            </p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
