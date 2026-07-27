@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In • AegisForge AI</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .auth-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+        }
+        .auth-box {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 20px;
+            padding: 50px 40px;
+            width: 100%;
+            max-width: 420px;
+            text-align: center;
+        }
+        .auth-box h1 {
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+        .auth-box p {
+            color: #a0a0b0;
+            margin-bottom: 32px;
+        }
+        .auth-form {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        .auth-form input {
+            padding: 16px 20px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 12px;
+            color: white;
+            font-size: 16px;
+        }
+        .auth-form button {
+            padding: 16px;
+            background: linear-gradient(135deg, #00ffc8, #00a8ff);
+            color: #0a0a0f;
+            border: none;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .auth-switch {
+            margin-top: 24px;
+            color: #888;
+        }
+        .auth-switch a {
+            color: #00ffc8;
+            text-decoration: none;
+        }
+        .auth-message {
+            margin-top: 16px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="auth-container">
+        <div class="auth-box">
+            <div class="logo" style="justify-content:center; margin-bottom:30px;">
+                <span class="logo-icon">⚡</span>
+                <span class="logo-text">AegisForge<span class="ai-text">AI</span></span>
+            </div>
+
+            <h1 id="authTitle">Welcome Back</h1>
+            <p id="authSubtitle">Sign in to access your dashboard</p>
+
+            <form class="auth-form" id="authForm">
+                <input type="email" id="email" placeholder="Email address" required>
+                <input type="password" id="password" placeholder="Password" required>
+                <button type="submit" id="authBtn">Sign In</button>
+            </form>
+
+            <div class="auth-message" id="authMessage"></div>
+
+            <div class="auth-switch">
+                <span id="switchText">Don't have an account?</span> 
+                <a href="#" id="switchLink">Sign Up</a>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        const SUPABASE_URL = 'https://rxwtjoibzaskkmxintzw.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ4d3Rqb2liemFza2tteGludHp3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUwMTkyNTcsImV4cCI6MjEwMDU5NTI1N30.el-h7Hg9oqfIvTadVJCa_X-myTDNVqgV9YfMceB4edo';
+
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        let isLogin = true;
+
+        const form = document.getElementById('authForm');
+        const title = document.getElementById('authTitle');
+        const subtitle = document.getElementById('authSubtitle');
+        const btn = document.getElementById('authBtn');
+        const switchText = document.getElementById('switchText');
+        const switchLink = document.getElementById('switchLink');
+        const messageEl = document.getElementById('authMessage');
+
+        switchLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            isLogin = !isLogin;
+            
+            if (isLogin) {
+                title.textContent = 'Welcome Back';
+                subtitle.textContent = 'Sign in to access your dashboard';
+                btn.textContent = 'Sign In';
+                switchText.textContent = "Don't have an account?";
+                switchLink.textContent = 'Sign Up';
+            } else {
+                title.textContent = 'Create Account';
+                subtitle.textContent = 'Join the future of secure app building';
+                btn.textContent = 'Create Account';
+                switchText.textContent = 'Already have an account?';
+                switchLink.textContent = 'Sign In';
+            }
+            messageEl.textContent = '';
+        });
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            messageEl.textContent = 'Processing...';
+            messageEl.style.color = '#888';
+
+            try {
+                let result;
+                if (isLogin) {
+                    result = await supabase.auth.signInWithPassword({ email, password });
+                } else {
+                    result = await supabase.auth.signUp({ email, password });
+                }
+
+                if (result.error) {
+                    messageEl.textContent = result.error.message;
+                    messageEl.style.color = '#ef4444';
+                } else {
+                    messageEl.textContent = isLogin ? 'Login successful! Redirecting...' : 'Account created! Check your email to confirm.';
+                    messageEl.style.color = '#00ffc8';
+                    
+                    setTimeout(() => {
+                        window.location.href = 'dashboard.html';
+                    }, 1200);
+                }
+            } catch (err) {
+                messageEl.textContent = 'Something went wrong. Try again.';
+                messageEl.style.color = '#ef4444';
+            }
+        });
+    </script>
+</body>
+</html>
