@@ -6,15 +6,34 @@ setTimeout(function() {
     }
 }, 2000);
 
-// Supabase Configuration
-const SUPABASE_URL = 'https://rxwtjoibzaskkmxintzw.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ4d3Rqb2liemFza2tteGludHp3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUwMTkyNTcsImV4cCI6MjEwMDU5NTI1N30.el-h7Hg9oqfIvTadVJCa_X-myTDNVqgV9YfMceB4edo';
-
 // Backend API URL
 const BACKEND_API_URL = 'https://aegisforge-backend.onrender.com';
 
+function escapeHTML(value) {
+    return String(value ?? '').replace(/[&<>"']/g, function(char) {
+        return ({
+            '&': '&amp;',
+            '<': '&lt;',
+            '>': '&gt;',
+            '"': '&quot;',
+            "'": '&#39;'
+        })[char];
+    });
+}
+
+function safeScore(value, fallback = 0) {
+    const number = Number(value);
+    if (!Number.isFinite(number)) return fallback;
+    return Math.max(0, Math.min(100, Math.round(number)));
+}
+
+function safeClass(value, allowed, fallback) {
+    const normalized = String(value || '').toLowerCase();
+    return allowed.includes(normalized) ? normalized : fallback;
+}
+
 // ============================================
-// WAITLIST FORM - Original Version (Supabase)
+// WAITLIST FORM - Backend Gmail SMTP Version
 // ============================================
 const waitlistForm = document.getElementById('waitlistForm');
 if (waitlistForm) {
@@ -23,33 +42,45 @@ if (waitlistForm) {
         
         const emailInput = document.getElementById('emailInput');
         const formMessage = document.getElementById('formMessage');
-        const email = emailInput.value.trim();
+        const submitButton = waitlistForm.querySelector('button[type="submit"]');
+        const email = emailInput.value.trim().toLowerCase();
         
         if (!email) return;
         
         try {
-            const response = await fetch(`${SUPABASE_URL}/rest/v1/waitlist`, {
+            if (submitButton) {
+                submitButton.disabled = true;
+                submitButton.textContent = 'Joining...';
+            }
+            formMessage.textContent = '⏳ Adding you to the waitlist...';
+            formMessage.style.color = '#a0a0b0';
+
+            const response = await fetch(`${BACKEND_API_URL}/waitlist`, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
-                    'apikey': SUPABASE_ANON_KEY,
-                    'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
-                    'Prefer': 'return=minimal'
+                    'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({ email: email })
             });
             
-            if (response.ok || response.status === 201) {
+            if (response.ok) {
                 formMessage.textContent = '🎉 Success! You are on the waitlist!';
                 formMessage.style.color = '#00ffc8';
                 emailInput.value = '';
             } else {
-                formMessage.textContent = '❌ Something went wrong. Try again.';
+                const errorData = await response.json().catch(() => ({}));
+                formMessage.textContent = `❌ ${errorData.detail || 'Something went wrong. Try again.'}`;
                 formMessage.style.color = '#ef4444';
             }
         } catch (error) {
+            console.error('Waitlist error:', error);
             formMessage.textContent = '❌ Connection error. Try again.';
             formMessage.style.color = '#ef4444';
+        } finally {
+            if (submitButton) {
+                submitButton.disabled = false;
+                submitButton.textContent = 'Get Early Access';
+            }
         }
     });
 }
@@ -125,7 +156,8 @@ async function performScan() {
         clearInterval(progressInterval);
         
         if (!response.ok) {
-            throw new Error(`Server error: ${response.status}`);
+            const errorData = await response.json().catch(() => ({}));
+            throw new Error(errorData.detail || `Server error: ${response.status}`);
         }
         
         const data = await response.json();
@@ -151,22 +183,25 @@ async function performScan() {
         scanButton.disabled = false;
         scannerUrl.disabled = false;
         
-        showScanError('Scanner starting up. Please wait 30 seconds and try again.');
+        showScanError(error.message || 'Scanner starting up. Please wait 30 seconds and try again.');
     }
 }
 
 function showScanError(message) {
-    scanResults.innerHTML = `<div style="padding:20px;background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.3);border-radius:12px;color:#fca5a5;text-align:center;"><strong style="color:#ef4444;display:block;margin-bottom:5px;">Notice</strong>${message}</div>`;
+    scanResults.innerHTML = `<div class="scan-error"><strong>Notice</strong>${escapeHTML(message)}</div>`;
     scanResults.classList.add('active');
 }
 
 function displayScanResults(data) {
     const riskScore = data.risk_score || {};
     const checks = data.checks || {};
-    const recommendations = data.recommendations || [];
+    const recommendations = Array.isArray(data.recommendations) ? data.recommendations : [];
     
-    const grade = (riskScore.grade || 'F').toLowerCase();
-    const score = riskScore.score || 0;
+    const grade = safeClass(riskScore.grade, ['a', 'b', 'c', 'd', 'f'], 'f');
+    const score = safeScore(riskScore.score);
+    const status = escapeHTML(riskScore.status || 'Unknown');
+    const summary = escapeHTML(riskScore.summary || 'Analysis complete');
+    const scannedUrl = escapeHTML(data.url || 'Unknown URL');
     
     let html = `
         <div class="results-score-container">
@@ -178,17 +213,17 @@ function displayScanResults(data) {
                     </div>
                 </div>
             </div>
-            <div class="grade-badge grade-${grade}">${(riskScore.grade || 'F').toUpperCase()}</div>
-            <div class="score-status">${riskScore.status || 'Unknown'}</div>
-            <p class="score-summary">${riskScore.summary || 'Analysis complete'}</p>
-            <div class="scanned-url">${data.url}</div>
+            <div class="grade-badge grade-${grade}">${grade.toUpperCase()}</div>
+            <div class="score-status">${status}</div>
+            <p class="score-summary">${summary}</p>
+            <div class="scanned-url">${scannedUrl}</div>
         </div>
         <div class="results-categories">
             ${generateCategoryCards(checks)}
         </div>
     `;
     
-    if (recommendations && recommendations.length > 0) {
+    if (recommendations.length > 0) {
         html += `
             <div class="recommendations-section">
                 <div class="recommendations-header">
@@ -231,8 +266,8 @@ function generateCategoryCards(checks) {
     return categories.map(cat => {
         const check = checks[cat.key] || {};
         let score = check.score;
-        if (cat.key === 'cookies') score = check.security_score || 0;
-        if (score === undefined) score = 0;
+        if (cat.key === 'cookies') score = check.security_score ?? check.score;
+        score = safeScore(score);
         
         let scoreClass = 'low';
         let status = 'Poor';
@@ -243,7 +278,7 @@ function generateCategoryCards(checks) {
         return `
             <div class="category-card">
                 <div class="category-icon">${cat.icon}</div>
-                <div class="category-name">${cat.name}</div>
+                <div class="category-name">${escapeHTML(cat.name)}</div>
                 <div class="category-score ${scoreClass}">${score}</div>
                 <div class="category-status">${status}</div>
             </div>
@@ -252,24 +287,27 @@ function generateCategoryCards(checks) {
 }
 
 function generateRecommendationCard(rec) {
-    const priority = (rec.priority || 'low').toLowerCase();
+    const priority = safeClass(rec.priority, ['critical', 'high', 'medium', 'low'], 'low');
     return `
         <div class="recommendation-item ${priority}">
             <div class="recommendation-header">
-                <div><div class="recommendation-category">${rec.category || 'General'}</div></div>
-                <div class="recommendation-priority ${priority}">${rec.priority || 'low'}</div>
+                <div><div class="recommendation-category">${escapeHTML(rec.category || 'General')}</div></div>
+                <div class="recommendation-priority ${priority}">${priority}</div>
             </div>
-            <div class="recommendation-issue">${rec.issue || 'Issue detected'}</div>
-            <div class="recommendation-fix">${rec.fix || 'Review this issue'}</div>
+            <div class="recommendation-issue">${escapeHTML(rec.issue || 'Issue detected')}</div>
+            <div class="recommendation-fix">${escapeHTML(rec.fix || 'Review this issue')}</div>
         </div>
     `;
 }
 
 function resetScanner() {
-    scannerUrl.value = '';
-    scanResults.classList.remove('active');
-    scanResults.innerHTML = '';
-    document.getElementById('scanner').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    if (scannerUrl) scannerUrl.value = '';
+    if (scanResults) {
+        scanResults.classList.remove('active');
+        scanResults.innerHTML = '';
+    }
+    const scannerSection = document.getElementById('scanner');
+    if (scannerSection) scannerSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 // FAQ Toggle
@@ -284,9 +322,9 @@ document.querySelectorAll('.faq-question').forEach(question => {
 
 // Countdown Timer
 function updateCountdown() {
-    const launchDate = new Date('2025-06-01T00:00:00').getTime();
-    const now = new Date().getTime();
-    const distance = launchDate - now;
+    const launchDate = new Date('2026-12-01T00:00:00').getTime();
+    const now = Date.now();
+    const distance = Math.max(0, launchDate - now);
     
     const days = Math.floor(distance / (1000 * 60 * 60 * 24));
     const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
@@ -297,14 +335,18 @@ function updateCountdown() {
     const hoursEl = document.getElementById('hours');
     const minutesEl = document.getElementById('minutes');
     const secondsEl = document.getElementById('seconds');
+    const labelEl = document.querySelector('.countdown-label');
     
     if (daysEl) daysEl.textContent = String(days).padStart(2, '0');
     if (hoursEl) hoursEl.textContent = String(hours).padStart(2, '0');
     if (minutesEl) minutesEl.textContent = String(minutes).padStart(2, '0');
     if (secondsEl) secondsEl.textContent = String(seconds).padStart(2, '0');
+    if (labelEl && launchDate <= now) labelEl.textContent = '🚀 FULL PLATFORM LAUNCHING SOON';
 }
-setInterval(updateCountdown, 1000);
-updateCountdown();
+if (document.querySelector('.countdown-container')) {
+    setInterval(updateCountdown, 1000);
+    updateCountdown();
+}
 
 // Back to Top
 const backToTopBtn = document.getElementById('backToTop');
