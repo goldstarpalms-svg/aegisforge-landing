@@ -64,7 +64,16 @@ if (waitlistForm) {
             });
             
             if (response.ok) {
-                formMessage.textContent = '🎉 Success! You are on the waitlist!';
+                const data = await response.json().catch(() => ({}));
+                if (data.position) {
+                    formMessage.textContent = data.already_joined
+                        ? `✅ You are already on the waitlist. Your position is #${data.position}.`
+                        : `🎉 Success! You are #${data.position} on the waitlist!`;
+                } else {
+                    formMessage.textContent = data.already_joined
+                        ? '✅ You are already on the waitlist.'
+                        : '🎉 Success! You are on the waitlist!';
+                }
                 formMessage.style.color = '#00ffc8';
                 emailInput.value = '';
             } else {
