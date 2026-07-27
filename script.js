@@ -61,7 +61,7 @@ if (waitlistForm) {
 
             // Final feedback
             if (supabaseSuccess || backendSuccess) {
-                formMessage.textContent = '🎉 Success! Check your email for confirmation.';
+                formMessage.innerHTML = '🎉 <strong>Success!</strong> Check your email for the welcome message.<br>Thank you for joining the movement!';
                 formMessage.style.color = '#00ffc8';
                 emailInput.value = '';
             } else {
