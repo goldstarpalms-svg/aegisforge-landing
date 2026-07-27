@@ -34,21 +34,24 @@ if (waitlistForm) {
         let backendSuccess = false;
 
         try {
-            // Job 1: Save to Supabase
-            const supabaseResponse = await fetch(`${SUPABASE_URL}/rest/v1/waitlist`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'apikey': SUPABASE_ANON_KEY,
-                    'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
-                    'Prefer': 'return=minimal'
-                },
-                body: JSON.stringify({ email: email })
-            });
-            
-            supabaseSuccess = supabaseResponse.ok || supabaseResponse.status === 201;
+            // Step 1: Save to Supabase (optional - for record keeping)
+            try {
+                const supabaseResponse = await fetch(`${SUPABASE_URL}/rest/v1/waitlist`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'apikey': SUPABASE_ANON_KEY,
+                        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+                        'Prefer': 'return=minimal'
+                    },
+                    body: JSON.stringify({ email: email })
+                });
+                supabaseSuccess = supabaseResponse.ok || supabaseResponse.status === 201;
+            } catch (e) {
+                console.log('Supabase save failed (non-critical)');
+            }
 
-            // Job 2: Send welcome email via Backend (Resend)
+            // Step 2: Send welcome email via Backend (this is the important one)
             const backendResponse = await fetch(`${BACKEND_API_URL}/waitlist`, {
                 method: 'POST',
                 headers: {
@@ -59,13 +62,13 @@ if (waitlistForm) {
 
             backendSuccess = backendResponse.ok;
 
-            // Final feedback
-            if (supabaseSuccess || backendSuccess) {
+            if (backendSuccess) {
                 formMessage.innerHTML = '🎉 <strong>Success!</strong> Check your email for the welcome message.<br>Thank you for joining the movement!';
                 formMessage.style.color = '#00ffc8';
                 emailInput.value = '';
             } else {
-                formMessage.textContent = '❌ Something went wrong. Please try again.';
+                const errorData = await backendResponse.json().catch(() => ({}));
+                formMessage.textContent = errorData.detail || '❌ Something went wrong. Please try again.';
                 formMessage.style.color = '#ef4444';
             }
         } catch (error) {
