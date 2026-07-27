@@ -133,66 +133,44 @@
 
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
-            console.log("Form submitted, isLogin =", isLogin);
             
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
             const originalBtnText = btn.textContent;
             
             btn.disabled = true;
-            btn.textContent = 'Processing...';
+            btn.textContent = 'Please wait...';
             messageEl.textContent = '';
-            messageEl.style.color = '#888';
 
             try {
                 let result;
                 
                 if (isLogin) {
-                    console.log("Attempting login...");
                     result = await supabase.auth.signInWithPassword({ email, password });
                 } else {
-                    console.log("Attempting signup...");
-                    result = await supabase.auth.signUp({ 
-                        email, 
-                        password,
-                        options: {
-                            emailRedirectTo: window.location.origin + '/dashboard.html'
-                        }
-                    });
+                    result = await supabase.auth.signUp({ email, password });
                 }
 
-                console.log("Supabase result:", result);
-
                 if (result.error) {
-                    console.error("Supabase error:", result.error);
                     messageEl.textContent = result.error.message;
                     messageEl.style.color = '#ef4444';
                     btn.disabled = false;
                     btn.textContent = originalBtnText;
                 } else {
                     if (isLogin) {
-                        messageEl.textContent = 'Login successful! Redirecting...';
+                        messageEl.textContent = 'Login successful!';
                         messageEl.style.color = '#00ffc8';
                         setTimeout(() => {
                             window.location.href = 'dashboard.html';
-                        }, 800);
+                        }, 600);
                     } else {
-                        // Signup successful
-                        if (result.data.user && !result.data.session) {
-                            messageEl.innerHTML = '✅ Account created! Please check your email to confirm your account.';
-                        } else {
-                            messageEl.textContent = '✅ Account created! Redirecting...';
-                            setTimeout(() => {
-                                window.location.href = 'dashboard.html';
-                            }, 800);
-                        }
+                        messageEl.innerHTML = '✅ Account created! Check your email to confirm.';
                         messageEl.style.color = '#00ffc8';
                         btn.disabled = false;
                         btn.textContent = originalBtnText;
                     }
                 }
             } catch (err) {
-                console.error("Unexpected error:", err);
                 messageEl.textContent = 'Something went wrong. Please try again.';
                 messageEl.style.color = '#ef4444';
                 btn.disabled = false;

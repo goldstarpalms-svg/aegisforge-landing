@@ -14,7 +14,7 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
 const BACKEND_API_URL = 'https://aegisforge-backend.onrender.com';
 
 // ============================================
-// WAITLIST FORM - Supabase + Backend Email
+// WAITLIST FORM - Simple & Reliable
 // ============================================
 const waitlistForm = document.getElementById('waitlistForm');
 if (waitlistForm) {
@@ -27,32 +27,13 @@ if (waitlistForm) {
         
         if (!email) return;
 
-        formMessage.textContent = 'Processing...';
+        // Show processing state
+        formMessage.textContent = 'Sending...';
         formMessage.style.color = '#888';
-        
-        let supabaseSuccess = false;
-        let backendSuccess = false;
+        emailInput.disabled = true;
 
         try {
-            // Step 1: Save to Supabase (optional - for record keeping)
-            try {
-                const supabaseResponse = await fetch(`${SUPABASE_URL}/rest/v1/waitlist`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'apikey': SUPABASE_ANON_KEY,
-                        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
-                        'Prefer': 'return=minimal'
-                    },
-                    body: JSON.stringify({ email: email })
-                });
-                supabaseSuccess = supabaseResponse.ok || supabaseResponse.status === 201;
-            } catch (e) {
-                console.log('Supabase save failed (non-critical)');
-            }
-
-            // Step 2: Send welcome email via Backend (this is the important one)
-            const backendResponse = await fetch(`${BACKEND_API_URL}/waitlist`, {
+            const response = await fetch(`${BACKEND_API_URL}/waitlist`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -60,21 +41,21 @@ if (waitlistForm) {
                 body: JSON.stringify({ email: email })
             });
 
-            backendSuccess = backendResponse.ok;
-
-            if (backendSuccess) {
-                formMessage.innerHTML = '🎉 <strong>Success!</strong> Check your email for the welcome message.<br>Thank you for joining the movement!';
+            if (response.ok) {
+                formMessage.innerHTML = '🎉 <strong>Success!</strong> Check your email for the welcome message!';
                 formMessage.style.color = '#00ffc8';
                 emailInput.value = '';
             } else {
-                const errorData = await backendResponse.json().catch(() => ({}));
-                formMessage.textContent = errorData.detail || '❌ Something went wrong. Please try again.';
+                const errorData = await response.json().catch(() => ({}));
+                formMessage.textContent = errorData.detail || 'Something went wrong. Please try again.';
                 formMessage.style.color = '#ef4444';
             }
         } catch (error) {
             console.error('Waitlist error:', error);
-            formMessage.textContent = '❌ Connection error. Please try again later.';
+            formMessage.textContent = 'Connection error. Please try again.';
             formMessage.style.color = '#ef4444';
+        } finally {
+            emailInput.disabled = false;
         }
     });
 }
