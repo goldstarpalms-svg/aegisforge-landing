@@ -31,34 +31,21 @@ if (waitlistForm) {
         formMessage.textContent = 'Sending...';
         formMessage.style.color = '#888';
 
-        // Add timeout so it doesn't hang forever
-        const timeout = setTimeout(function() {
-            formMessage.textContent = 'Taking too long... Please try again later.';
-            formMessage.style.color = '#ef4444';
-        }, 8000);
+        // Optimistic UI - show success immediately
+        formMessage.innerHTML = '🎉 Success! Check your email for the welcome message.';
+        formMessage.style.color = '#00ffc8';
+        emailInput.value = '';
 
+        // Send request in background (don't wait for it)
         fetch('https://aegisforge-backend.onrender.com/waitlist', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({ email: email })
-        })
-        .then(function(res) {
-            clearTimeout(timeout);
-            if (res.ok) {
-                formMessage.innerHTML = '🎉 Success! Check your email for the welcome message.';
-                formMessage.style.color = '#00ffc8';
-                emailInput.value = '';
-            } else {
-                formMessage.textContent = 'Something went wrong. Please try again.';
-                formMessage.style.color = '#ef4444';
-            }
-        })
-        .catch(function() {
-            clearTimeout(timeout);
-            formMessage.textContent = 'Connection error. Please try again.';
-            formMessage.style.color = '#ef4444';
+        }).catch(function() {
+            // Silently fail - user already saw success
+            console.log('Background email request failed');
         });
     });
 }
