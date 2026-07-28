@@ -280,6 +280,9 @@
                     <li>✓ Exportable source code direction</li>
                 </ul>
                 <div class="module-mini-cta">Best for founders building SaaS, marketplaces, dashboards, and portals.</div>
+                <div class="module-preview-actions">
+                    <button type="button" class="module-preview-btn" onclick="openModulePreview('app-builder')">Preview Module</button>
+                </div>
             </div>
             
             <div class="module-card">
@@ -294,6 +297,9 @@
                     <li>✓ Brand-aware sections</li>
                 </ul>
                 <div class="module-mini-cta">Best for founders who need a professional web presence fast.</div>
+                <div class="module-preview-actions">
+                    <button type="button" class="module-preview-btn" onclick="openModulePreview('website-generator')">Preview Module</button>
+                </div>
             </div>
             
             <div class="module-card featured">
@@ -308,6 +314,9 @@
                     <li>✓ Downloadable report</li>
                 </ul>
                 <div class="module-mini-cta live">Try it now above — no signup required.</div>
+                <div class="module-preview-actions">
+                    <a href="#scanner" class="module-preview-btn live">Try Live Scanner</a>
+                </div>
             </div>
             
             <div class="module-card">
@@ -322,6 +331,9 @@
                     <li>✓ Uptime and performance monitoring roadmap</li>
                 </ul>
                 <div class="module-mini-cta">Best for shipping without needing a DevOps team.</div>
+                <div class="module-preview-actions">
+                    <button type="button" class="module-preview-btn" onclick="openModulePreview('devops')">Preview Module</button>
+                </div>
             </div>
             
             <div class="module-card">
@@ -336,6 +348,9 @@
                     <li>✓ Beginner-friendly mentorship</li>
                 </ul>
                 <div class="module-mini-cta">Best for learning, debugging, and improving code quality.</div>
+                <div class="module-preview-actions">
+                    <button type="button" class="module-preview-btn" onclick="openModulePreview('code-assistant')">Preview Module</button>
+                </div>
             </div>
             
             <div class="module-card premium">
@@ -350,6 +365,9 @@
                     <li>✓ Proactive hardening suggestions</li>
                 </ul>
                 <div class="module-mini-cta">Best for teams that want security to think ahead.</div>
+                <div class="module-preview-actions">
+                    <button type="button" class="module-preview-btn" onclick="openModulePreview('threat-prediction')">Preview Module</button>
+                </div>
             </div>
         </div>
         
@@ -770,6 +788,18 @@
             <p class="footer-love">Made with 💚 for founders everywhere</p>
         </div>
     </footer>
+
+
+    <!-- Upcoming Module Preview Modal -->
+    <div class="module-preview-modal" id="modulePreviewModal" aria-hidden="true">
+        <div class="module-preview-backdrop" onclick="closeModulePreview()"></div>
+        <div class="module-preview-dialog" role="dialog" aria-modal="true" aria-labelledby="modulePreviewTitle">
+            <button type="button" class="module-preview-close" onclick="closeModulePreview()" aria-label="Close module preview">×</button>
+            <div class="module-preview-content" id="modulePreviewContent">
+                <!-- Module preview content is injected by script.js -->
+            </div>
+        </div>
+    </div>
 
     <!-- Back to Top Button -->
     <button class="back-to-top" id="backToTop" title="Back to top">

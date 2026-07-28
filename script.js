@@ -670,3 +670,148 @@ if (acceptCookiesBtn) {
 }
 
 console.log('AegisForge AI - Ready!');
+
+// ============================================
+// UPCOMING AI MODULE PREVIEWS
+// ============================================
+const modulePreviews = {
+    'app-builder': {
+        badge: 'COMING SOON • AI APP BUILDER',
+        title: 'AI App Builder Preview',
+        subtitle: 'A no-cost visual demo of how AegisForge will turn an idea into a secure app blueprint.',
+        mockup: `
+            <div class="preview-app-shell">
+                <div class="preview-sidebar">
+                    <div class="preview-logo-dot"></div>
+                    <span>Dashboard</span><span>Users</span><span>Payments</span><span>Settings</span>
+                </div>
+                <div class="preview-main">
+                    <div class="preview-hero-line"></div>
+                    <div class="preview-stats-row"><div></div><div></div><div></div></div>
+                    <div class="preview-table"><span></span><span></span><span></span><span></span></div>
+                </div>
+            </div>
+        `,
+        blueprint: [
+            'Prompt-to-app blueprint with user roles and core flows',
+            'Suggested screens, database tables, and API routes',
+            'Security checklist for auth, payments, validation, and secrets',
+            'Future upgrade path to real AI code generation'
+        ],
+        cta: 'Want your app idea previewed first? Join the waitlist.'
+    },
+    'website-generator': {
+        badge: 'COMING SOON • AI WEBSITE GENERATOR',
+        title: 'AI Website Generator Preview',
+        subtitle: 'A template-powered preview of a landing page generated from a business idea.',
+        mockup: `
+            <div class="preview-website-frame">
+                <div class="preview-web-nav"><strong>BrandName</strong><span>Services</span><span>Pricing</span><button>Get Started</button></div>
+                <div class="preview-web-hero"><h4>Your premium business headline</h4><p>Conversion-focused copy, sections, and CTAs generated from your idea.</p><button>Book a Call</button></div>
+                <div class="preview-web-cards"><div></div><div></div><div></div></div>
+            </div>
+        `,
+        blueprint: [
+            'Hero, features, testimonials, pricing, FAQ, and CTA section plan',
+            'SEO title, meta description, and keyword suggestions',
+            'Mobile-first layout and brand direction',
+            'Future upgrade path to downloadable website code'
+        ],
+        cta: 'Perfect for founders who need a professional web presence quickly.'
+    },
+    'devops': {
+        badge: 'COMING SOON • AI DEVOPS PLATFORM',
+        title: 'AI DevOps Platform Preview',
+        subtitle: 'A deployment command center preview for turning projects into shipped products.',
+        mockup: `
+            <div class="preview-devops-board">
+                <div class="preview-pipeline-step done">✓ Build</div>
+                <div class="preview-pipeline-step done">✓ Security Scan</div>
+                <div class="preview-pipeline-step active">↗ Deploy</div>
+                <div class="preview-pipeline-step">○ Monitor</div>
+                <div class="preview-env-box"><span>ENV</span><span>DATABASE_URL</span><span>API_KEY</span><span>WEBHOOK_SECRET</span></div>
+            </div>
+        `,
+        blueprint: [
+            'Deployment checklist and environment variable guidance',
+            'CI/CD steps for build, scan, deploy, and monitor',
+            'Production readiness checklist',
+            'Future upgrade path to one-click deployment automation'
+        ],
+        cta: 'Built for founders who want to ship without hiring a DevOps team.'
+    },
+    'code-assistant': {
+        badge: 'COMING SOON • AI CODE ASSISTANT',
+        title: 'AI Code Assistant Preview',
+        subtitle: 'A preview of code review, bug explanation, and beginner-friendly mentorship workflows.',
+        mockup: `
+            <div class="preview-code-review">
+                <pre>function login(user) {\n  // review: validate input\n  // fix: rate-limit attempts\n}</pre>
+                <div class="preview-review-card"><strong>Security Suggestion</strong><p>Add input validation, lockout rules, and secure session cookies.</p></div>
+            </div>
+        `,
+        blueprint: [
+            'Code explanation in beginner-friendly language',
+            'Bug and security smell detection',
+            'Refactoring suggestions and safer patterns',
+            'Future upgrade path to repo-aware AI reviews'
+        ],
+        cta: 'Designed to help beginners learn and pros move faster.'
+    },
+    'threat-prediction': {
+        badge: 'COMING SOON • THREAT PREDICTION AI',
+        title: 'Threat Prediction AI Preview',
+        subtitle: 'A premium risk forecasting concept for identifying weak signals before incidents happen.',
+        mockup: `
+            <div class="preview-threat-radar">
+                <div class="radar-circle"></div><div class="radar-circle two"></div><div class="radar-dot one"></div><div class="radar-dot two"></div><div class="radar-dot three"></div>
+                <div class="preview-threat-list"><span>Medium: exposed admin route</span><span>Low: missing policy header</span><span>High: payment webhook risk</span></div>
+            </div>
+        `,
+        blueprint: [
+            'Attack path prediction for common app patterns',
+            'Risk forecasting based on configuration and behavior signals',
+            'Proactive hardening recommendations',
+            'Future upgrade path to continuous monitoring and alerts'
+        ],
+        cta: 'Security that thinks ahead — planned for advanced tiers.'
+    }
+};
+
+function openModulePreview(key) {
+    const modal = document.getElementById('modulePreviewModal');
+    const content = document.getElementById('modulePreviewContent');
+    const preview = modulePreviews[key];
+    if (!modal || !content || !preview) return;
+
+    content.innerHTML = `
+        <div class="module-preview-badge">${preview.badge}</div>
+        <h2 id="modulePreviewTitle">${preview.title}</h2>
+        <p class="module-preview-subtitle">${preview.subtitle}</p>
+        <div class="module-preview-mockup">${preview.mockup}</div>
+        <div class="module-preview-blueprint">
+            <h3>What the preview demonstrates</h3>
+            <ul>${preview.blueprint.map(item => `<li>✓ ${item}</li>`).join('')}</ul>
+        </div>
+        <div class="module-preview-footer">
+            <p>${preview.cta}</p>
+            <a href="#waitlist" onclick="closeModulePreview()" class="module-preview-cta">Join Waitlist</a>
+        </div>
+    `;
+
+    modal.classList.add('active');
+    modal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeModulePreview() {
+    const modal = document.getElementById('modulePreviewModal');
+    if (!modal) return;
+    modal.classList.remove('active');
+    modal.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+}
+
+document.addEventListener('keydown', function(event) {
+    if (event.key === 'Escape') closeModulePreview();
+});
