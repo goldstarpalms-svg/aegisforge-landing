@@ -33,7 +33,7 @@ function safeClass(value, allowed, fallback) {
 }
 
 // ============================================
-// WAITLIST FORM - Backend Gmail SMTP Version
+// WAITLIST FORM - Backend Resend + Supabase Version
 // ============================================
 const waitlistForm = document.getElementById('waitlistForm');
 if (waitlistForm) {
