@@ -44,3 +44,7 @@ After pushing to GitHub, Vercel should auto-deploy from the `main` branch if con
 ## Notes
 
 Do not put backend secrets, Supabase service-role keys, or Resend API keys in this frontend repo. Secrets belong only in the backend deployment environment.
+
+## Pricing preview
+
+The landing page currently previews Free, Starter ($9/mo), Pro ($29/mo), and Business ($79/mo), plus founder annual/lifetime offers for waitlist members.
