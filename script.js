@@ -293,7 +293,10 @@ function generateCategoryCards(checks) {
         { key: 'cookies', icon: '🍪', name: 'Cookies' },
         { key: 'cdn', icon: '🌍', name: 'CDN' },
         { key: 'https_enforcement', icon: '🛡️', name: 'HTTPS' },
-        { key: 'performance', icon: '⚡', name: 'Speed' }
+        { key: 'performance', icon: '⚡', name: 'Speed' },
+        { key: 'dns', icon: '🧭', name: 'DNS' },
+        { key: 'security_txt', icon: '📨', name: 'Policy' },
+        { key: 'robots_txt', icon: '🤖', name: 'Robots' }
     ];
     
     return categories.map(cat => {
@@ -328,6 +331,9 @@ function generateDetailedResults(checks, data) {
     const cdn = checks.cdn || {};
     const https = checks.https_enforcement || {};
     const performance = checks.performance || {};
+    const dns = checks.dns || {};
+    const securityTxt = checks.security_txt || {};
+    const robotsTxt = checks.robots_txt || {};
     const missingHeaders = Array.isArray(headers.missing_headers) ? headers.missing_headers : [];
     const detectedTech = tech.detected || {};
 
@@ -424,6 +430,44 @@ function generateDetailedResults(checks, data) {
                 ['Grade', performance.grade]
             ],
             beginner: 'Faster pages improve trust, SEO, conversion, and user experience.'
+        },
+        {
+            title: 'DNS Resolution',
+            score: dns.score,
+            icon: '🧭',
+            rows: [
+                ['Resolves', dns.resolves],
+                ['IPv4 Count', dns.ipv4_count],
+                ['IPv6 Count', dns.ipv6_count],
+                ['IPv4 Addresses', dns.ipv4_addresses],
+                ['IPv6 Addresses', dns.ipv6_addresses]
+            ],
+            beginner: 'DNS is the internet phonebook. Reliable DNS resolution is required before users can reach your site.'
+        },
+        {
+            title: 'Security.txt Policy',
+            score: securityTxt.score,
+            icon: '📨',
+            rows: [
+                ['Found', securityTxt.found],
+                ['URL', securityTxt.url],
+                ['Has Contact', securityTxt.has_contact],
+                ['Has Expires', securityTxt.has_expires],
+                ['Has Policy', securityTxt.has_policy]
+            ],
+            beginner: 'security.txt gives ethical researchers a clear way to report vulnerabilities responsibly.'
+        },
+        {
+            title: 'Robots.txt',
+            score: robotsTxt.score,
+            icon: '🤖',
+            rows: [
+                ['Found', robotsTxt.found],
+                ['URL', robotsTxt.url],
+                ['Has Sitemap', robotsTxt.has_sitemap],
+                ['Has Disallow Rules', robotsTxt.has_disallow]
+            ],
+            beginner: 'robots.txt helps search engines understand which parts of your website they can crawl.'
         }
     ];
 
