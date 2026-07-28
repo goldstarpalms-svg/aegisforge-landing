@@ -9,8 +9,9 @@ Frontend landing page for AegisForge AI — an autonomous AI platform that build
 - Supabase-backed waitlist position display through the backend
 - Resend-powered welcome email through the backend
 - Legal pages: Terms and Privacy
-- Responsive landing page sections for modules, story, FAQ, contact, and waitlist
+- Responsive landing page sections for product preview, modules, pricing, trust, story, FAQ, contact, and waitlist
 - SEO/social sharing metadata and branded favicon
+- Premium product preview, pricing preview, trust section, and scanner report downloads
 
 ## Important files
 
