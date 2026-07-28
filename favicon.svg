@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="AegisForge AI">
+  <defs>
+    <linearGradient id="bolt" x1="8" y1="6" x2="56" y2="58" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#00ffc8"/>
+      <stop offset="0.52" stop-color="#00a8ff"/>
+      <stop offset="1" stop-color="#a855f7"/>
+    </linearGradient>
+    <filter id="glow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  <rect width="64" height="64" rx="16" fill="#0a0a0f"/>
+  <path filter="url(#glow)" fill="url(#bolt)" d="M36.8 4 12 35.1h17.1L25.8 60 52 27.3H34.2L36.8 4Z"/>
+</svg>

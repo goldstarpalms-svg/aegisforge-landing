@@ -3126,3 +3126,70 @@ section[id] {
     margin-bottom: 20px;
     font-size: 16px;
 }
+
+/* ============================================
+   WAITLIST MESSAGE CARD ENHANCEMENTS
+   ============================================ */
+.waitlist-message {
+    max-width: 560px;
+    margin: 20px auto 0;
+    padding: 16px 18px;
+    border-radius: 16px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 12px;
+    text-align: left;
+    line-height: 1.5;
+    transition: all 0.3s ease;
+}
+
+.waitlist-message .message-icon {
+    font-size: 24px;
+    line-height: 1.2;
+    flex-shrink: 0;
+}
+
+.waitlist-message strong {
+    color: #ffffff;
+    font-weight: 800;
+}
+
+.waitlist-message small {
+    display: inline-block;
+    margin-top: 4px;
+    color: rgba(255, 255, 255, 0.72);
+}
+
+.waitlist-message.loading {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    color: #a0a0b0;
+}
+
+.waitlist-message.success {
+    background: linear-gradient(135deg, rgba(0, 255, 200, 0.12), rgba(0, 168, 255, 0.08));
+    border: 1px solid rgba(0, 255, 200, 0.35);
+    color: #00ffc8;
+    box-shadow: 0 15px 40px rgba(0, 255, 200, 0.12);
+}
+
+.waitlist-message.error {
+    background: rgba(239, 68, 68, 0.1);
+    border: 1px solid rgba(239, 68, 68, 0.28);
+    color: #f87171;
+}
+
+#waitlistStats {
+    margin-top: 12px;
+    font-weight: 600;
+}
+
+@media (max-width: 600px) {
+    .waitlist-message {
+        margin-left: 8px;
+        margin-right: 8px;
+        padding: 14px;
+        font-size: 14px;
+    }
+}

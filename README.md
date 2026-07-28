@@ -4,20 +4,22 @@ Frontend landing page for AegisForge AI — an autonomous AI platform that build
 
 ## Features
 
-- Free website security scanner UI
+- Free website security scanner UI with downloadable text reports
 - Waitlist signup form
 - Supabase-backed waitlist position display through the backend
 - Resend-powered welcome email through the backend
 - Legal pages: Terms and Privacy
 - Responsive landing page sections for modules, story, FAQ, contact, and waitlist
+- SEO/social sharing metadata and branded favicon
 
 ## Important files
 
 - `index.html` — main landing page
 - `style.css` — styling for all public pages
-- `script.js` — waitlist, scanner, FAQ, countdown, and UI interactions
+- `script.js` — waitlist, scanner, report download, FAQ, countdown, and UI interactions
 - `privacy.html` — privacy policy
 - `terms.html` — terms of service
+- `favicon.svg` — branded browser/social icon
 
 ## Backend dependency
 

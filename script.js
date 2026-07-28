@@ -8,6 +8,7 @@ setTimeout(function() {
 
 // Backend API URL
 const BACKEND_API_URL = 'https://aegisforge-backend.onrender.com';
+let lastScanData = null;
 
 function escapeHTML(value) {
     return String(value ?? '').replace(/[&<>"']/g, function(char) {
@@ -32,6 +33,14 @@ function safeClass(value, allowed, fallback) {
     return allowed.includes(normalized) ? normalized : fallback;
 }
 
+function setWaitlistMessage(type, html) {
+    const formMessage = document.getElementById('formMessage');
+    if (!formMessage) return;
+
+    formMessage.className = `waitlist-note waitlist-message ${type || ''}`.trim();
+    formMessage.innerHTML = html;
+}
+
 // ============================================
 // WAITLIST FORM - Backend Resend + Supabase Version
 // ============================================
@@ -52,8 +61,7 @@ if (waitlistForm) {
                 submitButton.disabled = true;
                 submitButton.textContent = 'Joining...';
             }
-            formMessage.textContent = '⏳ Adding you to the waitlist...';
-            formMessage.style.color = '#a0a0b0';
+            setWaitlistMessage('loading', '<span class="message-icon">⏳</span><span>Adding you to the waitlist...</span>');
 
             const response = await fetch(`${BACKEND_API_URL}/waitlist`, {
                 method: 'POST',
@@ -65,27 +73,25 @@ if (waitlistForm) {
             
             if (response.ok) {
                 const data = await response.json().catch(() => ({}));
-                if (data.position) {
-                    formMessage.textContent = data.already_joined
-                        ? `✅ You are already on the waitlist. Your position is #${data.position}.`
-                        : `🎉 Success! You are #${data.position} on the waitlist!`;
-                } else {
-                    formMessage.textContent = data.already_joined
-                        ? '✅ You are already on the waitlist.'
-                        : '🎉 Success! You are on the waitlist!';
-                }
-                formMessage.style.color = '#00ffc8';
+                const positionText = data.position ? `#${data.position}` : 'confirmed';
+                const title = data.already_joined ? 'You are already in!' : 'You are in!';
+                const detail = data.position
+                    ? `Your founder waitlist position is <strong>${positionText}</strong>.`
+                    : 'Your early access spot is confirmed.';
+
+                setWaitlistMessage('success', `
+                    <span class="message-icon">🎉</span>
+                    <span><strong>${title}</strong><br>${detail}<br><small>Check your inbox for the confirmation email.</small></span>
+                `);
                 emailInput.value = '';
                 loadWaitlistStats();
             } else {
                 const errorData = await response.json().catch(() => ({}));
-                formMessage.textContent = `❌ ${errorData.detail || 'Something went wrong. Try again.'}`;
-                formMessage.style.color = '#ef4444';
+                setWaitlistMessage('error', `<span class="message-icon">❌</span><span>${escapeHTML(errorData.detail || 'Something went wrong. Try again.')}</span>`);
             }
         } catch (error) {
             console.error('Waitlist error:', error);
-            formMessage.textContent = '❌ Connection error. Try again.';
-            formMessage.style.color = '#ef4444';
+            setWaitlistMessage('error', '<span class="message-icon">❌</span><span>Connection error. Try again.</span>');
         } finally {
             if (submitButton) {
                 submitButton.disabled = false;
@@ -232,6 +238,7 @@ function showScanError(message) {
 }
 
 function displayScanResults(data) {
+    lastScanData = data;
     const riskScore = data.risk_score || {};
     const checks = data.checks || {};
     const recommendations = Array.isArray(data.recommendations) ? data.recommendations : [];
@@ -278,6 +285,7 @@ function displayScanResults(data) {
         <div class="results-actions">
             <div class="results-cta-text"><strong>💚 Love this scanner?</strong> Join our waitlist!</div>
             <a href="#waitlist" class="results-btn primary">🚀 Join Waitlist</a>
+            <button onclick="downloadScanReport()" class="results-btn secondary">⬇️ Download Report</button>
             <button onclick="resetScanner()" class="results-btn secondary">🔄 Scan Another</button>
         </div>
     `;
@@ -337,6 +345,60 @@ function generateRecommendationCard(rec) {
             <div class="recommendation-fix">${escapeHTML(rec.fix || 'Review this issue')}</div>
         </div>
     `;
+}
+
+function formatCheckSummary(checks) {
+    return Object.entries(checks || {}).map(([name, value]) => {
+        const score = value && typeof value === 'object' && value.score !== undefined
+            ? `Score: ${value.score}/100`
+            : value && typeof value === 'object' && value.security_score !== undefined
+                ? `Score: ${value.security_score}/100`
+                : 'Score: N/A';
+        return `- ${name.replace(/_/g, ' ')}: ${score}`;
+    }).join('\n');
+}
+
+function downloadScanReport() {
+    if (!lastScanData) {
+        showScanError('No scan report is available yet. Run a scan first.');
+        return;
+    }
+
+    const riskScore = lastScanData.risk_score || {};
+    const recommendations = Array.isArray(lastScanData.recommendations) ? lastScanData.recommendations : [];
+    const report = `AegisForge AI Security Scan Report
+====================================
+
+URL: ${lastScanData.url || 'Unknown'}
+Domain: ${lastScanData.domain || 'Unknown'}
+Scanned At: ${lastScanData.scanned_at || new Date().toISOString()}
+Scan Duration: ${lastScanData.scan_duration_seconds || 'N/A'} seconds
+
+Overall Score: ${riskScore.score ?? 0}/100
+Grade: ${(riskScore.grade || 'F').toUpperCase()}
+Status: ${riskScore.status || 'Unknown'}
+
+Security Checks
+---------------
+${formatCheckSummary(lastScanData.checks)}
+
+Recommendations
+---------------
+${recommendations.length ? recommendations.map((rec, index) => `${index + 1}. [${rec.priority || 'low'}] ${rec.category || 'General'} - ${rec.issue || 'Issue detected'}\n   Fix: ${rec.fix || 'Review this issue'}`).join('\n') : 'No recommendations returned.'}
+
+Generated by AegisForge AI
+`;
+
+    const blob = new Blob([report], { type: 'text/plain;charset=utf-8' });
+    const reportUrl = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    const safeDomain = String(lastScanData.domain || 'website').replace(/[^a-z0-9.-]/gi, '-');
+    link.href = reportUrl;
+    link.download = `aegisforge-scan-${safeDomain}.txt`;
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    URL.revokeObjectURL(reportUrl);
 }
 
 function resetScanner() {
