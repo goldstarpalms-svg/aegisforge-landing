@@ -680,16 +680,28 @@ const modulePreviews = {
         title: 'AI App Builder Preview',
         subtitle: 'A no-cost visual demo of how AegisForge will turn an idea into a secure app blueprint.',
         mockup: `
-            <div class="preview-app-shell">
-                <div class="preview-sidebar">
-                    <div class="preview-logo-dot"></div>
-                    <span>Dashboard</span><span>Users</span><span>Payments</span><span>Settings</span>
+            <div class="preview-full-module preview-app-full">
+                <div class="preview-browser-bar"><span></span><span></span><span></span><strong>AI App Builder Workspace</strong></div>
+                <div class="preview-app-layout">
+                    <aside class="preview-app-nav">
+                        <div class="preview-logo-dot"></div>
+                        <strong>FoodFlow SaaS</strong>
+                        <span>Overview</span><span>Users</span><span>Orders</span><span>Payments</span><span>Security</span>
+                    </aside>
+                    <main class="preview-app-canvas">
+                        <div class="preview-prompt-box"><small>PROMPT</small><p>Build a food delivery app with customers, vendors, riders, payments, and admin dashboard.</p></div>
+                        <div class="preview-app-screen-grid">
+                            <section><b>Generated Screens</b><span>Landing</span><span>Customer App</span><span>Vendor Portal</span><span>Rider Tracking</span></section>
+                            <section><b>Database Plan</b><span>users</span><span>vendors</span><span>orders</span><span>payments</span></section>
+                            <section><b>Security Plan</b><span>RBAC</span><span>Webhook verify</span><span>Rate limits</span><span>Audit logs</span></section>
+                        </div>
+                        <div class="preview-generated-app">
+                            <div class="preview-generated-header">Live App Mockup</div>
+                            <div class="preview-generated-content"><div></div><div></div><div></div></div>
+                        </div>
+                    </main>
                 </div>
-                <div class="preview-main">
-                    <div class="preview-hero-line"></div>
-                    <div class="preview-stats-row"><div></div><div></div><div></div></div>
-                    <div class="preview-table"><span></span><span></span><span></span><span></span></div>
-                </div>
+                <div class="preview-play-strip"><span></span><p>Preview flow: prompt → blueprint → screens → secure app plan</p></div>
             </div>
         `,
         blueprint: [
@@ -756,12 +768,23 @@ const modulePreviews = {
         title: 'AI DevOps Platform Preview',
         subtitle: 'A deployment command center preview for turning projects into shipped products.',
         mockup: `
-            <div class="preview-devops-board">
-                <div class="preview-pipeline-step done">✓ Build</div>
-                <div class="preview-pipeline-step done">✓ Security Scan</div>
-                <div class="preview-pipeline-step active">↗ Deploy</div>
-                <div class="preview-pipeline-step">○ Monitor</div>
-                <div class="preview-env-box"><span>ENV</span><span>DATABASE_URL</span><span>API_KEY</span><span>WEBHOOK_SECRET</span></div>
+            <div class="preview-full-module preview-devops-full">
+                <div class="preview-browser-bar"><span></span><span></span><span></span><strong>AI DevOps Launch Console</strong></div>
+                <div class="preview-devops-grid">
+                    <div class="preview-devops-left">
+                        <div class="preview-pipeline-step done">✓ Source connected</div>
+                        <div class="preview-pipeline-step done">✓ Build succeeded</div>
+                        <div class="preview-pipeline-step done">✓ Security gate passed</div>
+                        <div class="preview-pipeline-step active">↗ Deploying to production</div>
+                        <div class="preview-pipeline-step">○ Monitoring setup</div>
+                    </div>
+                    <div class="preview-devops-right">
+                        <div class="preview-env-box"><b>Environment Variables</b><span>DATABASE_URL • configured</span><span>RESEND_API_KEY • configured</span><span>WEBHOOK_SECRET • missing</span></div>
+                        <div class="preview-monitor-card"><b>Health Monitor</b><div class="mini-chart"><i></i><i></i><i></i><i></i><i></i></div><p>99.9% target uptime • response budget 500ms</p></div>
+                        <div class="preview-checklist-card"><b>Production Checklist</b><span>✓ HTTPS</span><span>✓ Env secrets</span><span>✓ Rate limits</span></div>
+                    </div>
+                </div>
+                <div class="preview-play-strip"><span></span><p>Preview flow: repo → build → scan → deploy → monitor</p></div>
             </div>
         `,
         blueprint: [
@@ -777,9 +800,21 @@ const modulePreviews = {
         title: 'AI Code Assistant Preview',
         subtitle: 'A preview of code review, bug explanation, and beginner-friendly mentorship workflows.',
         mockup: `
-            <div class="preview-code-review">
-                <pre>function login(user) {\n  // review: validate input\n  // fix: rate-limit attempts\n}</pre>
-                <div class="preview-review-card"><strong>Security Suggestion</strong><p>Add input validation, lockout rules, and secure session cookies.</p></div>
+            <div class="preview-full-module preview-code-full">
+                <div class="preview-browser-bar"><span></span><span></span><span></span><strong>AI Code Assistant Review</strong></div>
+                <div class="preview-code-layout">
+                    <div class="preview-code-editor">
+                        <div class="editor-tab">auth.js</div>
+                        <pre>async function login(email, password) {\n  const user = await db.find(email)\n  if (user.password === password) {\n    return createSession(user.id)\n  }\n}</pre>
+                    </div>
+                    <div class="preview-review-stack">
+                        <div class="preview-review-card high"><strong>Critical</strong><p>Password comparison must use hashing, not plain text.</p></div>
+                        <div class="preview-review-card medium"><strong>Medium</strong><p>Add rate limiting and account lockout after repeated failures.</p></div>
+                        <div class="preview-review-card low"><strong>Mentor Mode</strong><p>This function handles login. Secure auth requires hashing, validation, sessions, and audit logs.</p></div>
+                    </div>
+                </div>
+                <div class="preview-code-fix"><b>Suggested safer pattern</b><span>validate input → lookup user → compare hash → create secure session → audit login</span></div>
+                <div class="preview-play-strip"><span></span><p>Preview flow: paste code → review → explain → safer fix</p></div>
             </div>
         `,
         blueprint: [
@@ -795,9 +830,22 @@ const modulePreviews = {
         title: 'Threat Prediction AI Preview',
         subtitle: 'A premium risk forecasting concept for identifying weak signals before incidents happen.',
         mockup: `
-            <div class="preview-threat-radar">
-                <div class="radar-circle"></div><div class="radar-circle two"></div><div class="radar-dot one"></div><div class="radar-dot two"></div><div class="radar-dot three"></div>
-                <div class="preview-threat-list"><span>Medium: exposed admin route</span><span>Low: missing policy header</span><span>High: payment webhook risk</span></div>
+            <div class="preview-full-module preview-threat-full">
+                <div class="preview-browser-bar"><span></span><span></span><span></span><strong>Threat Prediction AI Radar</strong></div>
+                <div class="preview-threat-dashboard">
+                    <div class="preview-threat-radar large">
+                        <div class="radar-sweep"></div><div class="radar-circle"></div><div class="radar-circle two"></div>
+                        <div class="radar-dot one"></div><div class="radar-dot two"></div><div class="radar-dot three"></div>
+                    </div>
+                    <div class="preview-threat-panel">
+                        <h4>Predicted Attack Paths</h4>
+                        <div class="threat-path critical"><b>High</b><span>Payment webhook spoofing risk</span></div>
+                        <div class="threat-path medium"><b>Medium</b><span>Admin route exposure pattern</span></div>
+                        <div class="threat-path low"><b>Low</b><span>Missing security disclosure policy</span></div>
+                        <div class="threat-action"><strong>AI Hardening Plan</strong><p>Verify webhook signatures, protect admin routes, add audit logs, and publish security.txt.</p></div>
+                    </div>
+                </div>
+                <div class="preview-play-strip"><span></span><p>Preview flow: observe signals → predict risk → suggest hardening</p></div>
             </div>
         `,
         blueprint: [
