@@ -705,10 +705,42 @@ const modulePreviews = {
         title: 'AI Website Generator Preview',
         subtitle: 'A template-powered preview of a landing page generated from a business idea.',
         mockup: `
-            <div class="preview-website-frame">
-                <div class="preview-web-nav"><strong>BrandName</strong><span>Services</span><span>Pricing</span><button>Get Started</button></div>
-                <div class="preview-web-hero"><h4>Your premium business headline</h4><p>Conversion-focused copy, sections, and CTAs generated from your idea.</p><button>Book a Call</button></div>
-                <div class="preview-web-cards"><div></div><div></div><div></div></div>
+            <div class="preview-full-site-wrap">
+                <div class="preview-browser-bar">
+                    <span></span><span></span><span></span>
+                    <strong>Generated Website Preview</strong>
+                </div>
+                <div class="preview-full-site">
+                    <div class="preview-site-nav">
+                        <strong>NovaStudio</strong>
+                        <div><span>Services</span><span>Work</span><span>Pricing</span></div>
+                        <button>Start Project</button>
+                    </div>
+                    <section class="preview-site-hero">
+                        <div>
+                            <small>AI GENERATED LANDING PAGE</small>
+                            <h4>Launch a premium website for your business in minutes.</h4>
+                            <p>Clean copy, modern sections, strong CTA flow, and SEO-ready structure generated from your idea.</p>
+                            <button>Book a Free Call</button>
+                        </div>
+                        <div class="preview-site-card-stack"><span></span><span></span><span></span></div>
+                    </section>
+                    <section class="preview-site-services">
+                        <h5>Services</h5>
+                        <div><article>Brand Strategy</article><article>Website Design</article><article>Growth Systems</article></div>
+                    </section>
+                    <section class="preview-site-proof">
+                        <div><strong>98%</strong><span>Client satisfaction</span></div>
+                        <div><strong>24h</strong><span>Preview turnaround</span></div>
+                        <div><strong>SEO</strong><span>Structure included</span></div>
+                    </section>
+                    <section class="preview-site-pricing">
+                        <h5>Simple Packages</h5>
+                        <div><article>Starter</article><article class="featured">Pro</article><article>Business</article></div>
+                    </section>
+                    <section class="preview-site-footer">Generated with AegisForge AI Preview</section>
+                </div>
+                <div class="preview-play-strip"><span></span><p>Visual preview demo — full AI module coming soon</p></div>
             </div>
         `,
         blueprint: [
@@ -788,6 +820,7 @@ function openModulePreview(key) {
         <div class="module-preview-badge">${preview.badge}</div>
         <h2 id="modulePreviewTitle">${preview.title}</h2>
         <p class="module-preview-subtitle">${preview.subtitle}</p>
+        <div class="module-preview-notice">This is a visual preview to show the product direction. The complete AI module is still coming soon.</div>
         <div class="module-preview-mockup">${preview.mockup}</div>
         <div class="module-preview-blueprint">
             <h3>What the preview demonstrates</h3>
