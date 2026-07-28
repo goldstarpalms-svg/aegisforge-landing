@@ -76,6 +76,7 @@ if (waitlistForm) {
                 }
                 formMessage.style.color = '#00ffc8';
                 emailInput.value = '';
+                loadWaitlistStats();
             } else {
                 const errorData = await response.json().catch(() => ({}));
                 formMessage.textContent = `❌ ${errorData.detail || 'Something went wrong. Try again.'}`;
@@ -93,6 +94,35 @@ if (waitlistForm) {
         }
     });
 }
+
+// ============================================
+// WAITLIST STATS
+// ============================================
+async function loadWaitlistStats() {
+    const waitlistStats = document.getElementById('waitlistStats');
+    if (!waitlistStats) return;
+
+    try {
+        const response = await fetch(`${BACKEND_API_URL}/waitlist/stats`);
+        if (!response.ok) throw new Error(`Stats error: ${response.status}`);
+        const data = await response.json();
+        const total = Number(data.total || 0);
+        const remaining = Number(data.first_1000_remaining || 0);
+
+        if (total > 0) {
+            waitlistStats.textContent = `🔥 ${total.toLocaleString()} founder${total === 1 ? '' : 's'} joined. ${remaining.toLocaleString()} founder spot${remaining === 1 ? '' : 's'} remaining.`;
+            waitlistStats.style.color = '#00ffc8';
+        } else {
+            waitlistStats.textContent = '🚀 Founder spots are open now.';
+            waitlistStats.style.color = '#a0a0b0';
+        }
+    } catch (error) {
+        console.warn('Waitlist stats unavailable:', error);
+        waitlistStats.textContent = '🚀 Founder spots are open now.';
+        waitlistStats.style.color = '#a0a0b0';
+    }
+}
+loadWaitlistStats();
 
 // ============================================
 // SCANNER
