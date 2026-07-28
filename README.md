@@ -11,7 +11,7 @@ Frontend landing page for AegisForge AI — an autonomous AI platform that build
 - Legal pages: Terms and Privacy
 - Responsive landing page sections for product preview, modules, pricing, trust, story, FAQ, contact, and waitlist
 - SEO/social sharing metadata and branded favicon
-- Premium product preview, pricing preview, trust section, and scanner report downloads
+- Premium product preview, pricing preview, trust section, upgraded AI module roadmap, and scanner report downloads
 
 ## Important files
 

@@ -3661,3 +3661,196 @@ section[id] {
         justify-content: flex-start;
     }
 }
+
+/* ============================================
+   UPGRADED SCANNER DETAILED REPORT UI
+   ============================================ */
+.detailed-results.active {
+    display: block;
+}
+
+.detail-summary-strip {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 14px;
+    margin-bottom: 22px;
+}
+
+.detail-summary-strip div {
+    padding: 16px;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.035);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.detail-summary-strip strong {
+    display: block;
+    color: #00ffc8;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+}
+
+.detail-summary-strip span {
+    display: block;
+    color: #ffffff;
+    font-size: 13px;
+    word-break: break-word;
+}
+
+.detail-card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
+}
+
+.detail-report-card {
+    padding: 20px;
+    border-radius: 16px;
+    background: rgba(0, 0, 0, 0.28);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    transition: all 0.3s ease;
+}
+
+.detail-report-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(0, 255, 200, 0.24);
+    box-shadow: 0 16px 35px rgba(0, 255, 200, 0.08);
+}
+
+.detail-report-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.detail-report-header > div {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.detail-report-header strong {
+    color: #ffffff;
+    font-size: 16px;
+}
+
+.detail-report-icon {
+    font-size: 24px;
+    filter: drop-shadow(0 0 12px rgba(0, 255, 200, 0.35));
+}
+
+.detail-score {
+    flex-shrink: 0;
+    padding: 5px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 900;
+}
+
+.detail-score.high,
+.detail-report-status.high { color: #00ffc8; background: rgba(0, 255, 200, 0.1); }
+.detail-score.medium,
+.detail-report-status.medium { color: #facc15; background: rgba(250, 204, 21, 0.1); }
+.detail-score.low,
+.detail-report-status.low { color: #f87171; background: rgba(248, 113, 113, 0.1); }
+.detail-score.neutral,
+.detail-report-status.neutral { color: #93c5fd; background: rgba(147, 197, 253, 0.1); }
+
+.detail-report-status {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.7px;
+    margin-bottom: 14px;
+}
+
+.detail-report-rows {
+    display: grid;
+    gap: 8px;
+    margin-bottom: 14px;
+}
+
+.detail-report-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 14px;
+    padding: 9px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.detail-report-row span {
+    color: #a0a0b0;
+    font-size: 12px;
+    flex-shrink: 0;
+}
+
+.detail-report-row strong {
+    color: #ffffff;
+    font-size: 12px;
+    text-align: right;
+    word-break: break-word;
+    white-space: pre-wrap;
+}
+
+.detail-beginner-note {
+    margin: 14px 0 0;
+    padding: 12px;
+    border-radius: 12px;
+    color: #cbd5e1;
+    font-size: 13px;
+    line-height: 1.6;
+    background: rgba(0, 255, 200, 0.055);
+    border-left: 3px solid rgba(0, 255, 200, 0.45);
+}
+
+@media (max-width: 600px) {
+    .detail-report-row {
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .detail-report-row strong {
+        text-align: left;
+    }
+}
+
+/* ============================================
+   UPGRADED MODULE ROADMAP CARDS
+   ============================================ */
+.modules-grid.upgraded .module-card {
+    min-height: 460px;
+    display: flex;
+    flex-direction: column;
+}
+
+.modules-grid.upgraded .module-features {
+    flex: 1;
+}
+
+.module-mini-cta {
+    margin-top: 20px;
+    padding: 12px 14px;
+    border-radius: 12px;
+    color: #cbd5e1;
+    font-size: 13px;
+    line-height: 1.5;
+    background: rgba(255, 255, 255, 0.035);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.module-mini-cta.live {
+    color: #00ffc8;
+    background: rgba(0, 255, 200, 0.08);
+    border-color: rgba(0, 255, 200, 0.24);
+}
+
+.modules-grid.upgraded .module-status {
+    margin-bottom: 16px;
+}

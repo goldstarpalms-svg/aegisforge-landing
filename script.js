@@ -33,6 +33,21 @@ function safeClass(value, allowed, fallback) {
     return allowed.includes(normalized) ? normalized : fallback;
 }
 
+function formatValue(value) {
+    if (value === null || value === undefined || value === '') return 'Not detected';
+    if (typeof value === 'boolean') return value ? 'Yes' : 'No';
+    if (Array.isArray(value)) return value.length ? value.join(', ') : 'None';
+    if (typeof value === 'object') return JSON.stringify(value, null, 2);
+    return String(value);
+}
+
+function scoreLabel(score) {
+    const safe = safeScore(score);
+    if (safe >= 80) return 'Strong';
+    if (safe >= 60) return 'Needs work';
+    return 'High risk';
+}
+
 function setWaitlistMessage(type, html) {
     const formMessage = document.getElementById('formMessage');
     if (!formMessage) return;
@@ -237,6 +252,7 @@ function displayScanResults(data) {
         <div class="results-categories">
             ${generateCategoryCards(checks)}
         </div>
+        ${generateDetailedResults(checks, data)}
     `;
     
     if (recommendations.length > 0) {
@@ -301,6 +317,164 @@ function generateCategoryCards(checks) {
             </div>
         `;
     }).join('');
+}
+
+function generateDetailedResults(checks, data) {
+    const ssl = checks.ssl || {};
+    const headers = checks.headers || {};
+    const reachability = checks.reachability || {};
+    const tech = checks.tech_stack || {};
+    const cookies = checks.cookies || {};
+    const cdn = checks.cdn || {};
+    const https = checks.https_enforcement || {};
+    const performance = checks.performance || {};
+    const missingHeaders = Array.isArray(headers.missing_headers) ? headers.missing_headers : [];
+    const detectedTech = tech.detected || {};
+
+    const detailCards = [
+        {
+            title: 'SSL/TLS Certificate',
+            score: ssl.score,
+            icon: '🔒',
+            rows: [
+                ['Status', ssl.status],
+                ['Protocol', ssl.protocol],
+                ['Issuer', ssl.issuer],
+                ['Expires', ssl.expires],
+                ['Days Until Expiry', ssl.days_until_expiry],
+                ['Expiry Warning', ssl.expiry_warning]
+            ],
+            beginner: ssl.status === 'secure'
+                ? 'Your site is using HTTPS encryption. That protects visitors in transit.'
+                : 'Your site may not be properly protected by HTTPS. This is a critical trust and security issue.'
+        },
+        {
+            title: 'Security Headers',
+            score: headers.score,
+            icon: '📋',
+            rows: [
+                ['Headers Present', `${headers.headers_present ?? 0}/${headers.headers_total ?? 0}`],
+                ['Grade', headers.grade],
+                ['Server', headers.server],
+                ['Missing Headers', missingHeaders.length ? missingHeaders.join(', ') : 'None']
+            ],
+            beginner: missingHeaders.length
+                ? 'Security headers help browsers block attacks like clickjacking, MIME sniffing, and unsafe script execution.'
+                : 'Your key security headers look good from this scan.'
+        },
+        {
+            title: 'Reachability & Uptime',
+            score: reachability.score,
+            icon: '📡',
+            rows: [
+                ['Reachable', reachability.reachable],
+                ['Status Code', reachability.status_code],
+                ['Response Time', reachability.response_time_ms !== undefined ? `${reachability.response_time_ms}ms` : undefined],
+                ['Final URL', reachability.final_url],
+                ['Content Type', reachability.content_type]
+            ],
+            beginner: 'Reachability confirms whether the website responds reliably and how quickly it answers.'
+        },
+        {
+            title: 'Technology Stack',
+            score: tech.score ?? null,
+            icon: '🔍',
+            rows: [
+                ['Server', detectedTech.server],
+                ['Powered By', detectedTech.powered_by],
+                ['CMS', detectedTech.cms],
+                ['Frameworks', detectedTech.frameworks],
+                ['Libraries', detectedTech.libraries],
+                ['Analytics', detectedTech.analytics]
+            ],
+            beginner: 'Technology detection helps reveal what your website is built with and what may need updates or hardening.'
+        },
+        {
+            title: 'Cookies',
+            score: cookies.security_score,
+            icon: '🍪',
+            rows: [
+                ['Total Cookies', cookies.total_cookies],
+                ['Secure Cookies', cookies.secure_cookies],
+                ['Tracking Cookies', cookies.tracking_cookies]
+            ],
+            beginner: 'Secure cookies reduce the chance of session theft and improve user privacy.'
+        },
+        {
+            title: 'CDN & HTTPS Enforcement',
+            score: cdn.using_cdn ? 100 : https.score,
+            icon: '🌍',
+            rows: [
+                ['Using CDN', cdn.using_cdn],
+                ['CDNs Detected', cdn.cdns_detected],
+                ['Enforces HTTPS', https.enforces_https],
+                ['HTTP Status', https.http_status_code],
+                ['Redirect Location', https.redirect_location]
+            ],
+            beginner: 'A CDN can improve speed and resilience. HTTPS enforcement ensures visitors are pushed to the secure version.'
+        },
+        {
+            title: 'Performance',
+            score: performance.score,
+            icon: '⚡',
+            rows: [
+                ['First Load', performance.first_load_ms !== undefined ? `${performance.first_load_ms}ms` : undefined],
+                ['Cached Load', performance.cached_load_ms !== undefined ? `${performance.cached_load_ms}ms` : undefined],
+                ['Content Size', performance.content_size_kb !== undefined ? `${performance.content_size_kb}KB` : undefined],
+                ['Grade', performance.grade]
+            ],
+            beginner: 'Faster pages improve trust, SEO, conversion, and user experience.'
+        }
+    ];
+
+    return `
+        <div class="detailed-results active">
+            <button class="detailed-toggle" onclick="toggleDetailedResults(this)">
+                <span>📊 Detailed Security Report</span>
+                <span class="detailed-toggle-icon">⌄</span>
+            </button>
+            <div class="detailed-content active">
+                <div class="detail-summary-strip">
+                    <div><strong>Scanned URL</strong><span>${escapeHTML(data.url || 'Unknown')}</span></div>
+                    <div><strong>Domain</strong><span>${escapeHTML(data.domain || 'Unknown')}</span></div>
+                    <div><strong>Duration</strong><span>${escapeHTML(data.scan_duration_seconds || 'N/A')}s</span></div>
+                </div>
+                <div class="detail-card-grid">
+                    ${detailCards.map(card => generateDetailCard(card)).join('')}
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+function generateDetailCard(card) {
+    const score = card.score === null || card.score === undefined ? null : safeScore(card.score);
+    const scoreClass = score === null ? 'neutral' : score >= 80 ? 'high' : score >= 60 ? 'medium' : 'low';
+    return `
+        <div class="detail-report-card">
+            <div class="detail-report-header">
+                <div><span class="detail-report-icon">${card.icon}</span><strong>${escapeHTML(card.title)}</strong></div>
+                <span class="detail-score ${scoreClass}">${score === null ? 'Info' : `${score}/100`}</span>
+            </div>
+            <div class="detail-report-status ${scoreClass}">${score === null ? 'Informational' : scoreLabel(score)}</div>
+            <div class="detail-report-rows">
+                ${card.rows.map(([key, value]) => `
+                    <div class="detail-report-row">
+                        <span>${escapeHTML(key)}</span>
+                        <strong>${escapeHTML(formatValue(value))}</strong>
+                    </div>
+                `).join('')}
+            </div>
+            <p class="detail-beginner-note">${escapeHTML(card.beginner)}</p>
+        </div>
+    `;
+}
+
+function toggleDetailedResults(button) {
+    const content = button.parentElement.querySelector('.detailed-content');
+    if (!content) return;
+    const isActive = content.classList.toggle('active');
+    button.classList.toggle('active', isActive);
 }
 
 function generateRecommendationCard(rec) {
