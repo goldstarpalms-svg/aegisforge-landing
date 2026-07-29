@@ -4810,7 +4810,7 @@ section[id] {
 }
 
 .module-preview-ai-shot::before {
-    content: 'AI Visual Preview';
+    content: 'Product Concept Preview';
     position: absolute;
     top: 14px;
     left: 14px;

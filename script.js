@@ -873,7 +873,7 @@ function openModulePreview(key) {
         <div class="module-preview-badge">${preview.badge}</div>
         <h2 id="modulePreviewTitle">${preview.title}</h2>
         <p class="module-preview-subtitle">${preview.subtitle}</p>
-        <div class="module-preview-notice">This is a visual preview to show the product direction. The complete AI module is still coming soon.</div>
+        <div class="module-preview-notice">This is a mature product concept preview to show the planned module experience. The complete AI module is still coming soon.</div>
         ${preview.image ? `<div class="module-preview-ai-shot"><img src="${preview.image}" alt="${preview.title} visual preview" loading="lazy"></div>` : ''}
         <div class="module-preview-mockup">${preview.mockup}</div>
         <div class="module-preview-blueprint">
