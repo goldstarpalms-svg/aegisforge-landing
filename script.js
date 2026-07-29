@@ -679,6 +679,7 @@ const modulePreviews = {
         badge: 'COMING SOON • AI APP BUILDER',
         title: 'AI App Builder Preview',
         subtitle: 'A no-cost visual demo of how AegisForge will turn an idea into a secure app blueprint.',
+        image: 'assets/preview-app-builder.webp',
         mockup: `
             <div class="preview-full-module preview-app-full">
                 <div class="preview-browser-bar"><span></span><span></span><span></span><strong>AI App Builder Workspace</strong></div>
@@ -716,6 +717,7 @@ const modulePreviews = {
         badge: 'COMING SOON • AI WEBSITE GENERATOR',
         title: 'AI Website Generator Preview',
         subtitle: 'A template-powered preview of a landing page generated from a business idea.',
+        image: 'assets/preview-website-generator.webp',
         mockup: `
             <div class="preview-full-site-wrap">
                 <div class="preview-browser-bar">
@@ -767,6 +769,7 @@ const modulePreviews = {
         badge: 'COMING SOON • AI DEVOPS PLATFORM',
         title: 'AI DevOps Platform Preview',
         subtitle: 'A deployment command center preview for turning projects into shipped products.',
+        image: 'assets/preview-devops.webp',
         mockup: `
             <div class="preview-full-module preview-devops-full">
                 <div class="preview-browser-bar"><span></span><span></span><span></span><strong>AI DevOps Launch Console</strong></div>
@@ -799,6 +802,7 @@ const modulePreviews = {
         badge: 'COMING SOON • AI CODE ASSISTANT',
         title: 'AI Code Assistant Preview',
         subtitle: 'A preview of code review, bug explanation, and beginner-friendly mentorship workflows.',
+        image: 'assets/preview-code-assistant.webp',
         mockup: `
             <div class="preview-full-module preview-code-full">
                 <div class="preview-browser-bar"><span></span><span></span><span></span><strong>AI Code Assistant Review</strong></div>
@@ -829,6 +833,7 @@ const modulePreviews = {
         badge: 'COMING SOON • THREAT PREDICTION AI',
         title: 'Threat Prediction AI Preview',
         subtitle: 'A premium risk forecasting concept for identifying weak signals before incidents happen.',
+        image: 'assets/preview-threat-prediction.webp',
         mockup: `
             <div class="preview-full-module preview-threat-full">
                 <div class="preview-browser-bar"><span></span><span></span><span></span><strong>Threat Prediction AI Radar</strong></div>
@@ -869,6 +874,7 @@ function openModulePreview(key) {
         <h2 id="modulePreviewTitle">${preview.title}</h2>
         <p class="module-preview-subtitle">${preview.subtitle}</p>
         <div class="module-preview-notice">This is a visual preview to show the product direction. The complete AI module is still coming soon.</div>
+        ${preview.image ? `<div class="module-preview-ai-shot"><img src="${preview.image}" alt="${preview.title} visual preview" loading="lazy"></div>` : ''}
         <div class="module-preview-mockup">${preview.mockup}</div>
         <div class="module-preview-blueprint">
             <h3>What the preview demonstrates</h3>
