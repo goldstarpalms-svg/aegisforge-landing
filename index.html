@@ -47,6 +47,7 @@
             <div class="nav-links">
                 <a href="#scanner">Free Scan</a>
                 <a href="#product-preview">Product</a>
+                <a href="#preview-engine">Preview</a>
                 <a href="#modules">Modules</a>
                 <a href="#pricing">Pricing</a>
                 <a href="#faq">FAQ</a>
@@ -214,6 +215,44 @@
                     <h3>Risk monitor active</h3>
                     <p>Behavioral anomaly detection and AI recommendations designed to catch issues before they become incidents.</p>
                     <div class="threat-bars"><span></span><span></span><span></span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Smart Preview Engine Section -->
+    <section id="preview-engine" class="preview-engine-section">
+        <div class="preview-engine-header">
+            <div class="preview-engine-badge">✨ NO-COST PREVIEW ENGINE</div>
+            <h2 class="section-title">Describe your idea. <span class="gradient-text">See a real preview.</span></h2>
+            <p class="section-subtitle">Get a visual concept, feature blueprint, security checklist, and launch plan while the full AI build modules are coming soon.</p>
+        </div>
+
+        <div class="preview-engine-shell">
+            <form class="preview-engine-form" id="previewEngineForm">
+                <label for="previewIdea">What do you want to build?</label>
+                <textarea id="previewIdea" required maxlength="600" placeholder="Example: I want a food delivery app for restaurants in Lagos with customers, vendors, riders, payments, and admin dashboard."></textarea>
+                <div class="preview-engine-controls">
+                    <select id="previewType" aria-label="Preview type">
+                        <option value="auto">Auto detect type</option>
+                        <option value="website">Website</option>
+                        <option value="dashboard">SaaS Dashboard</option>
+                        <option value="marketplace">Marketplace</option>
+                        <option value="ecommerce">E-commerce Store</option>
+                        <option value="mobile">Mobile App</option>
+                        <option value="booking">Booking/Service App</option>
+                    </select>
+                    <button type="submit" id="previewGenerateBtn">Generate Preview</button>
+                </div>
+                <p class="preview-engine-note">This preview is template/rule-powered for now, so it costs nothing to run. Full AI generation is coming later.</p>
+            </form>
+
+            <div class="preview-engine-output" id="previewEngineOutput">
+                <div class="preview-empty-state">
+                    <div class="preview-empty-icon">⚡</div>
+                    <h3>Your generated concept will appear here</h3>
+                    <p>Try a marketplace, school dashboard, property website, online store, mobile app, or booking system idea.</p>
                 </div>
             </div>
         </div>

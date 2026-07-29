@@ -902,3 +902,166 @@ function closeModulePreview() {
 document.addEventListener('keydown', function(event) {
     if (event.key === 'Escape') closeModulePreview();
 });
+
+// ============================================
+// NO-COST SMART PREVIEW ENGINE
+// ============================================
+const previewEngineForm = document.getElementById('previewEngineForm');
+const previewEngineOutput = document.getElementById('previewEngineOutput');
+const previewGenerateBtn = document.getElementById('previewGenerateBtn');
+
+if (previewEngineForm) {
+    previewEngineForm.addEventListener('submit', async function(event) {
+        event.preventDefault();
+        const idea = document.getElementById('previewIdea').value.trim();
+        const projectType = document.getElementById('previewType').value;
+        if (!idea) return;
+
+        try {
+            if (previewGenerateBtn) {
+                previewGenerateBtn.disabled = true;
+                previewGenerateBtn.textContent = 'Generating...';
+            }
+            previewEngineOutput.innerHTML = `
+                <div class="preview-loading-state">
+                    <div class="loader-icon">⚡</div>
+                    <h3>Generating your concept preview...</h3>
+                    <p>Creating layout, features, database plan, and security checklist.</p>
+                </div>
+            `;
+
+            const response = await fetch(`${BACKEND_API_URL}/preview/generate`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ idea: idea, project_type: projectType })
+            });
+
+            const data = await response.json();
+            if (!response.ok) throw new Error(data.detail || 'Could not generate preview');
+            renderSmartPreview(data);
+        } catch (error) {
+            previewEngineOutput.innerHTML = `
+                <div class="preview-error-state">
+                    <h3>Preview could not be generated</h3>
+                    <p>${escapeHTML(error.message || 'Please try again.')}</p>
+                </div>
+            `;
+        } finally {
+            if (previewGenerateBtn) {
+                previewGenerateBtn.disabled = false;
+                previewGenerateBtn.textContent = 'Generate Preview';
+            }
+        }
+    });
+}
+
+function renderSmartPreview(data) {
+    const visual = generateSmartPreviewVisual(data);
+    previewEngineOutput.innerHTML = `
+        <div class="smart-preview-result">
+            <div class="smart-preview-top">
+                <div>
+                    <div class="smart-preview-category">${escapeHTML(data.category || 'concept')} preview</div>
+                    <h3>${escapeHTML(data.name || 'Generated Concept')}</h3>
+                    <p>${escapeHTML(data.tagline || data.summary || '')}</p>
+                </div>
+                <button type="button" onclick="downloadPreviewBlueprint()" class="smart-preview-download">Download Blueprint</button>
+            </div>
+            ${visual}
+            <div class="smart-blueprint-grid">
+                ${generateBlueprintCard('👥 Roles', data.roles)}
+                ${generateBlueprintCard('✨ Core Features', data.features)}
+                ${generateBlueprintCard('📄 Pages/Screens', data.pages)}
+                ${generateBlueprintCard('🗄️ Database', data.database)}
+                ${generateBlueprintCard('🛡️ Security', data.security)}
+                ${generateBlueprintCard('💰 Monetization', data.monetization)}
+            </div>
+            <div class="smart-launch-plan">
+                <h4>Launch Plan</h4>
+                <ol>${(data.launch_plan || []).map(item => `<li>${escapeHTML(item)}</li>`).join('')}</ol>
+            </div>
+            <div class="smart-preview-cta">
+                <p><strong>Want AegisForge to build this for real?</strong><br>Join the waitlist and get early access when the full AI modules launch.</p>
+                <a href="#waitlist" class="btn-primary">Join Waitlist →</a>
+            </div>
+        </div>
+    `;
+    window.lastPreviewBlueprint = data;
+}
+
+function generateBlueprintCard(title, items) {
+    return `
+        <div class="smart-blueprint-card">
+            <h4>${title}</h4>
+            <ul>${(items || []).map(item => `<li>${escapeHTML(item)}</li>`).join('')}</ul>
+        </div>
+    `;
+}
+
+function generateSmartPreviewVisual(data) {
+    const layout = data.layout || 'website';
+    const name = escapeHTML(data.name || 'Preview');
+    const tagline = escapeHTML(data.tagline || 'Generated concept preview');
+
+    if (layout === 'dashboard') {
+        return `
+            <div class="smart-visual dashboard">
+                <aside><strong>${name}</strong><span>Overview</span><span>Users</span><span>Reports</span><span>Settings</span></aside>
+                <main><div class="smart-visual-header"><h4>${name} Dashboard</h4><button>New Report</button></div><div class="smart-kpis"><div></div><div></div><div></div></div><div class="smart-chart"></div><div class="smart-table"><span></span><span></span><span></span></div></main>
+            </div>
+        `;
+    }
+
+    if (layout === 'marketplace' || layout === 'store') {
+        return `
+            <div class="smart-visual marketplace">
+                <nav><strong>${name}</strong><button>Get Started</button></nav>
+                <section><h4>${tagline}</h4><p>Browse listings, compare options, and complete secure transactions.</p></section>
+                <div class="smart-product-grid"><article></article><article></article><article></article></div>
+                <div class="smart-order-strip"><span>Order flow</span><span>Payment</span><span>Tracking</span></div>
+            </div>
+        `;
+    }
+
+    if (layout === 'mobile') {
+        return `
+            <div class="smart-visual mobile">
+                <div class="phone"><div class="phone-top"></div><h4>${name}</h4><p>${tagline}</p><div class="phone-card"></div><div class="phone-card small"></div><button>Continue</button></div>
+                <div class="phone side"><div class="phone-top"></div><h4>Activity</h4><div class="phone-list"><span></span><span></span><span></span></div></div>
+            </div>
+        `;
+    }
+
+    if (layout === 'booking') {
+        return `
+            <div class="smart-visual booking">
+                <div><h4>${name}</h4><p>${tagline}</p><button>Book Appointment</button></div>
+                <div class="calendar"><span></span><span></span><span class="active"></span><span></span><span></span><span></span></div>
+                <div class="booking-card"><strong>Available slots</strong><p>10:00 AM • 2:30 PM • 5:00 PM</p></div>
+            </div>
+        `;
+    }
+
+    return `
+        <div class="smart-visual website">
+            <nav><strong>${name}</strong><span>Services</span><span>Pricing</span><button>Contact</button></nav>
+            <section><h4>${tagline}</h4><p>A polished landing page concept with trust sections, conversion CTAs, and a clear offer.</p><button>Start Now</button></section>
+            <div class="smart-site-sections"><div></div><div></div><div></div></div>
+        </div>
+    `;
+}
+
+function downloadPreviewBlueprint() {
+    const data = window.lastPreviewBlueprint;
+    if (!data) return;
+    const report = `AegisForge Preview Engine Blueprint\n=================================\n\nName: ${data.name}\nCategory: ${data.category}\nTagline: ${data.tagline}\n\nSummary:\n${data.summary}\n\nRoles:\n- ${(data.roles || []).join('\n- ')}\n\nFeatures:\n- ${(data.features || []).join('\n- ')}\n\nPages/Screens:\n- ${(data.pages || []).join('\n- ')}\n\nDatabase:\n- ${(data.database || []).join('\n- ')}\n\nSecurity:\n- ${(data.security || []).join('\n- ')}\n\nMonetization:\n- ${(data.monetization || []).join('\n- ')}\n\nLaunch Plan:\n- ${(data.launch_plan || []).join('\n- ')}\n\nNote: ${data.disclaimer || ''}\n`;
+    const blob = new Blob([report], { type: 'text/plain;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `aegisforge-preview-${String(data.name || 'concept').replace(/[^a-z0-9]/gi, '-').toLowerCase()}.txt`;
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    URL.revokeObjectURL(url);
+}

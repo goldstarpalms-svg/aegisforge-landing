@@ -11,7 +11,7 @@ Frontend landing page for AegisForge AI — an autonomous AI platform that build
 - Legal pages: Terms and Privacy
 - Responsive landing page sections for product preview, modules, pricing, trust, story, FAQ, contact, and waitlist
 - SEO/social sharing metadata and branded favicon
-- Premium product preview, pricing preview, trust section, upgraded AI module roadmap, interactive upcoming module previews, AI-generated visual preview assets, and scanner report downloads
+- Premium product preview, pricing preview, trust section, upgraded AI module roadmap, interactive upcoming module previews, no-cost AegisForge Preview Engine, AI-generated visual preview assets, and scanner report downloads
 
 ## Important files
 
@@ -49,3 +49,7 @@ Do not put backend secrets, Supabase service-role keys, or Resend API keys in th
 ## Pricing preview
 
 The landing page currently previews Free, Starter ($9/mo), Pro ($29/mo), and Business ($79/mo), plus founder annual/lifetime offers for waitlist members.
+
+## AegisForge Preview Engine
+
+The landing page includes a no-cost smart preview generator where users describe an app or website idea and receive a visual concept, blueprint, security checklist, monetization suggestions, and launch plan. It calls the backend `/preview/generate` endpoint and does not require paid AI APIs.
