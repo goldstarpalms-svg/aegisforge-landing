@@ -672,6 +672,97 @@ if (acceptCookiesBtn) {
 console.log('AegisForge AI - Ready!');
 
 // ============================================
+// AI DEMO TYPING ANIMATION (Priority 7)
+// ============================================
+(function initDemoAnimation() {
+    const terminalBody = document.getElementById('demoTerminalBody');
+    if (!terminalBody) return;
+
+    const aiSteps = [
+        { text: 'Planning your product...', delay: 1200 },
+        { text: 'Designing UI screens...', delay: 1000 },
+        { text: 'Generating database schema...', delay: 1100 },
+        { text: 'Writing production code...', delay: 1300 },
+        { text: 'Running security scan...', delay: 900 },
+        { text: 'Fixing 3 vulnerabilities...', delay: 800 },
+        { text: 'Deploying to production...', delay: 1100 },
+        { text: '✓ Live at app.aegisforge.ai — All agents complete.', delay: 0 }
+    ];
+
+    let hasAnimated = false;
+
+    function typeText(element, text, speed) {
+        return new Promise(resolve => {
+            let i = 0;
+            const cursor = document.createElement('span');
+            cursor.className = 'demo-cursor';
+            element.appendChild(cursor);
+
+            function typeChar() {
+                if (i < text.length) {
+                    element.insertBefore(document.createTextNode(text[i]), cursor);
+                    i++;
+                    setTimeout(typeChar, speed);
+                } else {
+                    cursor.remove();
+                    resolve();
+                }
+            }
+            typeChar();
+        });
+    }
+
+    async function runAnimation() {
+        if (hasAnimated) return;
+        hasAnimated = true;
+
+        for (const step of aiSteps) {
+            const line = document.createElement('div');
+            line.className = 'demo-line ai';
+
+            const prompt = document.createElement('span');
+            prompt.className = 'demo-prompt';
+            prompt.textContent = 'AI';
+
+            const text = document.createElement('span');
+            text.className = 'demo-text step-active';
+
+            line.appendChild(prompt);
+            line.appendChild(text);
+            terminalBody.appendChild(line);
+
+            const speed = step.text.startsWith('✓') ? 25 : 35;
+            await typeText(text, step.text, speed);
+
+            if (step.text.startsWith('✓')) {
+                text.classList.remove('step-active');
+                text.classList.add('step-complete');
+            } else {
+                text.classList.remove('step-active');
+            }
+
+            if (step.delay > 0) {
+                await new Promise(r => setTimeout(r, step.delay));
+            }
+        }
+    }
+
+    // Start animation when section scrolls into view
+    const section = document.querySelector('.demo-animation-section');
+    if (section) {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    observer.disconnect();
+                    setTimeout(runAnimation, 500);
+                }
+            });
+        }, { threshold: 0.3 });
+        observer.observe(section);
+    }
+})();
+
+// ============================================
 // UPCOMING AI MODULE PREVIEWS
 // ============================================
 const modulePreviews = {
@@ -799,8 +890,8 @@ const modulePreviews = {
         cta: 'Built for founders who want to ship without hiring a DevOps team.'
     },
     'code-assistant': {
-        badge: 'FORGE BUILD • COMING SOON',
-        title: 'Forge Build Code Assistant',
+        badge: 'BUILDER AGENT • COMING SOON',
+        title: 'Builder Agent',
         subtitle: 'A preview of code review, bug explanation, and beginner-friendly mentorship workflows.',
         image: 'assets/preview-code-assistant.webp',
         mockup: `
@@ -873,7 +964,7 @@ function openModulePreview(key) {
         <div class="module-preview-badge">${preview.badge}</div>
         <h2 id="modulePreviewTitle">${preview.title}</h2>
         <p class="module-preview-subtitle">${preview.subtitle}</p>
-        <div class="module-preview-notice">This is a mature product concept preview to show the planned module experience. The complete AI module is still coming soon.</div>
+        <div class="module-preview-notice">This is a product concept preview showing the planned agent experience. The complete AI agent is still coming soon.</div>
         ${preview.image ? `<div class="module-preview-ai-shot"><img src="${preview.image}" alt="${preview.title} visual preview" loading="lazy"></div>` : ''}
         <div class="module-preview-mockup">${preview.mockup}</div>
         <div class="module-preview-blueprint">
@@ -1064,4 +1155,8 @@ function downloadPreviewBlueprint() {
     link.click();
     link.remove();
     URL.revokeObjectURL(url);
+}
+RL(url);
+}
+RL(url);
 }

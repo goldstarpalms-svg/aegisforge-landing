@@ -5899,3 +5899,330 @@ section[id] {
         padding: 40px 20px 60px;
     }
 }
+
+/* ============================================
+   PRIORITY 1: HERO STATUS BADGES (not 0 numbers)
+   ============================================ */
+.trust-badge-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 18px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 100px;
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    transition: all 0.3s ease;
+}
+
+.trust-badge-item.live {
+    background: rgba(0, 255, 200, 0.08);
+    border-color: rgba(0, 255, 200, 0.3);
+    color: #00ffc8;
+}
+
+.trust-badge-item:hover {
+    background: rgba(0, 255, 200, 0.1);
+    border-color: rgba(0, 255, 200, 0.3);
+    transform: translateY(-2px);
+}
+
+.hero-trust-bar .trust-stat {
+    text-align: center;
+}
+
+/* ============================================
+   PRIORITY 5: HERO ONE-LINER
+   ============================================ */
+.hero-one-liner {
+    margin-top: 30px;
+    font-size: clamp(18px, 3vw, 26px);
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    background: linear-gradient(135deg, #00ffc8, #00a8ff, #a855f7);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: shimmer 3s ease-in-out infinite;
+    background-size: 200% 200%;
+}
+
+@keyframes shimmer {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+}
+
+/* ============================================
+   PRIORITY 7: AI DEMO ANIMATION SECTION
+   ============================================ */
+.demo-animation-section {
+    padding: 100px 20px;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.demo-animation-container {
+    text-align: center;
+}
+
+.demo-animation-header {
+    margin-bottom: 60px;
+}
+
+.demo-animation-badge {
+    display: inline-block;
+    padding: 8px 20px;
+    background: rgba(0, 255, 200, 0.1);
+    border: 1px solid rgba(0, 255, 200, 0.3);
+    border-radius: 100px;
+    color: #00ffc8;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    margin-bottom: 20px;
+}
+
+.demo-terminal {
+    max-width: 720px;
+    margin: 0 auto;
+    border-radius: 24px;
+    overflow: hidden;
+    background: #0d0d14;
+    border: 1px solid rgba(0, 255, 200, 0.2);
+    box-shadow: 0 30px 80px rgba(0, 255, 200, 0.12), 0 0 0 1px rgba(0, 255, 200, 0.05);
+}
+
+.demo-terminal-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 18px;
+    background: rgba(255, 255, 255, 0.04);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.demo-terminal-bar span:first-child,
+.demo-terminal-bar span:nth-child(2),
+.demo-terminal-bar span:nth-child(3) {
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+}
+
+.demo-terminal-bar span:first-child { background: #ef4444; }
+.demo-terminal-bar span:nth-child(2) { background: #facc15; }
+.demo-terminal-bar span:nth-child(3) { background: #00ffc8; }
+
+.demo-terminal-bar strong {
+    color: #a0a0b0;
+    font-size: 12px;
+    margin-left: 10px;
+    font-weight: 600;
+}
+
+.demo-terminal-status {
+    margin-left: auto;
+    color: #00ffc8;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.demo-terminal-body {
+    padding: 28px 24px;
+    min-height: 340px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    text-align: left;
+}
+
+.demo-line {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+}
+
+.demo-prompt {
+    flex-shrink: 0;
+    padding: 4px 10px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+.demo-line.user .demo-prompt {
+    background: rgba(0, 168, 255, 0.15);
+    color: #00a8ff;
+}
+
+.demo-line.ai .demo-prompt {
+    background: rgba(0, 255, 200, 0.12);
+    color: #00ffc8;
+}
+
+.demo-text {
+    color: #ffffff;
+    font-size: 15px;
+    line-height: 1.5;
+    font-weight: 500;
+}
+
+.demo-line.ai .demo-text {
+    color: #cbd5e1;
+}
+
+.demo-line.ai .demo-text.step-complete {
+    color: #00ffc8;
+}
+
+.demo-line.ai .demo-text.step-active {
+    color: #ffffff;
+}
+
+.demo-cursor {
+    display: inline-block;
+    width: 8px;
+    height: 16px;
+    background: #00ffc8;
+    margin-left: 4px;
+    animation: blink 0.8s step-end infinite;
+    vertical-align: middle;
+}
+
+@keyframes blink {
+    50% { opacity: 0; }
+}
+
+.demo-cta {
+    margin-top: 50px;
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+/* ============================================
+   PRIORITY 3: JOURNEY SCREENSHOTS
+   ============================================ */
+.journey-screenshot {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    border-radius: 16px;
+    overflow: hidden;
+    margin-bottom: 20px;
+    border: 1px solid rgba(0, 255, 200, 0.15);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+    transition: all 0.4s ease;
+}
+
+.journey-screenshot:hover {
+    transform: scale(1.03);
+    border-color: rgba(0, 255, 200, 0.35);
+    box-shadow: 0 20px 50px rgba(0, 255, 200, 0.15);
+}
+
+.journey-screenshot img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.journey-screenshot-label {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    padding: 5px 12px;
+    background: linear-gradient(135deg, #00ffc8, #00a8ff);
+    color: #0a0a0f;
+    font-size: 10px;
+    font-weight: 800;
+    border-radius: 100px;
+    letter-spacing: 0.5px;
+    box-shadow: 0 5px 15px rgba(0, 255, 200, 0.3);
+    z-index: 2;
+}
+
+.journey-step .journey-icon {
+    display: none; /* Hide emoji icons when screenshots are shown */
+}
+
+/* ============================================
+   PRIORITY 6: FOOTER VISION
+   ============================================ */
+.footer-vision {
+    color: #cbd5e1;
+    font-size: 16px;
+    max-width: 500px;
+    margin: 15px auto 20px;
+    line-height: 1.6;
+    font-style: italic;
+}
+
+/* ============================================
+   PRIORITY 9: AGENT CARD ICONS
+   ============================================ */
+.modules-section .module-icon {
+    font-size: 48px;
+    margin-bottom: 16px;
+    filter: drop-shadow(0 0 20px rgba(0, 255, 200, 0.4));
+}
+
+/* ============================================
+   RESPONSIVE UPDATES FOR NEW SECTIONS
+   ============================================ */
+@media (max-width: 768px) {
+    .demo-animation-section {
+        padding: 60px 20px;
+    }
+    
+    .demo-terminal-body {
+        padding: 20px 16px;
+        min-height: 280px;
+    }
+    
+    .demo-line {
+        flex-direction: column;
+        gap: 6px;
+    }
+    
+    .demo-prompt {
+        display: inline-block;
+        width: fit-content;
+    }
+    
+    .demo-cta {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .hero-one-liner {
+        margin-top: 20px;
+    }
+    
+    .journey-screenshot {
+        aspect-ratio: 16 / 9;
+    }
+    
+    .hero-trust-bar {
+        flex-direction: column;
+        gap: 12px;
+    }
+    
+    .trust-divider {
+        display: none;
+    }
+}
+
+@media (max-width: 480px) {
+    .trust-badge-item {
+        font-size: 12px;
+        padding: 6px 14px;
+    }
+}
