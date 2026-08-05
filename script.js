@@ -676,8 +676,8 @@ console.log('AegisForge AI - Ready!');
 // ============================================
 const modulePreviews = {
     'app-builder': {
-        badge: 'COMING SOON • AI APP BUILDER',
-        title: 'AI App Builder Preview',
+        badge: 'FORGE VISION + FORGE BUILD • COMING SOON',
+        title: 'Forge Vision & Forge Build',
         subtitle: 'A no-cost visual demo of how AegisForge will turn an idea into a secure app blueprint.',
         image: 'assets/preview-app-builder.webp',
         mockup: `
@@ -714,8 +714,8 @@ const modulePreviews = {
         cta: 'Want your app idea previewed first? Join the waitlist.'
     },
     'website-generator': {
-        badge: 'COMING SOON • AI WEBSITE GENERATOR',
-        title: 'AI Website Generator Preview',
+        badge: 'FORGE VISION • COMING SOON',
+        title: 'Forge Vision for Websites',
         subtitle: 'A template-powered preview of a landing page generated from a business idea.',
         image: 'assets/preview-website-generator.webp',
         mockup: `
@@ -766,8 +766,8 @@ const modulePreviews = {
         cta: 'Perfect for founders who need a professional web presence quickly.'
     },
     'devops': {
-        badge: 'COMING SOON • AI DEVOPS PLATFORM',
-        title: 'AI DevOps Platform Preview',
+        badge: 'FORGE DEPLOY • COMING SOON',
+        title: 'Forge Deploy',
         subtitle: 'A deployment command center preview for turning projects into shipped products.',
         image: 'assets/preview-devops.webp',
         mockup: `
@@ -799,8 +799,8 @@ const modulePreviews = {
         cta: 'Built for founders who want to ship without hiring a DevOps team.'
     },
     'code-assistant': {
-        badge: 'COMING SOON • AI CODE ASSISTANT',
-        title: 'AI Code Assistant Preview',
+        badge: 'FORGE BUILD • COMING SOON',
+        title: 'Forge Build Code Assistant',
         subtitle: 'A preview of code review, bug explanation, and beginner-friendly mentorship workflows.',
         image: 'assets/preview-code-assistant.webp',
         mockup: `
@@ -830,8 +830,8 @@ const modulePreviews = {
         cta: 'Designed to help beginners learn and pros move faster.'
     },
     'threat-prediction': {
-        badge: 'COMING SOON • THREAT PREDICTION AI',
-        title: 'Threat Prediction AI Preview',
+        badge: 'FORGE SENTINEL • COMING SOON',
+        title: 'Forge Sentinel',
         subtitle: 'A premium risk forecasting concept for identifying weak signals before incidents happen.',
         image: 'assets/preview-threat-prediction.webp',
         mockup: `
