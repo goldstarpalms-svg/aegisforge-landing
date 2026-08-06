@@ -34,9 +34,11 @@
                 <a href="#security">Security</a>
                 <a href="#pricing">Pricing</a>
                 <a href="https://aegisforge-backend.onrender.com/docs" target="_blank" rel="noopener">Docs</a>
+                <a href="#trust">Community</a>
             </div>
             <div class="nav-actions">
                 <a href="#waitlist" class="nav-cta">Early Access</a>
+                <button class="nav-cmd" id="navCmd" title="Command Palette (⌘K)" aria-label="Open command palette">⌘K</button>
                 <button class="nav-mobile-toggle" id="navToggle" aria-label="Menu">
                     <span></span><span></span>
                 </button>
@@ -106,6 +108,7 @@
                 <div class="nova-agent-pill" data-agent="growth">Growth</div>
             </div>
             <div class="nova-build-result" id="novaBuildResult"></div>
+            <div class="demo-disclaimer">This is a demonstration. Nova is not yet generating real code — join Early Access to be first when it launches.</div>
         </div>
     </div>
 
@@ -201,7 +204,16 @@
 
                     <div class="scan-actions" id="scanActions">
                         <button class="scan-action-btn" id="scanExportPdf" title="Export PDF">📄 PDF</button>
+                        <button class="scan-action-btn" id="scanExportJson" title="Export JSON">{ } JSON</button>
                         <button class="scan-action-btn" id="scanShareBtn" title="Share report">🔗 Share</button>
+                    </div>
+                    <div class="scan-remediation hidden" id="scanRemediation">
+                        <div class="scan-rem-title">Remediation Guidance</div>
+                        <div id="scanRemList"></div>
+                    </div>
+                    <div class="scan-timeline hidden" id="scanTimeline">
+                        <div class="scan-timeline-title">Scan History</div>
+                        <div id="scanTimelineList"></div>
                     </div>
                 </div>
             </div>
@@ -293,6 +305,57 @@
             </div>
         </div>
     </section>
+
+    <!-- ════════════════════════════════════════════ -->
+    <!-- TRUST (Phase 14) -->
+    <!-- ════════════════════════════════════════════ -->
+    <section class="trust-section" id="trust">
+        <div class="container">
+            <div class="section-label anim-reveal">TRUST & TRANSPARENCY</div>
+            <h2 class="section-title anim-reveal">Built on <span class="text-glow">honesty.</span></h2>
+            <div class="trust-grid">
+                <div class="trust-item anim-reveal" style="--delay:0s">
+                    <div class="trust-item-icon">🗺</div>
+                    <div class="trust-item-title">Public Roadmap</div>
+                    <div class="trust-item-desc">Our development roadmap is public. You can see what's coming, vote on priorities, and track progress.</div>
+                </div>
+                <div class="trust-item anim-reveal" style="--delay:0.08s">
+                    <div class="trust-item-icon">📋</div>
+                    <div class="trust-item-title">Changelog</div>
+                    <div class="trust-item-desc">Every change is documented. No silent updates. You always know what changed and why.</div>
+                </div>
+                <div class="trust-item anim-reveal" style="--delay:0.16s">
+                    <div class="trust-item-icon">🛡</div>
+                    <div class="trust-item-title">Security Commitment</div>
+                    <div class="trust-item-desc">Your code and data are never used to train AI models. Security scans use public methods only.</div>
+                </div>
+                <div class="trust-item anim-reveal" style="--delay:0.24s">
+                    <div class="trust-item-icon">⚡</div>
+                    <div class="trust-item-title">Early Access Benefits</div>
+                    <div class="trust-item-desc">First access to Nova, priority support, influence the roadmap, and founding-member pricing locked in forever.</div>
+                </div>
+                <div class="trust-item anim-reveal" style="--delay:0.32s">
+                    <div class="trust-item-icon">🔓</div>
+                    <div class="trust-item-title">Open Architecture</div>
+                    <div class="trust-item-desc">API-first design. Every feature has an API. Bring your own AI provider. No vendor lock-in.</div>
+                </div>
+                <div class="trust-item anim-reveal" style="--delay:0.40s">
+                    <div class="trust-item-icon">📊</div>
+                    <div class="trust-item-title">Real Metrics Only</div>
+                    <div class="trust-item-desc">We don't fabricate statistics. When we show numbers, they're real. Our scanner accuracy is tested against known benchmarks.</div>
+                </div>
+            </div>
+            <p class="trust-note anim-reveal">No fabricated statistics. No inflated claims. Just honest software.</p>
+        </div>
+    </section>
+
+    <!-- ════════════════════════════════════════════ -->
+    <!-- COMMAND PALETTE (Phase 15) -->
+    <!-- ════════════════════════════════════════════ -->
+    <div class="cmd-palette" id="cmdPalette">
+        <input type="text" class="cmd-palette-input" id="cmdInput" placeholder="Type a command..." autocomplete="off">
+        <div class="cmd-palette-list" id="cmdList"></div>
+    </div>
 
     <!-- ════════════════════════════════════════════ -->
     <!-- WAITLIST -->

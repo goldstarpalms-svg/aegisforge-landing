@@ -24,6 +24,8 @@ document.addEventListener('DOMContentLoaded', () => {
     initScanner();
     initBlueprint();
     initWaitlist();
+    initCommandPalette();
+    initKeyboardShortcuts();
 });
 
 // ════════════════════════════════════════════
@@ -196,6 +198,7 @@ function initScanner() {
     const progress = document.getElementById('scanProgress');
     const results = document.getElementById('scanResults');
     let currentReportId = null;
+    let currentDomain = null;
 
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
@@ -205,9 +208,12 @@ function initScanner() {
         // Reset
         progress.classList.remove('hidden');
         results.classList.add('hidden');
+        document.getElementById('scanRemediation')?.classList.add('hidden');
+        document.getElementById('scanTimeline')?.classList.add('hidden');
         btn.disabled = true;
         btn.textContent = 'Scanning...';
         currentReportId = null;
+        currentDomain = null;
 
         // Animated progress
         const statusLabel = document.getElementById('scanStatusLabel');
@@ -249,7 +255,21 @@ function initScanner() {
             progress.classList.add('hidden');
             results.classList.remove('hidden');
             currentReportId = data.report_id || null;
+            currentDomain = data.domain || null;
             renderScanResults(data);
+            // Render remediation guidance
+            if (data.recommendations) renderScanRemediation(data.recommendations);
+
+            // Fetch scan history for comparison
+            if (currentDomain) {
+                try {
+                    const histRes = await fetch(`${API}/api/v2/scan/history/${currentDomain}`);
+                    const histData = await histRes.json();
+                    if (histData.scans && histData.scans.length > 1) {
+                        renderScanTimeline(histData.scans);
+                    }
+                } catch (e) { /* best effort */ }
+            }
         } catch (err) {
             statusLabel.textContent = 'Scan failed';
             pct.textContent = '✕';
@@ -266,9 +286,12 @@ function initScanner() {
 
     // Export PDF
     document.getElementById('scanExportPdf')?.addEventListener('click', () => {
-        if (currentReportId) {
-            window.open(`${API}/scan/${currentReportId}/export/pdf`, '_blank');
-        }
+        if (currentReportId) window.open(`${API}/scan/${currentReportId}/export/pdf`, '_blank');
+    });
+
+    // Export JSON
+    document.getElementById('scanExportJson')?.addEventListener('click', () => {
+        if (currentReportId) window.open(`${API}/scan/${currentReportId}/export/json`, '_blank');
     });
 
     // Share
@@ -450,3 +473,115 @@ function initWaitlist() {
 
 // ── Utility ──
 function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+// ════════════════════════════════════════════
+// SCAN REMEDIATION (Phase 7)
+// ════════════════════════════════════════════
+function renderScanRemediation(recommendations) {
+    const container = document.getElementById('scanRemList');
+    const section = document.getElementById('scanRemediation');
+    if (!container || !recommendations || !recommendations.length) return;
+
+    container.innerHTML = recommendations.slice(0, 8).map(r => {
+        const severity = (r.severity || r.category || 'medium').toLowerCase();
+        const sevClass = severity.includes('high') || severity.includes('critical') ? 'high' :
+                         severity.includes('low') || severity.includes('info') ? 'low' : 'medium';
+        return `<div class="scan-rem-item">
+            <span class="scan-rem-severity ${sevClass}">${sevClass.toUpperCase()}</span>
+            <span class="scan-rem-text">${r.title || r.recommendation || r.description || ''}</span>
+        </div>`;
+    }).join('');
+    section.classList.remove('hidden');
+}
+
+// ════════════════════════════════════════════
+// SCAN TIMELINE / HISTORY (Phase 7)
+// ════════════════════════════════════════════
+function renderScanTimeline(scans) {
+    const container = document.getElementById('scanTimelineList');
+    const section = document.getElementById('scanTimeline');
+    if (!container || !scans || scans.length < 2) return;
+
+    container.innerHTML = scans.map(s => {
+        const date = s.created_at ? new Date(s.created_at).toLocaleDateString() : '—';
+        const scoreColor = (s.score || 0) >= 80 ? 'var(--green)' : (s.score || 0) >= 50 ? 'var(--yellow)' : 'var(--red)';
+        return `<div class="scan-timeline-row">
+            <span>${date}</span>
+            <span class="scan-timeline-score" style="color:${scoreColor}">${s.score || '—'}/100 (${s.grade || '—'})</span>
+        </div>`;
+    }).join('');
+    section.classList.remove('hidden');
+}
+
+// ════════════════════════════════════════════
+// COMMAND PALETTE (Phase 15)
+// ═══════════════!═════════════════════════════
+const COMMANDS = [
+    { label: 'Scan a website', action: () => document.getElementById('scannerUrl')?.focus(), kbd: 'S' },
+    { label: 'Generate blueprint', action: () => document.getElementById('blueprintIdea')?.focus(), kbd: 'B' },
+    { label: 'Join early access', action: () => document.getElementById('waitlistEmail')?.focus(), kbd: 'W' },
+    { label: 'Go to features', action: () => document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' }) },
+    { label: 'Go to security', action: () => document.getElementById('security')?.scrollIntoView({ behavior: 'smooth' }) },
+    { label: 'Go to pricing', action: () => document.getElementById('pricing')?.scrollIntoView({ behavior: 'smooth' }) },
+    { label: 'Open API docs', action: () => window.open(`${API}/docs`, '_blank'), kbd: 'D' },
+    { label: 'View source on GitHub', action: () => window.open('https://github.com/goldstarpalms-svg/aegisforge-landing', '_blank') },
+];
+
+function initCommandPalette() {
+    const palette = document.getElementById('cmdPalette');
+    const cmdInput = document.getElementById('cmdInput');
+    const cmdList = document.getElementById('cmdList');
+    const cmdBtn = document.getElementById('navCmd');
+    let selectedIdx = 0;
+
+    function open() { palette.classList.add('active'); cmdInput.value = ''; renderCmdList(''); cmdInput.focus(); selectedIdx = 0; }
+    function close() { palette.classList.remove('active'); }
+
+    function renderCmdList(query) {
+        const q = query.toLowerCase();
+        const filtered = COMMANDS.filter(c => c.label.toLowerCase().includes(q));
+        cmdList.innerHTML = filtered.map((c, i) => `
+            <div class="cmd-palette-item${i === selectedIdx ? ' selected' : ''}" data-idx="${i}">
+                ${c.label}${c.kbd ? `<kbd>${c.kbd}</kbd>` : ''}
+            </div>
+        `).join('');
+        cmdList.querySelectorAll('.cmd-palette-item').forEach(el => {
+            el.addEventListener('click', () => { COMMANDS[el.dataset.idx]?.action(); close(); });
+        });
+    }
+
+    cmdBtn?.addEventListener('click', open);
+    cmdInput?.addEventListener('input', () => { selectedIdx = 0; renderCmdList(cmdInput.value); });
+    cmdInput?.addEventListener('keydown', (e) => {
+        const items = cmdList.querySelectorAll('.cmd-palette-item');
+        if (e.key === 'ArrowDown') { e.preventDefault(); selectedIdx = Math.min(selectedIdx + 1, items.length - 1); renderCmdList(cmdInput.value); }
+        else if (e.key === 'ArrowUp') { e.preventDefault(); selectedIdx = Math.max(selectedIdx - 1, 0); renderCmdList(cmdInput.value); }
+        else if (e.key === 'Enter') { e.preventDefault(); items[selectedIdx]?.click(); }
+        else if (e.key === 'Escape') { close(); }
+    });
+
+    // Keyboard shortcut: Cmd/Ctrl+K
+    document.addEventListener('keydown', (e) => {
+        if ((e.metaKey || e.ctrlKey) && e.key === 'k') { e.preventDefault(); palette.classList.contains('active') ? close() : open(); }
+        if (e.key === 'Escape' && palette.classList.contains('active')) { close(); }
+    });
+
+    // Close on backdrop click
+    palette.addEventListener('click', (e) => { if (e.target === palette) close(); });
+}
+
+// ════════════════════════════════════════════
+// KEYBOARD SHORTCUTS (Phase 15)
+// ════════════════════════════════════════════
+function initKeyboardShortcuts() {
+    document.addEventListener('keydown', (e) => {
+        // Skip if typing in an input
+        if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.tagName === 'SELECT') return;
+        if (e.metaKey || e.ctrlKey || e.altKey) return;
+
+        switch(e.key) {
+            case '/': e.preventDefault(); document.getElementById('novaPromptInput')?.focus(); break;
+            case 's': e.preventDefault(); document.getElementById('scannerUrl')?.focus(); break;
+        }
+    });
+}
