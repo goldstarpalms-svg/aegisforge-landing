@@ -325,7 +325,7 @@ function renderScanResults(data) {
     // Color based on score
     const color = score >= 80 ? 'var(--green)' : score >= 50 ? 'var(--yellow)' : 'var(--red)';
     gradeEl.style.color = color;
-    ringFill.style.stroke = color === 'var(--green)' ? '#34d399' : color === 'var(--yellow)' ? '#fbbf24' : '#f87171';
+    ringFill.style.stroke = color === 'var(--green)' ? '#00D084' : color === 'var(--yellow)' ? '#F4B400' : '#FF5A5F';
 
     // Animate ring (circumference = 2 * PI * 54 ≈ 339.292)
     const circumference = 339.292;
