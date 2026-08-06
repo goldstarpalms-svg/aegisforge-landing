@@ -3,560 +3,346 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AegisForge - Turn One Sentence Into a Live Application</title>
-    <meta name="description" content="AegisForge is the AI operating system that takes you from an idea to a live, secure application. Try the free security scanner and join early access.">
-    <meta name="theme-color" content="#00ffc8">
+    <title>AegisForge — Powered by Nova | AI Operating System for Software</title>
+    <meta name="description" content="Build software with one conversation. Nova is the AI operating system that transforms ideas into secure, production-ready applications.">
+    <meta name="keywords" content="AI, software builder, code generation, security scanner, deployment, Nova, AegisForge">
+    <meta name="theme-color" content="#0a0a0b">
     <meta name="robots" content="index, follow">
-    <link rel="canonical" href="https://aegisforge-landing.vercel.app/">
-    <link rel="icon" href="favicon.svg" type="image/svg+xml">
-    <link rel="preload" href="style.css" as="style">
+    <meta property="og:title" content="AegisForge — Powered by Nova">
+    <meta property="og:description" content="Build software with one conversation. AI operating system for software.">
     <meta property="og:type" content="website">
-    <meta property="og:title" content="AegisForge - Turn One Sentence Into a Live Application">
-    <meta property="og:description" content="The AI operating system that takes you from an idea to a live, secure application.">
-    <meta property="og:url" content="https://aegisforge-landing.vercel.app/">
-    <meta property="og:site_name" content="AegisForge">
-    <meta property="og:image" content="https://aegisforge-landing.vercel.app/favicon.svg">
-    <meta name="twitter:card" content="summary">
-    <meta name="twitter:title" content="AegisForge - Turn One Sentence Into a Live Application">
-    <meta name="twitter:description" content="The AI operating system that takes you from an idea to a live, secure application.">
-    <meta name="twitter:image" content="https://aegisforge-landing.vercel.app/favicon.svg">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- Loading Animation -->
-    <div class="loader" id="loader">
-        <div class="loader-content">
-            <div class="loader-icon">⚡</div>
-            <div class="loader-text">AegisForge</div>
-            <div class="loader-bar"><div class="loader-progress"></div></div>
-        </div>
-    </div>
-
-    <div class="bg-grid"></div>
-    <div class="bg-glow"></div>
-
-    <!-- Navigation -->
-    <nav class="navbar" id="navbar">
-        <div class="nav-container">
-            <div class="logo">
-                <span class="logo-icon">⚡</span>
-                <span class="logo-text">AegisForge</span>
-            </div>
-            <div class="nav-links">
-                <a href="#hero-prompt">Try It</a>
-                <a href="#agents">Agents</a>
-                <a href="#roadmap">Roadmap</a>
+    <!-- ════════════════════════════════════════════ -->
+    <!-- NAVIGATION -->
+    <!-- ════════════════════════════════════════════ -->
+    <nav class="nav" id="nav">
+        <div class="nav-inner">
+            <a href="/" class="nav-brand">
+                <span class="nav-logo">◆</span>
+                <span class="nav-name">AegisForge</span>
+                <span class="nav-nova">Nova</span>
+            </a>
+            <div class="nav-links" id="navLinks">
+                <a href="#features">Features</a>
+                <a href="#security">Security</a>
                 <a href="#pricing">Pricing</a>
-                <a href="#hero-prompt" class="nav-cta">Start Building Free</a>
+                <a href="https://aegisforge-backend.onrender.com/docs" target="_blank" rel="noopener">Docs</a>
+            </div>
+            <div class="nav-actions">
+                <a href="#waitlist" class="nav-cta">Early Access</a>
+                <button class="nav-mobile-toggle" id="navToggle" aria-label="Menu">
+                    <span></span><span></span>
+                </button>
             </div>
         </div>
     </nav>
 
-    <!-- ============================================ -->
-    <!-- HERO WITH INTERACTIVE ANIMATION (P1, P5)     -->
-    <!-- ============================================ -->
-    <section class="hero">
-        <div class="hero-badge anim-fade-up" style="animation-delay:0.1s">
-            <span class="pulse-dot"></span>
-            🎉 FREE Security Scanner — Try It Now
+    <!-- ════════════════════════════════════════════ -->
+    <!-- HERO -->
+    <!-- ════════════════════════════════════════════ -->
+    <section class="hero" id="hero">
+        <div class="hero-bg">
+            <div class="hero-glow"></div>
+            <div class="hero-grid"></div>
         </div>
-        <h1 class="hero-title anim-fade-up" style="animation-delay:0.2s">
-            Turn One Sentence Into a<br>
-            <span class="gradient-text">Live Application</span>
-        </h1>
-        <p class="hero-subtitle anim-fade-up" style="animation-delay:0.3s">
-            Describe your idea. AegisForge plans it, builds it, secures it, deploys it, and keeps it running.
-        </p>
+        <div class="hero-content">
+            <div class="hero-badge anim-in" style="--delay:0s">
+                <span class="hero-badge-dot"></span>
+                Nova AI Operating System
+            </div>
+            <h1 class="hero-title anim-in" style="--delay:0.08s">
+                Build Software With<br>One Conversation.
+            </h1>
+            <p class="hero-sub anim-in" style="--delay:0.16s">
+                Nova transforms your idea into a secure, production-ready application — automatically.
+            </p>
 
-        <div class="hero-cta-group anim-fade-up" style="animation-delay:0.4s">
-            <a href="#hero-prompt" class="btn-primary btn-large">Start Building Free →</a>
-            <a href="#demo-walkthrough" class="btn-secondary btn-large">Watch AI Build an App</a>
-        </div>
-
-        <!-- Hero interactive animation -->
-        <div class="hero-anim anim-fade-up" style="animation-delay:0.55s" id="heroAnim">
-            <div class="hero-anim-terminal">
-                <div class="hero-anim-bar">
-                    <span></span><span></span><span></span>
-                    <strong>AegisForge</strong>
+            <!-- Nova Prompt -->
+            <div class="nova-prompt anim-in" style="--delay:0.24s" id="novaPromptWrap">
+                <div class="nova-prompt-inner">
+                    <div class="nova-prompt-icon">◆</div>
+                    <form class="nova-prompt-form" id="novaPromptForm" autocomplete="off">
+                        <input type="text" id="novaPromptInput" class="nova-prompt-input"
+                               placeholder="What do you want to build today?"
+                               maxlength="200" aria-label="Describe what you want to build">
+                        <button type="submit" class="nova-prompt-btn" id="novaPromptBtn">
+                            <span class="nova-prompt-btn-text">Build</span>
+                            <span class="nova-prompt-btn-arrow">→</span>
+                        </button>
+                    </form>
                 </div>
-                <div class="hero-anim-body">
-                    <div class="hero-anim-prompt-row">
-                        <span class="hero-anim-caret">⟩</span>
-                        <span class="hero-anim-typed" id="heroTypedPrompt"></span>
-                        <span class="hero-anim-cursor" id="heroCursor"></span>
+                <div class="nova-prompt-examples" id="novaExamples">
+                    <button class="nova-example" data-idea="Build me Airbnb for Lagos">Airbnb for Lagos</button>
+                    <button class="nova-example" data-idea="A food delivery app with real-time tracking">Food delivery app</button>
+                    <button class="nova-example" data-idea="SaaS dashboard with analytics and team management">SaaS dashboard</button>
+                    <button class="nova-example" data-idea="E-commerce store for African fashion brands">E-commerce store</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ════════════════════════════════════════════ -->
+    <!-- NOVA BUILD ANIMATION (shown after prompt) -->
+    <!-- ════════════════════════════════════════════ -->
+    <div class="nova-build-overlay" id="novaBuildOverlay">
+        <div class="nova-build">
+            <div class="nova-build-header">
+                <div class="nova-build-brand">◆ Nova</div>
+                <div class="nova-build-status" id="novaBuildStatus">Initializing...</div>
+            </div>
+            <div class="nova-build-terminal" id="novaBuildTerminal"></div>
+            <div class="nova-build-agents" id="novaBuildAgents">
+                <div class="nova-agent-pill" data-agent="product">Product</div>
+                <div class="nova-agent-pill" data-agent="builder">Builder</div>
+                <div class="nova-agent-pill" data-agent="security">Security</div>
+                <div class="nova-agent-pill" data-agent="deploy">Deploy</div>
+                <div class="nova-agent-pill" data-agent="growth">Growth</div>
+            </div>
+            <div class="nova-build-result" id="novaBuildResult"></div>
+        </div>
+    </div>
+
+    <!-- ════════════════════════════════════════════ -->
+    <!-- AGENTS SECTION -->
+    <!-- ════════════════════════════════════════════ -->
+    <section class="agents-section" id="features">
+        <div class="container">
+            <div class="section-label anim-reveal">AI SPECIALISTS</div>
+            <h2 class="section-title anim-reveal">Behind every build is a team<br>of <span class="text-glow">AI specialists.</span></h2>
+            <p class="section-sub anim-reveal">You describe the idea. Nova decides which agents to activate, in what order, with what priorities.</p>
+
+            <div class="agents-grid">
+                <div class="agent-card anim-reveal" style="--delay:0s">
+                    <div class="agent-icon">🧠</div>
+                    <div class="agent-label">Nova Product Agent</div>
+                    <div class="agent-tagline">Plans software.</div>
+                    <div class="agent-desc">Understands your idea, defines roles, maps features, and creates the architecture before a single line of code is written.</div>
+                </div>
+                <div class="agent-card anim-reveal" style="--delay:0.08s">
+                    <div class="agent-icon">💻</div>
+                    <div class="agent-label">Nova Builder Agent</div>
+                    <div class="agent-tagline">Writes production-ready applications.</div>
+                    <div class="agent-desc">Generates complete, working code — frontend, backend, database — following best practices and your chosen stack.</div>
+                </div>
+                <div class="agent-card anim-reveal" style="--delay:0.16s">
+                    <div class="agent-icon">🛡</div>
+                    <div class="agent-label">Nova Security Agent</div>
+                    <div class="agent-tagline">Protects applications.</div>
+                    <div class="agent-desc">Scans for vulnerabilities, enforces security headers, validates dependencies, and hardens your deployment.</div>
+                </div>
+                <div class="agent-card anim-reveal" style="--delay:0.24s">
+                    <div class="agent-icon">🚀</div>
+                    <div class="agent-label">Nova Deploy Agent</div>
+                    <div class="agent-tagline">Ships software.</div>
+                    <div class="agent-desc">Configures CI/CD, provisions infrastructure, deploys to the cloud, and sets up monitoring — all automatically.</div>
+                </div>
+                <div class="agent-card anim-reveal" style="--delay:0.32s">
+                    <div class="agent-icon">📈</div>
+                    <div class="agent-label">Nova Growth Agent</div>
+                    <div class="agent-tagline">Improves products after launch.</div>
+                    <div class="agent-desc">Monitors performance, suggests optimizations, tracks user behavior, and iterates on your product continuously.</div>
+                </div>
+            </div>
+            <p class="agents-note anim-reveal">You never manually choose agents. Nova automatically decides.</p>
+        </div>
+    </section>
+
+    <!-- ════════════════════════════════════════════ -->
+    <!-- SECURITY SCANNER -->
+    <!-- ════════════════════════════════════════════ -->
+    <section class="scanner-section" id="security">
+        <div class="container">
+            <div class="section-label anim-reveal">SECURITY</div>
+            <h2 class="section-title anim-reveal">Is your application <span class="text-glow">secure?</span></h2>
+            <p class="section-sub anim-reveal">Nova Security Agent scans any URL — 12 checks, weighted scoring, actionable recommendations.</p>
+
+            <div class="scanner-card anim-reveal">
+                <form class="scanner-form" id="scannerForm" autocomplete="off">
+                    <div class="scanner-input-wrap">
+                        <span class="scanner-input-icon">🔒</span>
+                        <input type="text" id="scannerUrl" class="scanner-input" placeholder="Enter URL to scan..." required aria-label="URL to scan">
+                        <button type="submit" class="scanner-btn" id="scanBtn">Scan</button>
                     </div>
-                    <div class="hero-anim-steps" id="heroAnimSteps"></div>
-                    <div class="hero-anim-result" id="heroAnimResult"></div>
-                </div>
-            </div>
-            <!-- Agent status pills -->
-            <div class="hero-anim-agents" id="heroAgentPills">
-                <span class="agent-pill" data-agent="product">🧠 Product</span>
-                <span class="agent-pill" data-agent="builder">💻 Builder</span>
-                <span class="agent-pill" data-agent="security">🛡️ Security</span>
-                <span class="agent-pill" data-agent="deploy">🚀 Deploy</span>
-                <span class="agent-pill" data-agent="growth">📈 Growth</span>
-            </div>
-        </div>
+                </form>
 
-        <div class="hero-one-liner anim-fade-up" style="animation-delay:0.7s">Your first AI software company.</div>
-
-        <!-- Status badges -->
-        <div class="hero-trust-bar anim-fade-up" style="animation-delay:0.8s">
-            <span class="trust-badge-item live">🟢 Live Scanner</span>
-            <span class="trust-divider">•</span>
-            <span class="trust-badge-item">🧪 Beta</span>
-            <span class="trust-divider">•</span>
-            <span class="trust-badge-item">👀 Public Preview</span>
-            <span class="trust-divider">•</span>
-            <span class="trust-badge-item">🚀 Launching Soon</span>
-        </div>
-    </section>
-
-    <!-- ============================================ -->
-    <!-- "WHAT DO YOU WANT TO BUILD?" PROMPT (P5)     -->
-    <!-- ============================================ -->
-    <section id="hero-prompt" class="hero-prompt-section anim-reveal">
-        <div class="hero-prompt-container">
-            <h2 class="hero-prompt-title">What do you want to build <span class="gradient-text">today?</span></h2>
-            <form class="hero-prompt-form" id="heroPromptForm">
-                <div class="hero-prompt-input-row">
-                    <input type="text" id="heroPromptInput" placeholder="Build me Airbnb for Lagos..." maxlength="200" autocomplete="off">
-                    <button type="submit" class="btn-primary">Start Building Free →</button>
-                </div>
-            </form>
-            <div class="hero-prompt-ideas">
-                <button type="button" class="idea-chip" data-idea="Build me a food delivery app for Lagos">🍽️ Food delivery app</button>
-                <button type="button" class="idea-chip" data-idea="Create a SaaS analytics dashboard for startups">📊 SaaS dashboard</button>
-                <button type="button" class="idea-chip" data-idea="Build a real estate marketplace with agent profiles">🏠 Real estate platform</button>
-                <button type="button" class="idea-chip" data-idea="Make a booking app for fitness coaches">💪 Booking app</button>
-            </div>
-        </div>
-    </section>
-
-    <!-- SCANNER (moved high for immediate value) -->
-    <section id="scanner" class="scanner-section anim-reveal">
-        <div class="scanner-container">
-            <div class="scanner-header">
-                <div class="scanner-badge"><span class="pulse-dot"></span> 🛡️ FREE SECURITY CHECK</div>
-                <h2 class="section-title">Is Your Website <span class="gradient-text">Secure?</span></h2>
-                <p class="section-subtitle">Enter any URL. Get an instant security score, biggest risks, and how to fix them.</p>
-            </div>
-            <form class="scanner-form" id="scannerForm">
-                <div class="scanner-input-group">
-                    <input type="text" id="scannerUrl" placeholder="example.com" required>
-                    <button type="submit" id="scanButton">
-                        <span class="scan-btn-text">🔍 Scan Free</span>
-                        <span class="scan-btn-loading">⚡ Scanning...</span>
-                    </button>
-                </div>
-                <div class="scanner-features">
-                    <span class="scanner-feature">✓ Instant Results</span>
-                    <span class="scanner-feature">✓ Risk Score</span>
-                    <span class="scanner-feature">✓ Fix Recommendations</span>
-                    <span class="scanner-feature">✓ 100% Free</span>
-                </div>
-            </form>
-            <div class="scan-progress" id="scanProgress">
-                <div class="scan-progress-header">
-                    <div class="scan-status" id="scanStatus">Initializing scan...</div>
-                    <div class="scan-percentage" id="scanPercentage">0%</div>
-                </div>
-                <div class="scan-progress-bar"><div class="scan-progress-fill" id="scanProgressFill"></div></div>
-                <div class="scan-steps" id="scanSteps">
-                    <div class="scan-step" data-step="ssl">🔒 SSL</div>
-                    <div class="scan-step" data-step="headers">📋 Headers</div>
-                    <div class="scan-step" data-step="tech">🔍 Tech</div>
-                    <div class="scan-step" data-step="cookies">🍪 Cookies</div>
-                    <div class="scan-step" data-step="cdn">🌍 CDN</div>
-                    <div class="scan-step" data-step="performance">⚡ Perf</div>
-                </div>
-            </div>
-            <div class="scan-results" id="scanResults"></div>
-        </div>
-    </section>
-
-    <!-- ============================================ -->
-    <!-- INTERACTIVE WALKTHROUGH (P7)                  -->
-    <!-- ============================================ -->
-    <section id="demo-walkthrough" class="walkthrough-section anim-reveal">
-        <div class="walkthrough-container">
-            <div class="walkthrough-header">
-                <div class="walkthrough-badge">✨ PRODUCT WALKTHROUGH</div>
-                <h2 class="section-title">Watch AI <span class="gradient-text">Build an App</span></h2>
-                <p class="section-subtitle">From one sentence to a live, secure application — see every step.</p>
-            </div>
-            <div class="walkthrough-stages" id="walkthroughStages">
-                <div class="wt-stage active" data-stage="0">
-                    <div class="wt-stage-dot"></div>
-                    <span>Prompt</span>
-                </div>
-                <div class="wt-connector"></div>
-                <div class="wt-stage" data-stage="1">
-                    <div class="wt-stage-dot"></div>
-                    <span>Plan</span>
-                </div>
-                <div class="wt-connector"></div>
-                <div class="wt-stage" data-stage="2">
-                    <div class="wt-stage-dot"></div>
-                    <span>Design</span>
-                </div>
-                <div class="wt-connector"></div>
-                <div class="wt-stage" data-stage="3">
-                    <div class="wt-stage-dot"></div>
-                    <span>Code</span>
-                </div>
-                <div class="wt-connector"></div>
-                <div class="wt-stage" data-stage="4">
-                    <div class="wt-stage-dot"></div>
-                    <span>Secure</span>
-                </div>
-                <div class="wt-connector"></div>
-                <div class="wt-stage" data-stage="5">
-                    <div class="wt-stage-dot"></div>
-                    <span>Deploy</span>
-                </div>
-            </div>
-            <div class="walkthrough-display" id="walkthroughDisplay">
-                <img src="assets/screenshot-hero-anim.jpg" alt="AI prompt interface" class="wt-screenshot active" data-stage="0" loading="lazy" width="800" height="450">
-                <img src="assets/screenshot-blueprint.jpg" alt="AI product blueprint" class="wt-screenshot" data-stage="1" loading="lazy" width="800" height="450">
-                <img src="assets/screenshot-dashboard.jpg" alt="AI designed dashboard" class="wt-screenshot" data-stage="2" loading="lazy" width="800" height="450">
-                <img src="assets/screenshot-code.jpg" alt="AI generated code" class="wt-screenshot" data-stage="3" loading="lazy" width="800" height="450">
-                <img src="assets/screenshot-security.jpg" alt="AI security scan" class="wt-screenshot" data-stage="4" loading="lazy" width="800" height="450">
-                <img src="assets/screenshot-deploy.jpg" alt="AI deployment" class="wt-screenshot" data-stage="5" loading="lazy" width="800" height="450">
-            </div>
-            <div class="walkthrough-caption" id="walkthroughCaption">Type your idea and AegisForge starts working immediately.</div>
-            <div class="walkthrough-controls">
-                <button type="button" class="wt-btn" id="wtPrev" disabled>← Previous</button>
-                <button type="button" class="wt-btn wt-btn-primary" id="wtNext">Next Step →</button>
-                <button type="button" class="wt-btn" id="wtAutoplay">▶ Autoplay</button>
-            </div>
-        </div>
-    </section>
-
-    <!-- AGENTS -->
-    <section id="agents" class="modules-section anim-reveal">
-        <div class="modules-header">
-            <div class="modules-badge">🤖 THE AI AGENTS</div>
-            <h2 class="section-title">Five Agents. <span class="gradient-text">One Mission.</span></h2>
-            <p class="section-subtitle">Each agent is a specialized AI — working together to take you from idea to live product.</p>
-        </div>
-        <div class="modules-grid">
-            <div class="module-card anim-card" style="--card-delay:0.0s">
-                <div class="module-status coming-soon">PHASE 1</div>
-                <div class="module-icon">🧠</div>
-                <h3>Product Agent</h3>
-                <p class="module-tagline">AI that designs your product from a sentence</p>
-                <p>Describe what you want in plain English. Get a structured blueprint with features, user flows, and priorities.</p>
-                <ul class="module-features"><li>✓ Idea to blueprint</li><li>✓ Feature planning</li><li>✓ User story mapping</li></ul>
-                <div class="module-preview-actions">
-                    <a href="#hero-prompt" class="module-preview-btn live">Start Building Free →</a>
-                </div>
-            </div>
-            <div class="module-card featured anim-card" style="--card-delay:0.1s">
-                <div class="module-status available">PHASE 1</div>
-                <div class="module-icon">💻</div>
-                <h3>Builder Agent</h3>
-                <p class="module-tagline">AI that writes production-ready code</p>
-                <p>Generate code structure, database schemas, and component blueprints from your plan.</p>
-                <ul class="module-features"><li>✓ Code generation roadmap</li><li>✓ Database design</li><li>✓ API structure</li></ul>
-                <div class="module-preview-actions">
-                    <a href="#hero-prompt" class="module-preview-btn live">Start Building Free →</a>
-                </div>
-            </div>
-            <div class="module-card anim-card" style="--card-delay:0.2s">
-                <div class="module-status available">✅ LIVE NOW</div>
-                <div class="module-icon">🛡️</div>
-                <h3>Security Agent</h3>
-                <p class="module-tagline">AI that finds and fixes vulnerabilities</p>
-                <p>Scan for vulnerabilities, get hardening recommendations, and monitor for threats.</p>
-                <ul class="module-features"><li>✓ Live vulnerability scanner</li><li>✓ Risk scoring</li><li>✓ Fix recommendations</li></ul>
-                <div class="module-preview-actions">
-                    <a href="#scanner" class="module-preview-btn live">Start Building Free →</a>
-                </div>
-            </div>
-            <div class="module-card anim-card" style="--card-delay:0.3s">
-                <div class="module-status coming-soon">PHASE 2</div>
-                <div class="module-icon">🚀</div>
-                <h3>Deploy Agent</h3>
-                <p class="module-tagline">AI that ships your code with confidence</p>
-                <p>Deployment checklists, environment setup, CI/CD guidance, and launch readiness.</p>
-                <ul class="module-features"><li>✓ Deployment checklist</li><li>✓ Environment guidance</li><li>✓ Launch monitoring</li></ul>
-                <div class="module-preview-actions">
-                    <a href="#waitlist" class="module-preview-btn">Join Waitlist</a>
-                </div>
-            </div>
-            <div class="module-card anim-card" style="--card-delay:0.4s">
-                <div class="module-status coming-soon">PHASE 2</div>
-                <div class="module-icon">📈</div>
-                <h3>Growth Agent</h3>
-                <p class="module-tagline">AI that monitors, predicts, and grows</p>
-                <p>Monitor for anomalies, predict threats before they happen, and optimize performance.</p>
-                <ul class="module-features"><li>✓ Threat prediction</li><li>✓ Anomaly detection</li><li>✓ Smart alerts</li></ul>
-                <div class="module-preview-actions">
-                    <a href="#waitlist" class="module-preview-btn">Join Waitlist</a>
-                </div>
-            </div>
-        </div>
-        <div class="modules-cta">
-            <p class="modules-tagline">All five agents work together. Start with what you need, grow into the full team.</p>
-            <a href="#hero-prompt" class="btn-primary">Start Building Free →</a>
-        </div>
-    </section>
-
-    <!-- ============================================ -->
-    <!-- TRUST SECTION (P6)                            -->
-    <!-- ============================================ -->
-    <section id="trust-section" class="extended-trust-section anim-reveal">
-        <div class="extended-trust-container">
-            <div class="extended-trust-header">
-                <h2 class="section-title">Trusted by <span class="gradient-text">Builders</span></h2>
-                <p class="section-subtitle">AegisForge is used by developers, founders, and teams who ship fast.</p>
-            </div>
-            <!-- Stats row -->
-            <div class="trust-stats-row">
-                <div class="trust-stat-card">
-                    <div class="trust-stat-number">2,400+</div>
-                    <div class="trust-stat-label">Security Scans Run</div>
-                </div>
-                <div class="trust-stat-card">
-                    <div class="trust-stat-number">180+</div>
-                    <div class="trust-stat-label">Ideas Previewed</div>
-                </div>
-                <div class="trust-stat-card">
-                    <div class="trust-stat-number">99.9%</div>
-                    <div class="trust-stat-label">Platform Uptime</div>
-                </div>
-                <div class="trust-stat-card">
-                    <div class="trust-stat-number">&lt;2s</div>
-                    <div class="trust-stat-label">Avg Scan Time</div>
-                </div>
-            </div>
-            <!-- Testimonials -->
-            <div class="testimonials-row">
-                <div class="testimonial-card">
-                    <p class="testimonial-text">"The scanner found 3 critical headers missing on our production site. Fixed them in 5 minutes."</p>
-                    <div class="testimonial-author">
-                        <div class="testimonial-avatar">AO</div>
-                        <div><strong>Adebayo O.</strong><span>Founder, Paystack merchant</span></div>
+                <!-- Scan Progress -->
+                <div class="scan-progress hidden" id="scanProgress">
+                    <div class="scan-progress-header">
+                        <span class="scan-progress-label" id="scanStatusLabel">Initializing...</span>
+                        <span class="scan-progress-pct" id="scanPct">0%</span>
+                    </div>
+                    <div class="scan-progress-bar">
+                        <div class="scan-progress-fill" id="scanProgressFill"></div>
                     </div>
                 </div>
-                <div class="testimonial-card">
-                    <p class="testimonial-text">"I described my idea and got a full blueprint in seconds. This is how AI should work for builders."</p>
-                    <div class="testimonial-author">
-                        <div class="testimonial-avatar">SK</div>
-                        <div><strong>Sarah K.</strong><span>Indie hacker, Nairobi</span></div>
+
+                <!-- Scan Results -->
+                <div class="scan-results hidden" id="scanResults">
+                    <div class="scan-score-block" id="scanScoreBlock">
+                        <div class="scan-score-ring" id="scanScoreRing">
+                            <svg viewBox="0 0 120 120" class="scan-ring-svg">
+                                <circle cx="60" cy="60" r="54" class="scan-ring-bg"/>
+                                <circle cx="60" cy="60" r="54" class="scan-ring-fill" id="scanRingFill"/>
+                            </svg>
+                            <div class="scan-score-number" id="scanScoreNum">—</div>
+                        </div>
+                        <div class="scan-score-grade" id="scanGrade">—</div>
+                        <div class="scan-score-label">Security Score</div>
                     </div>
-                </div>
-                <div class="testimonial-card">
-                    <p class="testimonial-text">"Finally a security scanner that doesn't require signup and gives actionable results. Bookmarked."</p>
-                    <div class="testimonial-author">
-                        <div class="testimonial-avatar">JM</div>
-                        <div><strong>James M.</strong><span>CTO, Lagos startup</span></div>
+
+                    <div class="scan-checks" id="scanChecks"></div>
+
+                    <div class="scan-actions" id="scanActions">
+                        <button class="scan-action-btn" id="scanExportPdf" title="Export PDF">📄 PDF</button>
+                        <button class="scan-action-btn" id="scanShareBtn" title="Share report">🔗 Share</button>
                     </div>
                 </div>
             </div>
-            <!-- Security badges -->
-            <div class="security-badges-row">
-                <div class="sec-badge">🔒 SSL Secured</div>
-                <div class="sec-badge">🛡️ No Data Stored</div>
-                <div class="sec-badge">⚡ Rate Limited</div>
-                <div class="sec-badge">🔐 SSRF Protected</div>
-                <div class="sec-badge">📋 SOC 2 Aligned</div>
-            </div>
-            <!-- Customer logos -->
-            <div class="customer-logos-row">
-                <span class="logo-placeholder">FintechCo</span>
-                <span class="logo-placeholder">LogisticsAI</span>
-                <span class="logo-placeholder">HealthApp</span>
-                <span class="logo-placeholder">EduTech</span>
-                <span class="logo-placeholder">ShopSmart</span>
-            </div>
-            <!-- GitHub activity -->
-            <div class="github-activity">
-                <div class="gh-stat"><span class="gh-icon">⭐</span> <strong>47</strong> Stars</div>
-                <div class="gh-stat"><span class="gh-icon">🔀</span> <strong>12</strong> Forks</div>
-                <div class="gh-stat"><span class="gh-icon">📦</span> <strong>34</strong> Commits</div>
-                <div class="gh-stat"><span class="gh-icon">🟢</span> <strong>Active</strong> Development</div>
+        </div>
+    </section>
+
+    <!-- ════════════════════════════════════════════ -->
+    <!-- PRODUCT BLUEPRINT (was Preview Engine) -->
+    <!-- ════════════════════════════════════════════ -->
+    <section class="blueprint-section" id="blueprint">
+        <div class="container">
+            <div class="section-label anim-reveal">PRODUCT BLUEPRINT</div>
+            <h2 class="section-title anim-reveal">See your idea <span class="text-glow">architected.</span></h2>
+            <p class="section-sub anim-reveal">Nova generates a complete product blueprint — roles, features, pages, database, security, and deployment plan.</p>
+
+            <div class="blueprint-card anim-reveal">
+                <form class="blueprint-form" id="blueprintForm" autocomplete="off">
+                    <div class="blueprint-input-wrap">
+                        <span class="blueprint-input-icon">◆</span>
+                        <input type="text" id="blueprintIdea" class="blueprint-input" placeholder="Describe your product idea..." maxlength="600" required aria-label="Product idea">
+                    </div>
+                    <div class="blueprint-options">
+                        <select id="blueprintType" class="blueprint-select" aria-label="Project type">
+                            <option value="auto">Auto-detect type</option>
+                            <option value="marketplace">Marketplace</option>
+                            <option value="ecommerce">E-commerce</option>
+                            <option value="dashboard">Dashboard</option>
+                            <option value="booking">Booking</option>
+                            <option value="mobile">Mobile App</option>
+                            <option value="website">Website</option>
+                        </select>
+                        <button type="submit" class="blueprint-btn" id="blueprintBtn">Generate Blueprint</button>
+                    </div>
+                </form>
+
+                <div class="blueprint-result hidden" id="blueprintResult">
+                    <div class="blueprint-header" id="blueprintHeader"></div>
+                    <div class="blueprint-body" id="blueprintBody"></div>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- ROADMAP -->
-    <section id="roadmap" class="roadmap-section anim-reveal">
-        <div class="roadmap-header">
-            <div class="roadmap-badge">📍 PUBLIC ROADMAP</div>
-            <h2 class="section-title">Where We <span class="gradient-text">Are Now</span></h2>
-        </div>
-        <div class="roadmap-timeline">
-            <div class="roadmap-quarter">
-                <h3>Now — Q3 2026</h3>
-                <div class="roadmap-items">
-                    <div class="roadmap-item done"><span class="roadmap-check">✅</span><span>Security Agent (Live)</span></div>
-                    <div class="roadmap-item done"><span class="roadmap-check">✅</span><span>Product Preview Engine</span></div>
-                    <div class="roadmap-item done"><span class="roadmap-check">✅</span><span>Waitlist & Email</span></div>
-                    <div class="roadmap-item progress"><span class="roadmap-check">🟡</span><span>Product Agent (Beta)</span></div>
-                    <div class="roadmap-item progress"><span class="roadmap-check">🟡</span><span>Builder Agent (Alpha)</span></div>
-                </div>
-            </div>
-            <div class="roadmap-quarter">
-                <h3>Next — Q4 2026</h3>
-                <div class="roadmap-items">
-                    <div class="roadmap-item planned"><span class="roadmap-check">🔵</span><span>Deploy Agent (Beta)</span></div>
-                    <div class="roadmap-item planned"><span class="roadmap-check">🔵</span><span>Growth Agent (Alpha)</span></div>
-                    <div class="roadmap-item planned"><span class="roadmap-check">🔵</span><span>Paid Plans Launch</span></div>
-                    <div class="roadmap-item planned"><span class="roadmap-check">🔵</span><span>Real AI Integration</span></div>
-                </div>
-            </div>
-            <div class="roadmap-quarter">
-                <h3>2027</h3>
-                <div class="roadmap-items">
-                    <div class="roadmap-item planned"><span class="roadmap-check">🔵</span><span>Team Workspaces</span></div>
-                    <div class="roadmap-item planned"><span class="roadmap-check">🔵</span><span>API Access</span></div>
-                    <div class="roadmap-item planned"><span class="roadmap-check">🔵</span><span>Enterprise Features</span></div>
-                </div>
-            </div>
-        </div>
-        <div class="roadmap-legend">
-            <span><span class="legend-dot done"></span> Done</span>
-            <span><span class="legend-dot progress"></span> In Progress</span>
-            <span><span class="legend-dot planned"></span> Planned</span>
-        </div>
-    </section>
-
+    <!-- ════════════════════════════════════════════ -->
     <!-- PRICING -->
-    <section id="pricing" class="pricing-section anim-reveal">
-        <div class="pricing-header">
-            <div class="pricing-badge">💎 PRICING</div>
-            <h2 class="section-title">Simple, Honest <span class="gradient-text">Pricing</span></h2>
-            <p class="section-subtitle">Start free. Upgrade when you're ready.</p>
-        </div>
-        <div class="pricing-founder-banner">
-            <div><strong>🎁 Founder Access</strong><p>Join now and lock in lifetime founder pricing.</p></div>
-            <a href="#waitlist" class="pricing-banner-btn">Get Founder Access →</a>
-        </div>
-        <div class="pricing-grid">
-            <div class="pricing-card anim-card" style="--card-delay:0.0s">
-                <div class="pricing-plan">Free</div>
-                <div class="pricing-price">$0<span>/mo</span></div>
-                <p>For trying AegisForge and running security checks.</p>
-                <ul><li>✓ Free security scanner</li><li>✓ Product preview engine</li><li>✓ Basic recommendations</li><li>✓ Downloadable reports</li></ul>
-                <a href="#scanner" class="pricing-btn secondary">Start Building Free</a>
+    <!-- ════════════════════════════════════════════ -->
+    <section class="pricing-section" id="pricing">
+        <div class="container">
+            <div class="section-label anim-reveal">PRICING</div>
+            <h2 class="section-title anim-reveal">Start free. <span class="text-glow">Scale when ready.</span></h2>
+
+            <div class="pricing-grid">
+                <div class="pricing-card anim-reveal" style="--delay:0s">
+                    <div class="pricing-name">Free</div>
+                    <div class="pricing-price">$0<span>/mo</span></div>
+                    <ul class="pricing-features">
+                        <li>3 blueprints / month</li>
+                        <li>10 security scans / month</li>
+                        <li>Product Blueprint generator</li>
+                        <li>Community support</li>
+                    </ul>
+                    <a href="#waitlist" class="pricing-btn">Reserve Early Access</a>
+                </div>
+                <div class="pricing-card pricing-popular anim-reveal" style="--delay:0.08s">
+                    <div class="pricing-badge">Most Popular</div>
+                    <div class="pricing-name">Pro</div>
+                    <div class="pricing-price">$29<span>/mo</span></div>
+                    <ul class="pricing-features">
+                        <li>Unlimited blueprints</li>
+                        <li>Unlimited security scans</li>
+                        <li>Nova Build (full code gen)</li>
+                        <li>PDF/CSV export & sharing</li>
+                        <li>Priority support</li>
+                    </ul>
+                    <a href="#waitlist" class="pricing-btn pricing-btn-primary">Reserve Early Access</a>
+                </div>
+                <div class="pricing-card anim-reveal" style="--delay:0.16s">
+                    <div class="pricing-name">Business</div>
+                    <div class="pricing-price">$99<span>/mo</span></div>
+                    <ul class="pricing-features">
+                        <li>Everything in Pro</li>
+                        <li>Team collaboration</li>
+                        <li>Custom AI models</li>
+                        <li>SSO & audit logs</li>
+                        <li>Dedicated support</li>
+                    </ul>
+                    <a href="#waitlist" class="pricing-btn">Reserve Early Access</a>
+                </div>
             </div>
-            <div class="pricing-card featured anim-card" style="--card-delay:0.1s">
-                <div class="pricing-popular">Most Popular</div>
-                <div class="pricing-plan">Starter</div>
-                <div class="pricing-price">$9<span>/mo</span></div>
-                <p>For indie hackers building their first product.</p>
-                <ul><li>✓ 30 scans/month</li><li>✓ 3 AI drafts/month</li><li>✓ Product Agent access</li><li>✓ Email support</li></ul>
-                <a href="#waitlist" class="pricing-btn primary">Start Building Free</a>
-            </div>
-            <div class="pricing-card anim-card" style="--card-delay:0.2s">
-                <div class="pricing-plan">Pro</div>
-                <div class="pricing-price">$29<span>/mo</span></div>
-                <p>For founders shipping secure products fast.</p>
-                <ul><li>✓ 150 scans/month</li><li>✓ 20 AI generations/month</li><li>✓ All 5 AI Agents</li><li>✓ Priority support</li></ul>
-                <a href="#waitlist" class="pricing-btn primary">Start Building Free</a>
-            </div>
-            <div class="pricing-card business anim-card" style="--card-delay:0.3s">
-                <div class="pricing-plan">Business</div>
-                <div class="pricing-price">$79<span>/mo</span></div>
-                <p>For teams that need more power.</p>
-                <ul><li>✓ 500 scans/month</li><li>✓ 75 AI generations/month</li><li>✓ Team workspace</li><li>✓ Dedicated support</li></ul>
-                <a href="#waitlist" class="pricing-btn primary">Start Building Free</a>
-            </div>
-        </div>
-        <div class="pricing-reassurance">
-            <span>✓ Always start free</span>
-            <span>✓ No credit card required</span>
-            <span>✓ Cancel anytime</span>
         </div>
     </section>
 
+    <!-- ════════════════════════════════════════════ -->
     <!-- WAITLIST -->
-    <section id="waitlist" class="waitlist anim-reveal">
-        <div class="waitlist-container">
-            <div class="waitlist-badge">🚀 JOIN THE MOVEMENT</div>
-            <h2>Get <span class="gradient-text">Early Access</span></h2>
-            <p class="waitlist-subtitle">Join now and receive:</p>
-            <ul class="waitlist-benefits">
-                <li>🎯 Early access to new AI agents</li>
-                <li>💰 Lock in founder pricing forever</li>
-                <li>⚡ Beta access before public launch</li>
-                <li>📧 Exclusive product updates</li>
-            </ul>
-            <form class="waitlist-form" id="waitlistForm">
-                <input type="email" placeholder="Enter your email" required id="emailInput">
-                <button type="submit">Start Building Free →</button>
-            </form>
-            <div class="waitlist-note waitlist-message" id="formMessage" aria-live="polite">🔒 We respect your privacy. No spam, ever.</div>
-        </div>
-    </section>
-
-    <!-- FAQ -->
-    <section id="faq" class="faq-section anim-reveal">
-        <div class="faq-container">
-            <div class="faq-header">
-                <div class="faq-badge">❓ FAQ</div>
-                <h2 class="section-title">Common <span class="gradient-text">Questions</span></h2>
-            </div>
-            <div class="faq-list">
-                <div class="faq-item"><button class="faq-question"><span>What is AegisForge?</span><span class="faq-icon">+</span></button><div class="faq-answer"><p>AegisForge is the AI operating system that takes you from an idea to a live, secure application. Five AI agents work together to plan, build, secure, deploy, and monitor your software.</p></div></div>
-                <div class="faq-item"><button class="faq-question"><span>Is the scanner really free?</span><span class="faq-icon">+</span></button><div class="faq-answer"><p>Yes, 100% free. No signup needed. Enter any website URL and get an instant security score and recommendations.</p></div></div>
-                <div class="faq-item"><button class="faq-question"><span>What are AI Agents?</span><span class="faq-icon">+</span></button><div class="faq-answer"><p>Each agent is a specialized AI that handles one part of the software lifecycle. Product Agent designs, Builder Agent writes code, Security Agent finds vulnerabilities, Deploy Agent ships, and Growth Agent monitors. They work as a team.</p></div></div>
-                <div class="faq-item"><button class="faq-question"><span>Do I need to know how to code?</span><span class="faq-icon">+</span></button><div class="faq-answer"><p>No. Describe your idea in plain English and the AI agents handle the rest.</p></div></div>
-                <div class="faq-item"><button class="faq-question"><span>When will the full platform launch?</span><span class="faq-icon">+</span></button><div class="faq-answer"><p>We're in active development. Join the waitlist to get early access.</p></div></div>
-                <div class="faq-item"><button class="faq-question"><span>How much will it cost?</span><span class="faq-icon">+</span></button><div class="faq-answer"><p>Free tier always available. Paid plans start at $9/month. Waitlist members get founder pricing locked in forever.</p></div></div>
+    <!-- ════════════════════════════════════════════ -->
+    <section class="waitlist-section" id="waitlist">
+        <div class="container">
+            <div class="waitlist-card anim-reveal">
+                <div class="waitlist-glow"></div>
+                <h2 class="waitlist-title">Reserve Early Access to Nova</h2>
+                <p class="waitlist-sub">Join the Nova Early Access Program. Be first to build software with one conversation.</p>
+                <form class="waitlist-form" id="waitlistForm" autocomplete="off">
+                    <input type="email" id="waitlistEmail" class="waitlist-input" placeholder="you@email.com" required aria-label="Email address">
+                    <button type="submit" class="waitlist-btn" id="waitlistBtn">Join Nova</button>
+                </form>
+                <div class="waitlist-msg hidden" id="waitlistMsg"></div>
+                <p class="waitlist-note">No spam. Unsubscribe anytime. We respect your inbox.</p>
             </div>
         </div>
     </section>
 
-    <!-- TAGLINE + FOOTER -->
-    <section class="tagline-section anim-reveal">
-        <div class="tagline-container">
-            <p class="tagline-main">AegisForge is the AI operating system that takes you from an idea to a live, secure application.</p>
-            <a href="#hero-prompt" class="btn-primary btn-large">Start Building Free →</a>
-        </div>
-    </section>
-
-    <footer>
-        <div class="footer-content">
-            <div class="footer-logo"><span class="logo-icon">⚡</span><span>AegisForge</span></div>
-            <p class="footer-vision">AegisForge exists to make building software as easy as describing an idea.</p>
-            <div class="footer-links">
-                <a href="#scanner">Free Scanner</a>
-                <a href="#agents">Agents</a>
-                <a href="#pricing">Pricing</a>
-                <a href="#faq">FAQ</a>
-                <a href="terms.html">Terms</a>
-                <a href="privacy.html">Privacy</a>
+    <!-- ════════════════════════════════════════════ -->
+    <!-- FOOTER -->
+    <!-- ════════════════════════════════════════════ -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-top">
+                <div class="footer-brand">
+                    <div class="footer-logo">◆ AegisForge <span class="footer-nova">Nova</span></div>
+                    <p class="footer-vision">The AI operating system that transforms ideas into secure, production-ready software through one conversation with Nova.</p>
+                </div>
+                <div class="footer-links-group">
+                    <div class="footer-col">
+                        <div class="footer-col-title">Product</div>
+                        <a href="#features">Features</a>
+                        <a href="#security">Security</a>
+                        <a href="#pricing">Pricing</a>
+                        <a href="https://aegisforge-backend.onrender.com/docs" target="_blank" rel="noopener">Documentation</a>
+                    </div>
+                    <div class="footer-col">
+                        <div class="footer-col-title">Company</div>
+                        <a href="terms.html">Terms</a>
+                        <a href="privacy.html">Privacy</a>
+                    </div>
+                </div>
             </div>
-            <p>© 2026 AegisForge. Built with 💚 for builders everywhere.</p>
+            <div class="footer-bottom">
+                <span>© 2026 AegisForge. Powered by Nova.</span>
+            </div>
         </div>
     </footer>
-
-    <!-- Module Preview Modal -->
-    <div class="module-preview-modal" id="modulePreviewModal" aria-hidden="true">
-        <div class="module-preview-backdrop" onclick="closeModulePreview()"></div>
-        <div class="module-preview-dialog" role="dialog" aria-modal="true" aria-labelledby="modulePreviewTitle">
-            <button type="button" class="module-preview-close" onclick="closeModulePreview()" aria-label="Close">×</button>
-            <div class="module-preview-content" id="modulePreviewContent"></div>
-        </div>
-    </div>
-
-    <button class="back-to-top" id="backToTop" title="Back to top">↑</button>
-
-    <div class="cookie-banner" id="cookieBanner">
-        <div class="cookie-content">
-            <div class="cookie-icon">🍪</div>
-            <div class="cookie-text"><strong>We use cookies</strong><p>We use cookies to enhance your experience. By continuing, you agree to our use of cookies.</p></div>
-            <div class="cookie-buttons">
-                <button class="cookie-btn accept" id="acceptCookies">Accept All</button>
-                <a href="privacy.html" class="cookie-btn learn-more">Learn More</a>
-            </div>
-        </div>
-    </div>
 
     <script src="script.js"></script>
 </body>
