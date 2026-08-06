@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import type { ReactNode } from "react";
 
 import { AnimatedBackground } from "@/components/common/animated-background";
+import { CommandPalette } from "@/components/common/command-palette";
 import { Footer } from "@/components/layout/footer";
 import { Navbar } from "@/components/layout/navbar";
 import { AppProviders } from "@/providers/app-providers";
@@ -72,6 +73,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
       <body>
         <AppProviders>
           <AnimatedBackground />
+          <CommandPalette />
           <div className="relative flex min-h-screen flex-col">
             <Navbar />
             <main className="flex-1 pt-24 sm:pt-28">{children}</main>

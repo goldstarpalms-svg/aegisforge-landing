@@ -1,6 +1,9 @@
 import type { NavItem } from "@/types/navigation";
 
 export const primaryNavigation: NavItem[] = [
+  { label: "Scanner", href: "/scanner", description: "Security scanner" },
+  { label: "Blueprint", href: "/blueprint", description: "AI blueprint engine" },
+  { label: "Nova", href: "/nova", description: "AI orchestrator" },
   { label: "Vision", href: "/vision", description: "Why AegisForge exists" },
   { label: "Roadmap", href: "/roadmap", description: "How AegisForge ships" },
   {
@@ -8,7 +11,6 @@ export const primaryNavigation: NavItem[] = [
     href: "/technology",
     description: "Platform modules and systems",
   },
-  { label: "Blog", href: "/blog", description: "Notes from the build" },
   { label: "FAQ", href: "/faq", description: "Answers and clarity" },
   { label: "Contact", href: "/contact", description: "Talk to the team" },
 ];
