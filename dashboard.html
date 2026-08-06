@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nova Dashboard — AegisForge</title>
+    <meta name="description" content="Nova Dashboard — Your AI operating system for software.">
+    <meta name="theme-color" content="#06060a">
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="dashboard-body">
+    <!-- ════════════════════════════════════════════ -->
+    <!-- SIDEBAR -->
+    <!-- ════════════════════════════════════════════ -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-brand">
+            <span class="sidebar-logo">◆</span>
+            <span class="sidebar-name">AegisForge</span>
+            <span class="sidebar-nova">Nova</span>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="/" class="sidebar-link active" data-page="home">
+                <span class="sidebar-icon">🏠</span> Home
+            </a>
+            <a href="#nova" class="sidebar-link" data-page="nova">
+                <span class="sidebar-icon">💬</span> Nova
+            </a>
+            <a href="#projects" class="sidebar-link" data-page="projects">
+                <span class="sidebar-icon">📂</span> Projects
+            </a>
+            <a href="#security" class="sidebar-link" data-page="security">
+                <span class="sidebar-icon">🛡</span> Security
+            </a>
+            <a href="#deployments" class="sidebar-link" data-page="deployments">
+                <span class="sidebar-icon">🚀</span> Deployments
+            </a>
+            <a href="#analytics" class="sidebar-link" data-page="analytics">
+                <span class="sidebar-icon">📈</span> Analytics
+            </a>
+            <a href="#settings" class="sidebar-link" data-page="settings">
+                <span class="sidebar-icon">⚙</span> Settings
+            </a>
+        </nav>
+        <div class="sidebar-footer">
+            <a href="index.html" class="sidebar-back">← Back to Site</a>
+        </div>
+    </aside>
+
+    <!-- ════════════════════════════════════════════ -->
+    <!-- MAIN CONTENT -->
+    <!-- ════════════════════════════════════════════ -->
+    <main class="main" id="main">
+        <!-- TOP BAR -->
+        <div class="topbar">
+            <button class="topbar-toggle" id="sidebarToggle" aria-label="Toggle sidebar">☰</button>
+            <div class="topbar-title">Dashboard</div>
+            <div class="topbar-actions">
+                <button class="topbar-cmd" id="dashCmd" title="Command Palette (⌘K)">⌘K</button>
+            </div>
+        </div>
+
+        <!-- HOME PAGE -->
+        <div class="page active" id="page-home">
+            <div class="dash-welcome anim-dash" style="--i:0">
+                <h1 class="dash-welcome-title">Welcome back.</h1>
+                <p class="dash-welcome-sub">Describe your idea. Nova handles the rest.</p>
+            </div>
+
+            <!-- NOVA PROMPT (large, prominent) -->
+            <div class="dash-prompt anim-dash" style="--i:1">
+                <div class="dash-prompt-inner">
+                    <div class="dash-prompt-icon">◆</div>
+                    <form class="dash-prompt-form" id="dashPromptForm" autocomplete="off">
+                        <input type="text" id="dashPromptInput" class="dash-prompt-input"
+                               placeholder="What do you want to build today?"
+                               maxlength="200" aria-label="Describe what you want to build">
+                        <button type="submit" class="dash-prompt-btn">
+                            <span>Build</span> <span>→</span>
+                        </button>
+                    </form>
+                </div>
+                <div class="dash-prompt-hints">
+                    <button class="dash-hint" data-idea="SaaS dashboard with team management">SaaS dashboard</button>
+                    <button class="dash-hint" data-idea="E-commerce for African fashion">E-commerce store</button>
+                    <button class="dash-hint" data-idea="Mobile food delivery app">Food delivery app</button>
+                </div>
+            </div>
+
+            <!-- RECENT ACTIVITY GRID -->
+            <div class="dash-grid">
+                <!-- Recent Projects -->
+                <div class="dash-card anim-dash" style="--i:2">
+                    <div class="dash-card-header">
+                        <span class="dash-card-icon">📂</span>
+                        <span class="dash-card-title">Recent Projects</span>
+                    </div>
+                    <div class="dash-card-body" id="recentProjects">
+                        <div class="dash-empty">No projects yet. Start by describing your idea above.</div>
+                    </div>
+                </div>
+
+                <!-- Recent Scans -->
+                <div class="dash-card anim-dash" style="--i:3">
+                    <div class="dash-card-header">
+                        <span class="dash-card-icon">🛡</span>
+                        <span class="dash-card-title">Recent Scans</span>
+                    </div>
+                    <div class="dash-card-body" id="recentScans">
+                        <div class="skeleton skeleton-block"></div>
+                    </div>
+                </div>
+
+                <!-- Recent Blueprints -->
+                <div class="dash-card anim-dash" style="--i:4">
+                    <div class="dash-card-header">
+                        <span class="dash-card-icon">📋</span>
+                        <span class="dash-card-title">Recent Blueprints</span>
+                    </div>
+                    <div class="dash-card-body" id="recentBlueprints">
+                        <div class="dash-empty">Generate your first blueprint with Nova.</div>
+                    </div>
+                </div>
+
+                <!-- Deployment History -->
+                <div class="dash-card anim-dash" style="--i:5">
+                    <div class="dash-card-header">
+                        <span class="dash-card-icon">🚀</span>
+                        <span class="dash-card-title">Deployments</span>
+                    </div>
+                    <div class="dash-card-body" id="recentDeploys">
+                        <div class="dash-empty">Deployments will appear here when Nova ships your app.</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- QUICK SCANNER -->
+            <div class="dash-card dash-scanner-card anim-dash" style="--i:6">
+                <div class="dash-card-header">
+                    <span class="dash-card-icon">🔒</span>
+                    <span class="dash-card-title">Quick Security Scan</span>
+                </div>
+                <div class="dash-card-body">
+                    <form class="dash-scan-form" id="dashScanForm" autocomplete="off">
+                        <input type="text" id="dashScanInput" class="dash-scan-input" placeholder="Enter URL..." aria-label="URL to scan">
+                        <button type="submit" class="dash-scan-btn">Scan</button>
+                    </form>
+                    <div class="dash-scan-result hidden" id="dashScanResult"></div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- COMMAND PALETTE -->
+    <div class="cmd-palette" id="cmdPalette">
+        <input type="text" class="cmd-palette-input" id="cmdInput" placeholder="Type a command..." autocomplete="off">
+        <div class="cmd-palette-list" id="cmdList"></div>
+    </div>
+
+    <!-- NOVA BUILD OVERLAY (reused from landing) -->
+    <div class="nova-build-overlay" id="novaBuildOverlay">
+        <div class="nova-build">
+            <div class="nova-build-header">
+                <div class="nova-build-brand">◆ Nova</div>
+                <div class="nova-build-status" id="novaBuildStatus">Initializing...</div>
+            </div>
+            <div class="nova-build-terminal" id="novaBuildTerminal"></div>
+            <div class="nova-build-agents" id="novaBuildAgents">
+                <div class="nova-agent-pill" data-agent="product">Product</div>
+                <div class="nova-agent-pill" data-agent="builder">Builder</div>
+                <div class="nova-agent-pill" data-agent="security">Security</div>
+                <div class="nova-agent-pill" data-agent="deploy">Deploy</div>
+                <div class="nova-agent-pill" data-agent="growth">Growth</div>
+            </div>
+            <div class="nova-build-result" id="novaBuildResult"></div>
+            <div class="demo-disclaimer">This is a demonstration. Nova is not yet generating real code.</div>
+        </div>
+    </div>
+
+    <script src="dashboard.js"></script>
+</body>
+</html>

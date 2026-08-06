@@ -18,7 +18,7 @@ const revealObserver = new IntersectionObserver((entries) => {
 }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
 
 document.addEventListener('DOMContentLoaded', () => {
-    document.querySelectorAll('.anim-reveal').forEach(el => revealObserver.observe(el));
+    initSpringReveals(); // Phase 13: Spring physics instead of CSS transitions
     initNav();
     initHeroPrompt();
     initScanner();
@@ -26,6 +26,8 @@ document.addEventListener('DOMContentLoaded', () => {
     initWaitlist();
     initCommandPalette();
     initKeyboardShortcuts();
+    initSpringHover(); // Phase 13: Spring card hover
+    initRipple();      // Phase 13: Button ripple
 });
 
 // ════════════════════════════════════════════
@@ -473,6 +475,109 @@ function initWaitlist() {
 
 // ── Utility ──
 function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+// ════════════════════════════════════════════
+// PHASE 13: SPRING PHYSICS MOTION ENGINE
+// Framer Motion equivalent for vanilla JS
+// ════════════════════════════════════════════
+class Spring {
+    constructor({ from = 0, to = 1, stiffness = 180, damping = 12, mass = 1 } = {}) {
+        this.from = from; this.to = to;
+        this.stiffness = stiffness; this.damping = damping; this.mass = mass;
+        this.value = from; this.velocity = 0; this.done = false;
+    }
+    step(dt) {
+        const displacement = this.value - this.to;
+        const springForce = -this.stiffness * displacement;
+        const dampingForce = -this.damping * this.velocity;
+        const acceleration = (springForce + dampingForce) / this.mass;
+        this.velocity += acceleration * dt;
+        this.value += this.velocity * dt;
+        if (Math.abs(this.velocity) < 0.001 && Math.abs(displacement) < 0.001) {
+            this.value = this.to; this.done = true;
+        }
+        return this.value;
+    }
+}
+
+function animateSpring(el, props, config = {}) {
+    const { stiffness = 180, damping = 14, mass = 1, delay = 0 } = config;
+    const springs = {};
+    for (const [key, to] of Object.entries(props)) {
+        const from = key === 'opacity' ? 0 : key === 'scale' ? 1 : key === 'y' ? 20 : 0;
+        springs[key] = new Spring({ from, to, stiffness, damping, mass });
+    }
+    let startTime = null;
+    function frame(ts) {
+        if (!startTime) startTime = ts;
+        const elapsed = (ts - startTime) / 1000;
+        if (elapsed < delay) { requestAnimationFrame(frame); return; }
+        const dt = 1 / 60;
+        let allDone = true;
+        let transforms = {};
+        for (const [key, spring] of Object.entries(springs)) {
+            if (!spring.done) { spring.step(dt); allDone = false; }
+            if (key === 'opacity') el.style.opacity = spring.value;
+            else if (key === 'scale') transforms.scale = spring.value;
+            else if (key === 'y') transforms.y = spring.value;
+        }
+        if (transforms.scale || transforms.y) {
+            const s = transforms.scale ?? 1;
+            const y = transforms.y ?? 0;
+            el.style.transform = `translateY(${y}px) scale(${s})`;
+        }
+        if (!allDone) requestAnimationFrame(frame);
+    }
+    requestAnimationFrame(frame);
+}
+
+// Upgrade scroll reveals to use spring physics instead of CSS transitions
+function initSpringReveals() {
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(e => {
+            if (e.isIntersecting) {
+                const delay = parseFloat(e.target.style.getPropertyValue('--delay') || '0') * 1000;
+                animateSpring(e.target, { opacity: 1, y: 0, scale: 1 }, { stiffness: 200, damping: 18, delay });
+                observer.unobserve(e.target);
+            }
+        });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+    document.querySelectorAll('.anim-reveal').forEach(el => {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(20px) scale(0.97)';
+        observer.observe(el);
+    });
+}
+
+// Card hover with spring physics
+function initSpringHover() {
+    document.querySelectorAll('.agent-card, .pricing-card, .trust-item').forEach(card => {
+        card.addEventListener('mouseenter', () => {
+            animateSpring(card, { scale: 1.03, y: -3 }, { stiffness: 300, damping: 22 });
+        });
+        card.addEventListener('mouseleave', () => {
+            animateSpring(card, { scale: 1, y: 0 }, { stiffness: 300, damping: 22 });
+        });
+    });
+}
+
+// Button ripple effect
+function initRipple() {
+    document.querySelectorAll('.nova-prompt-btn, .scanner-btn, .blueprint-btn, .waitlist-btn').forEach(btn => {
+        btn.style.position = 'relative';
+        btn.style.overflow = 'hidden';
+        btn.addEventListener('click', (e) => {
+            const ripple = document.createElement('span');
+            ripple.className = 'ripple';
+            const rect = btn.getBoundingClientRect();
+            ripple.style.left = (e.clientX - rect.left) + 'px';
+            ripple.style.top = (e.clientY - rect.top) + 'px';
+            btn.appendChild(ripple);
+            setTimeout(() => ripple.remove(), 600);
+        });
+    });
+}
 
 // ════════════════════════════════════════════
 // SCAN REMEDIATION (Phase 7)
