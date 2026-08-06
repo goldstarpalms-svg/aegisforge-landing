@@ -1,0 +1,13 @@
+<svg width="280" height="56" viewBox="0 0 280 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="56" height="56" rx="18" fill="#0F172A"/>
+  <path d="M16 40V16L28 31.2L40 16V40" stroke="url(#aegisGradient)" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M16 40L28 24L40 40" stroke="#E2E8F0" stroke-opacity="0.82" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="72" y="36" font-family="Inter, system-ui, sans-serif" font-size="20" font-weight="600" letter-spacing="3.5" fill="#F8FAFC">AEGISFORGE</text>
+  <defs>
+    <linearGradient id="aegisGradient" x1="16" y1="16" x2="43" y2="43" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#22D3EE"/>
+      <stop offset="0.55" stop-color="#818CF8"/>
+      <stop offset="1" stop-color="#C084FC"/>
+    </linearGradient>
+  </defs>
+</svg>

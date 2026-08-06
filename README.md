@@ -1,55 +1,66 @@
-# AegisForge AI Landing Page
+# AegisForge
 
-Frontend landing page for AegisForge AI — an autonomous AI platform that builds, secures, and deploys applications.
+**Your first AI software company.**
 
-## Features
+AegisForge is an AI operating system that builds, secures, and deploys applications from a single conversation. Built with Next.js 15, React 19, TypeScript, TailwindCSS 4, and Framer Motion 13.
 
-- Free website security scanner UI with downloadable text reports
-- Waitlist signup form
-- Supabase-backed waitlist position display through the backend
-- Resend-powered welcome email through the backend
-- Legal pages: Terms and Privacy
-- Responsive landing page sections for product preview, modules, pricing, trust, story, FAQ, contact, and waitlist
-- SEO/social sharing metadata and branded favicon
-- Premium product preview, pricing preview, trust section, upgraded AI module roadmap, interactive upcoming module previews, no-cost AegisForge Preview Engine, AI-generated visual preview assets, and scanner report downloads
+## Stack
 
-## Important files
+- **Framework:** Next.js 15 (App Router)
+- **UI:** React 19 + TypeScript + TailwindCSS 4
+- **Motion:** Framer Motion 13
+- **Icons:** Lucide React
+- **Theming:** next-themes (dark/light)
+- **Backend:** [aegisforge-backend](https://github.com/goldstarpalms-svg/aegisforge-backend) (FastAPI on Render)
 
-- `index.html` — main landing page
-- `style.css` — styling for all public pages
-- `script.js` — waitlist, scanner, report download, FAQ, countdown, and UI interactions
-- `privacy.html` — privacy policy
-- `terms.html` — terms of service
-- `favicon.svg` — branded browser/social icon
-- `assets/*.webp` — optimized AI-generated module preview visuals
+## Pages
 
-## Backend dependency
+| Page       | Route         |
+| ---------- | ------------- |
+| Home       | `/`           |
+| Vision     | `/vision`     |
+| Roadmap    | `/roadmap`    |
+| Technology | `/technology` |
+| Blog       | `/blog`       |
+| FAQ        | `/faq`        |
+| Contact    | `/contact`    |
+| Waitlist   | `/waitlist`   |
+| Privacy    | `/privacy`    |
+| Terms      | `/terms`      |
 
-The frontend calls the deployed backend API:
+## API Routes
 
-```js
-const BACKEND_API_URL = 'https://aegisforge-backend.onrender.com';
+| Route           | Method | Description                              |
+| --------------- | ------ | ---------------------------------------- |
+| `/api/health`   | GET    | Health check                             |
+| `/api/waitlist` | POST   | Waitlist submission → proxied to backend |
+
+## Backend Integration
+
+The waitlist connects to the AegisForge backend at `https://aegisforge-backend.onrender.com`:
+
+- `POST /waitlist` — Email + name + company → Supabase + Resend confirmation
+
+## Getting Started
+
+```bash
+npm install
+npm run dev
 ```
 
-Current frontend flows:
+Open [http://localhost:3000](http://localhost:3000).
 
-- `POST /waitlist` — stores user in Supabase and sends welcome email using Resend
-- `POST /scan` — runs the website security scanner
+## Scripts
 
-## Deployment
+| Command             | Description               |
+| ------------------- | ------------------------- |
+| `npm run dev`       | Start dev server          |
+| `npm run build`     | Production build          |
+| `npm run start`     | Start production server   |
+| `npm run lint`      | ESLint                    |
+| `npm run typecheck` | TypeScript check          |
+| `npm run validate`  | Lint + typecheck + format |
 
-This repo is intended to deploy as a static frontend on Vercel or any static host.
+## License
 
-After pushing to GitHub, Vercel should auto-deploy from the `main` branch if connected.
-
-## Notes
-
-Do not put backend secrets, Supabase service-role keys, or Resend API keys in this frontend repo. Secrets belong only in the backend deployment environment.
-
-## Pricing preview
-
-The landing page currently previews Free, Starter ($9/mo), Pro ($29/mo), and Business ($79/mo), plus founder annual/lifetime offers for waitlist members.
-
-## AegisForge Preview Engine
-
-The landing page includes a no-cost smart preview generator where users describe an app or website idea and receive a visual concept, blueprint, security checklist, monetization suggestions, and launch plan. It calls the backend `/preview/generate` endpoint and does not require paid AI APIs.
+MIT
