@@ -1,6 +1,7 @@
 import type { NavItem } from "@/types/navigation";
 
 export const primaryNavigation: NavItem[] = [
+  { label: "Workspace", href: "/workspace", description: "AI workspace" },
   { label: "Scanner", href: "/scanner", description: "Security scanner" },
   { label: "Blueprint", href: "/blueprint", description: "AI blueprint engine" },
   { label: "Nova", href: "/nova", description: "AI orchestrator" },
@@ -12,7 +13,6 @@ export const primaryNavigation: NavItem[] = [
     description: "Platform modules and systems",
   },
   { label: "FAQ", href: "/faq", description: "Answers and clarity" },
-  { label: "Contact", href: "/contact", description: "Talk to the team" },
 ];
 
 export const secondaryNavigation: NavItem[] = [

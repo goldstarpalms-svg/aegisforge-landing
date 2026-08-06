@@ -77,8 +77,11 @@ export function Navbar() {
           </nav>
 
           <div className="hidden items-center gap-2 lg:flex">
+            <Button asChild variant="ghost" className="rounded-full px-4 text-sm text-slate-300">
+              <Link href="/dashboard">Dashboard</Link>
+            </Button>
             <Button asChild variant="primary" className="rounded-full px-5">
-              <Link href="/waitlist">Join Waitlist</Link>
+              <Link href="/auth/sign-up">Get Started</Link>
             </Button>
           </div>
 
@@ -120,9 +123,16 @@ export function Navbar() {
                     {item.label}
                   </Link>
                 ))}
+                <Link
+                  href="/dashboard"
+                  className="rounded-2xl border border-transparent px-4 py-3 text-sm font-medium text-slate-300 transition hover:border-white/10 hover:bg-white/5 hover:text-white"
+                  onClick={() => setOpen(false)}
+                >
+                  Dashboard
+                </Link>
                 <Button asChild variant="primary" className="mt-2 rounded-full">
-                  <Link href="/waitlist" onClick={() => setOpen(false)}>
-                    Join Waitlist
+                  <Link href="/auth/sign-up" onClick={() => setOpen(false)}>
+                    Get Started
                   </Link>
                 </Button>
               </Container>
