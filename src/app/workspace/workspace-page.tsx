@@ -16,6 +16,10 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useAuth } from "@/stores/auth";
+import { useAIEContext } from "@/stores/context";
+import { useProjects } from "@/stores/projects";
+import { getAIE } from "@/lib/aie";
+import { Zap } from "lucide-react";
 
 const BACKEND_URL =
   process.env.NEXT_PUBLIC_BACKEND_URL ?? "https://aegisforge-backend.onrender.com";
@@ -37,6 +41,12 @@ interface Conversation {
 
 export function WorkspacePage() {
   const user = useAuth((s) => s.user);
+  const aieContext = useAIEContext((s) => s.context);
+  const setConversation = useAIEContext((s) => s.setConversation);
+  const setPage = useAIEContext((s) => s.setPage);
+  const addRecentAction = useAIEContext((s) => s.addRecentAction);
+  const projects = useProjects((s) => s.projects);
+  const addProject = useProjects((s) => s.addProject);
   const [conversations, setConversations] = useState<Conversation[]>([]);
   const [activeId, setActiveId] = useState<string | null>(null);
   const [input, setInput] = useState("");
@@ -45,6 +55,19 @@ export function WorkspacePage() {
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const activeConvo = conversations.find((c) => c.id === activeId) ?? null;
+  const engine = getAIE(aieContext);
+
+  // Track context
+  useEffect(() => {
+    setPage("/workspace");
+  }, [setPage]);
+
+  useEffect(() => {
+    setConversation(activeId);
+  }, [activeId, setConversation]);
+
+  // Get AI suggestions for the current input
+  const aiSuggestions = input.length > 3 ? engine.process(input) : null;
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -344,31 +367,47 @@ export function WorkspacePage() {
           )}
         </div>
 
-        {/* Input */}
+        {/* Input with AIE suggestions */}
         <div className="border-t border-white/5 p-4">
-          <div className="mx-auto flex max-w-3xl gap-3">
-            <Input
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === "Enter" && !e.shiftKey) {
-                  e.preventDefault();
-                  void sendMessage();
-                }
-              }}
-              placeholder="Describe what you want to build..."
-              disabled={loading}
-              className="h-11 rounded-xl bg-white/5 font-mono text-sm"
-            />
-            <Button
-              variant="primary"
-              size="lg"
-              onClick={() => void sendMessage()}
-              disabled={loading || !input.trim()}
-              className="shrink-0"
-            >
-              {loading ? <LoaderCircle className="size-4 animate-spin" /> : <Send className="size-4" />}
-            </Button>
+          <div className="mx-auto max-w-3xl space-y-2">
+            {aiSuggestions && aiSuggestions.understood && aiSuggestions.actions.length > 0 && (
+              <div className="flex flex-wrap gap-1.5">
+                {aiSuggestions.actions.slice(0, 3).map((action) => (
+                  <button
+                    key={action.id}
+                    onClick={() => setInput(action.label)}
+                    className="flex items-center gap-1 rounded-full border border-cyan-400/15 bg-cyan-400/5 px-2.5 py-1 text-[0.65rem] text-cyan-300 transition-colors hover:bg-cyan-400/10"
+                  >
+                    <Zap className="size-2.5" />
+                    {action.label}
+                  </button>
+                ))}
+              </div>
+            )}
+            <div className="flex gap-3">
+              <Input
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" && !e.shiftKey) {
+                    e.preventDefault();
+                    void sendMessage();
+                  }
+                }}
+                placeholder="Describe what you want to build..."
+                disabled={loading}
+                className="h-11 rounded-xl bg-white/5 font-mono text-sm"
+              />
+              <Button
+                variant="primary"
+                size="lg"
+                onClick={() => void sendMessage()}
+                disabled={loading || !input.trim()}
+                className="shrink-0"
+              >
+                {loading ? <LoaderCircle className="size-4 animate-spin" /> : <Send className="size-4" />}
+              </Button>
+            </div>
           </div>
         </div>
       </main>
