@@ -12,12 +12,14 @@ import {
   XCircle,
   Info,
   LoaderCircle,
+  ExternalLink,
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Container } from "@/components/ui/container";
 import { Input } from "@/components/ui/input";
+import { LoadingDots, ErrorState } from "@/components/common/loading-states";
 
 const BACKEND_URL =
   process.env.NEXT_PUBLIC_BACKEND_URL ??
@@ -50,13 +52,22 @@ const gradeColor = (grade: string) => {
 const statusIcon = (status: string) => {
   switch (status) {
     case "pass":
-      return <CheckCircle2 className="size-4 text-emerald-400" />;
+      return <CheckCircle2 className="size-4 text-emerald-400" aria-hidden="true" />;
     case "warn":
-      return <AlertTriangle className="size-4 text-amber-400" />;
+      return <AlertTriangle className="size-4 text-amber-400" aria-hidden="true" />;
     case "fail":
-      return <XCircle className="size-4 text-red-400" />;
+      return <XCircle className="size-4 text-red-400" aria-hidden="true" />;
     default:
-      return <Info className="size-4 text-slate-400" />;
+      return <Info className="size-4 text-slate-400" aria-hidden="true" />;
+  }
+};
+
+const statusLabel = (status: string) => {
+  switch (status) {
+    case "pass": return "Passed";
+    case "warn": return "Warning";
+    case "fail": return "Failed";
+    default: return "Info";
   }
 };
 
@@ -69,7 +80,7 @@ const confidenceBadge = (c?: string) => {
         ? "bg-amber-400/10 text-amber-300"
         : "bg-slate-400/10 text-slate-300";
   return (
-    <span className={`ml-2 rounded-full px-2 py-0.5 text-[0.65rem] ${color}`}>
+    <span className={`ml-2 rounded-full px-2 py-0.5 text-[0.65rem] ${color}`} aria-label={`Confidence: ${c}`}>
       {c}
     </span>
   );
@@ -271,47 +282,50 @@ export function ScannerPage() {
     : circumference;
 
   return (
-    <Container className="py-12">
-      <div className="mx-auto max-w-3xl space-y-10">
+    <Container className="py-8 sm:py-12">
+      <div className="mx-auto max-w-3xl space-y-8 sm:space-y-10">
         <div className="space-y-3 text-center">
           <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-4 py-1.5 text-sm text-slate-300">
-            <Shield className="size-4" />
+            <Shield className="size-4" aria-hidden="true" />
             Enterprise Security Scanner
           </div>
-          <h1 className="text-4xl font-semibold tracking-tight text-white sm:text-5xl">
+          <h1 className="text-3xl sm:text-4xl font-semibold tracking-tight text-white sm:text-5xl">
             Scan any domain
           </h1>
-          <p className="text-lg text-slate-400">
+          <p className="text-base sm:text-lg text-slate-400">
             12 concurrent security checks · Weighted scoring · Confidence levels
             · PDF/JSON/CSV export
           </p>
         </div>
 
-        <div className="flex gap-3">
+        <div className="flex gap-2 sm:gap-3">
+          <label htmlFor="scanner-domain" className="sr-only">Domain to scan</label>
           <Input
+            id="scanner-domain"
             type="text"
             value={domain}
             onChange={(e) => setDomain(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && runScan()}
             placeholder="Enter a domain (e.g. example.com)"
-            className="h-12 rounded-full bg-white/6 px-5 font-mono"
+            className="h-12 rounded-full bg-white/6 px-5 font-mono text-sm"
           />
           <Button
             variant="primary"
             size="lg"
             onClick={runScan}
             disabled={loading || !domain}
-            className="min-w-32 shrink-0 rounded-full"
+            className="min-w-24 sm:min-w-32 shrink-0 rounded-full"
+            aria-label={loading ? "Scanning..." : "Scan domain"}
           >
             {loading ? (
               <>
-                <LoaderCircle className="size-4 animate-spin" />
-                Scanning...
+                <LoaderCircle className="size-4 animate-spin" aria-hidden="true" />
+                <span className="hidden sm:inline">Scanning...</span>
               </>
             ) : (
               <>
-                <Globe className="size-4" />
-                Scan
+                <Globe className="size-4" aria-hidden="true" />
+                <span>Scan</span>
               </>
             )}
           </Button>
@@ -319,14 +333,11 @@ export function ScannerPage() {
 
         <AnimatePresence>
           {error && (
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0 }}
-              className="rounded-2xl border border-red-300/20 bg-red-400/10 px-5 py-4 text-sm text-red-200"
-            >
-              {error}
-            </motion.div>
+            <ErrorState
+              title="Scan failed"
+              description={error}
+              retry={{ label: "Retry", onRetry: runScan }}
+            />
           )}
         </AnimatePresence>
 
@@ -337,6 +348,8 @@ export function ScannerPage() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               className="space-y-3"
+              role="status"
+              aria-label="Scanning in progress"
             >
               {[
                 "Checking HTTPS redirect...",
@@ -360,9 +373,9 @@ export function ScannerPage() {
                   }`}
                 >
                   {i <= activeCheck ? (
-                    <LoaderCircle className="size-4 animate-spin" />
+                    <LoaderCircle className="size-4 animate-spin" aria-hidden="true" />
                   ) : (
-                    <div className="size-4 rounded-full border border-slate-600" />
+                    <div className="size-4 rounded-full border border-slate-600" aria-hidden="true" />
                   )}
                   {step}
                 </motion.div>
@@ -378,9 +391,9 @@ export function ScannerPage() {
               animate={{ opacity: 1, y: 0 }}
               className="space-y-8"
             >
-              <Card className="flex items-center gap-8 rounded-[2rem] bg-white/[0.05] p-8">
-                <div className="relative shrink-0">
-                  <svg width="128" height="128" viewBox="0 0 128 128">
+              <Card className="flex flex-col sm:flex-row items-center gap-4 sm:gap-8 rounded-[2rem] bg-white/[0.05] p-6 sm:p-8">
+                <div className="relative shrink-0" aria-label={`Security grade: ${result.grade}, score: ${result.score} out of 100`}>
+                  <svg width="128" height="128" viewBox="0 0 128 128" aria-hidden="true">
                     <circle
                       cx="64"
                       cy="64"
@@ -427,17 +440,14 @@ export function ScannerPage() {
                     </span>
                   </div>
                 </div>
-                <div className="space-y-2">
-                  <h2 className="text-2xl font-semibold text-white">
+                <div className="space-y-2 text-center sm:text-left">
+                  <h2 className="text-xl sm:text-2xl font-semibold text-white">
                     {result.domain}
                   </h2>
                   <p className="text-sm text-slate-400">
-                    {result.checks.filter((c) => c.status === "pass").length}{" "}
-                    passed ·{" "}
-                    {result.checks.filter((c) => c.status === "warn").length}{" "}
-                    warnings ·{" "}
-                    {result.checks.filter((c) => c.status === "fail").length}{" "}
-                    failures
+                    {result.checks.filter((c) => c.status === "pass").length} passed ·{" "}
+                    {result.checks.filter((c) => c.status === "warn").length} warnings ·{" "}
+                    {result.checks.filter((c) => c.status === "fail").length} failures
                   </p>
                   <p className="text-xs text-slate-500">
                     Scanned {new Date(result.timestamp).toLocaleString()}
@@ -457,6 +467,8 @@ export function ScannerPage() {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: i * 0.05 }}
                     className="flex items-start gap-3 rounded-xl border border-white/8 bg-white/[0.03] px-4 py-3"
+                    role="listitem"
+                    aria-label={`${check.name}: ${statusLabel(check.status)}. ${check.detail}`}
                   >
                     {statusIcon(check.status)}
                     <div className="min-w-0 flex-1">
@@ -472,12 +484,13 @@ export function ScannerPage() {
                 ))}
               </div>
 
-              <div className="flex flex-wrap gap-3">
+              <div className="flex flex-wrap gap-2 sm:gap-3">
                 <Button
                   variant="secondary"
                   size="sm"
                   onClick={() => exportReport("pdf")}
-                  className="gap-2"
+                  className="gap-2 min-h-[40px]"
+                  aria-label="Export as PDF"
                 >
                   <Download className="size-3.5" /> PDF
                 </Button>
@@ -485,7 +498,8 @@ export function ScannerPage() {
                   variant="secondary"
                   size="sm"
                   onClick={() => exportReport("json")}
-                  className="gap-2"
+                  className="gap-2 min-h-[40px]"
+                  aria-label="Export as JSON"
                 >
                   <Download className="size-3.5" /> JSON
                 </Button>
@@ -493,14 +507,16 @@ export function ScannerPage() {
                   variant="secondary"
                   size="sm"
                   onClick={() => exportReport("csv")}
-                  className="gap-2"
+                  className="gap-2 min-h-[40px]"
+                  aria-label="Export as CSV"
                 >
                   <Download className="size-3.5" /> CSV
                 </Button>
                 <Button
                   variant="secondary"
                   size="sm"
-                  className="gap-2"
+                  className="gap-2 min-h-[40px]"
+                  aria-label="Share report"
                 >
                   <Share2 className="size-3.5" /> Share
                 </Button>

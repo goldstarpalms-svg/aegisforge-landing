@@ -11,7 +11,12 @@ import {
   Paperclip,
   Trash2,
   ChevronLeft,
+  PanelLeft,
+  Zap,
+  Copy,
+  Check,
 } from "lucide-react";
+import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -19,7 +24,7 @@ import { useAuth } from "@/stores/auth";
 import { useAIEContext } from "@/stores/context";
 import { useProjects } from "@/stores/projects";
 import { getAIE } from "@/lib/aie";
-import { Zap } from "lucide-react";
+import { LoadingDots, EmptyState } from "@/components/common/loading-states";
 
 const BACKEND_URL =
   process.env.NEXT_PUBLIC_BACKEND_URL ?? "https://aegisforge-backend.onrender.com";
@@ -45,13 +50,12 @@ export function WorkspacePage() {
   const setConversation = useAIEContext((s) => s.setConversation);
   const setPage = useAIEContext((s) => s.setPage);
   const addRecentAction = useAIEContext((s) => s.addRecentAction);
-  const projects = useProjects((s) => s.projects);
-  const addProject = useProjects((s) => s.addProject);
   const [conversations, setConversations] = useState<Conversation[]>([]);
   const [activeId, setActiveId] = useState<string | null>(null);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [copiedId, setCopiedId] = useState<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const activeConvo = conversations.find((c) => c.id === activeId) ?? null;
@@ -72,6 +76,15 @@ export function WorkspacePage() {
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [activeConvo?.messages.length]);
+
+  // Responsive sidebar: default closed on mobile
+  useEffect(() => {
+    const mql = window.matchMedia("(max-width: 768px)");
+    setSidebarOpen(!mql.matches);
+    const handler = (e: MediaQueryListEvent) => setSidebarOpen(!e.matches);
+    mql.addEventListener("change", handler);
+    return () => mql.removeEventListener("change", handler);
+  }, []);
 
   function createConversation() {
     const id = crypto.randomUUID();
@@ -98,6 +111,13 @@ export function WorkspacePage() {
     if (activeId === id) {
       setActiveId(null);
     }
+  }
+
+  function copyToClipboard(text: string, msgId: string) {
+    navigator.clipboard.writeText(text).then(() => {
+      setCopiedId(msgId);
+      setTimeout(() => setCopiedId(null), 2000);
+    });
   }
 
   async function sendMessage() {
@@ -138,6 +158,8 @@ export function WorkspacePage() {
       ),
     );
 
+    addRecentAction({ type: "build", label: input.slice(0, 60), timestamp: new Date(), href: "/workspace" });
+
     setInput("");
     setLoading(true);
 
@@ -176,7 +198,7 @@ export function WorkspacePage() {
       const errorMsg: Message = {
         id: crypto.randomUUID(),
         role: "assistant",
-        content: "I'm having trouble connecting right now. Please try again in a moment.",
+        content: "I'm having trouble connecting right now. Please try again in a moment — the server may be waking up from inactivity.",
         timestamp: new Date(),
       };
       setConversations((prev) =>
@@ -200,7 +222,7 @@ export function WorkspacePage() {
             initial={{ width: 0, opacity: 0 }}
             animate={{ width: 256, opacity: 1 }}
             exit={{ width: 0, opacity: 0 }}
-            className="shrink-0 overflow-hidden border-r border-white/5 bg-white/[0.02]"
+            className="hidden sm:flex shrink-0 overflow-hidden border-r border-white/5 bg-white/[0.02]"
           >
             <div className="flex h-full w-64 flex-col p-3">
               <div className="flex items-center justify-between mb-4">
@@ -208,6 +230,7 @@ export function WorkspacePage() {
                 <button
                   onClick={() => setSidebarOpen(false)}
                   className="rounded-lg p-1 text-slate-400 hover:bg-white/5 hover:text-white"
+                  aria-label="Close sidebar"
                 >
                   <ChevronLeft className="size-4" />
                 </button>
@@ -217,36 +240,41 @@ export function WorkspacePage() {
                 variant="secondary"
                 size="sm"
                 onClick={createConversation}
-                className="mb-3 gap-1.5"
+                className="mb-3 gap-1.5 min-h-[40px]"
               >
                 <Plus className="size-3.5" /> New Chat
               </Button>
 
               <div className="flex-1 space-y-1 overflow-y-auto">
-                {conversations.map((c) => (
-                  <div
-                    key={c.id}
-                    className={`group flex items-center gap-2 rounded-lg px-2 py-2 text-sm transition-colors ${
-                      activeId === c.id
-                        ? "bg-white/10 text-white"
-                        : "text-slate-400 hover:bg-white/5 hover:text-white"
-                    }`}
-                  >
-                    <button
-                      onClick={() => setActiveId(c.id)}
-                      className="flex min-w-0 flex-1 items-center gap-2 text-left"
+                {conversations.length > 0 ? (
+                  conversations.map((c) => (
+                    <div
+                      key={c.id}
+                      className={`group flex items-center gap-2 rounded-lg px-2 py-2 text-sm transition-colors min-h-[40px] ${
+                        activeId === c.id
+                          ? "bg-white/10 text-white"
+                          : "text-slate-400 hover:bg-white/5 hover:text-white"
+                      }`}
                     >
-                      <MessageSquare className="size-3.5 shrink-0" />
-                      <span className="truncate">{c.title}</span>
-                    </button>
-                    <button
-                      onClick={() => deleteConversation(c.id)}
-                      className="shrink-0 rounded p-0.5 text-slate-600 opacity-0 transition-opacity hover:text-red-400 group-hover:opacity-100"
-                    >
-                      <Trash2 className="size-3" />
-                    </button>
-                  </div>
-                ))}
+                      <button
+                        onClick={() => setActiveId(c.id)}
+                        className="flex min-w-0 flex-1 items-center gap-2 text-left"
+                      >
+                        <MessageSquare className="size-3.5 shrink-0" />
+                        <span className="truncate">{c.title}</span>
+                      </button>
+                      <button
+                        onClick={() => deleteConversation(c.id)}
+                        className="shrink-0 rounded p-1 text-slate-600 opacity-0 transition-opacity hover:text-red-400 group-hover:opacity-100"
+                        aria-label={`Delete conversation: ${c.title}`}
+                      >
+                        <Trash2 className="size-3" />
+                      </button>
+                    </div>
+                  ))
+                ) : (
+                  <p className="px-2 py-4 text-xs text-slate-600">No conversations yet</p>
+                )}
               </div>
 
               <div className="mt-auto border-t border-white/5 pt-3 text-xs text-slate-500">
@@ -258,19 +286,20 @@ export function WorkspacePage() {
       </AnimatePresence>
 
       {/* Main chat area */}
-      <main className="flex flex-1 flex-col">
+      <main className="flex flex-1 flex-col min-w-0">
         {/* Header */}
-        <div className="flex items-center gap-3 border-b border-white/5 px-4 py-3">
+        <div className="flex items-center gap-2 sm:gap-3 border-b border-white/5 px-3 sm:px-4 py-2.5 sm:py-3">
           {!sidebarOpen && (
             <button
               onClick={() => setSidebarOpen(true)}
               className="rounded-lg p-1.5 text-slate-400 hover:bg-white/5 hover:text-white"
+              aria-label="Open sidebar"
             >
-              <MessageSquare className="size-4" />
+              <PanelLeft className="size-4" />
             </button>
           )}
-          <div className="flex-1">
-            <h1 className="text-sm font-medium text-white">
+          <div className="flex-1 min-w-0">
+            <h1 className="text-sm font-medium text-white truncate">
               {activeConvo?.title ?? "AI Workspace"}
             </h1>
             <p className="text-xs text-slate-500">
@@ -279,17 +308,15 @@ export function WorkspacePage() {
                 : "Start a new conversation"}
             </p>
           </div>
-          <div className="flex items-center gap-1">
-            <Button variant="ghost" size="sm" className="gap-1.5 text-xs text-slate-400">
-              <Paperclip className="size-3.5" /> Upload
-            </Button>
-          </div>
+          <Button variant="ghost" size="sm" className="hidden sm:flex gap-1.5 text-xs text-slate-400">
+            <Paperclip className="size-3.5" /> Upload
+          </Button>
         </div>
 
         {/* Messages */}
-        <div className="flex-1 overflow-y-auto p-4 sm:p-6">
+        <div className="flex-1 overflow-y-auto p-3 sm:p-4 lg:p-6">
           {!activeConvo ? (
-            <div className="flex h-full flex-col items-center justify-center gap-4 text-center">
+            <div className="flex h-full flex-col items-center justify-center gap-4 text-center px-4">
               <Brain className="size-12 text-cyan-400/40" />
               <div>
                 <h2 className="text-lg font-medium text-white">AI Workspace</h2>
@@ -298,10 +325,10 @@ export function WorkspacePage() {
                   save conversations, and iterate on your ideas.
                 </p>
               </div>
-              <Button variant="primary" onClick={createConversation} className="gap-2">
+              <Button variant="primary" onClick={createConversation} className="gap-2 min-h-[44px]">
                 <Plus className="size-4" /> Start Conversation
               </Button>
-              <div className="mt-4 grid gap-2 sm:grid-cols-2">
+              <div className="mt-4 grid gap-2 sm:grid-cols-2 w-full max-w-lg">
                 {[
                   "Build a SaaS landing page with auth and pricing",
                   "Design a database schema for an e-commerce app",
@@ -310,16 +337,21 @@ export function WorkspacePage() {
                 ].map((suggestion) => (
                   <button
                     key={suggestion}
-                    onClick={() => {
-                      setInput(suggestion);
-                    }}
-                    className="rounded-xl border border-white/5 bg-white/[0.03] px-3 py-2 text-left text-xs text-slate-400 transition-colors hover:bg-white/[0.06] hover:text-white"
+                    onClick={() => setInput(suggestion)}
+                    className="rounded-xl border border-white/5 bg-white/[0.03] px-3 py-3 text-left text-xs text-slate-400 transition-colors hover:bg-white/[0.06] hover:text-white min-h-[44px]"
                   >
                     {suggestion}
                   </button>
                 ))}
               </div>
             </div>
+          ) : activeConvo.messages.length === 0 ? (
+            <EmptyState
+              icon={MessageSquare}
+              title="Start the conversation"
+              description="Type your message below to begin chatting with AegisForge AI."
+              action={{ label: "Send a message", onClick: () => document.querySelector<HTMLInputElement>("[data-workspace-input]")?.focus() }}
+            />
           ) : (
             <div className="mx-auto max-w-3xl space-y-4">
               {activeConvo.messages.map((msg) => (
@@ -330,7 +362,7 @@ export function WorkspacePage() {
                   className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
                 >
                   <div
-                    className={`max-w-[85%] rounded-2xl px-4 py-3 text-sm leading-7 ${
+                    className={`group relative max-w-[85%] rounded-2xl px-4 py-3 text-sm leading-7 ${
                       msg.role === "user"
                         ? "bg-cyan-500/15 text-cyan-50"
                         : msg.role === "system"
@@ -344,8 +376,17 @@ export function WorkspacePage() {
                       </div>
                     )}
                     <div className="whitespace-pre-wrap">{msg.content}</div>
-                    <div className="mt-2 text-[0.6rem] text-slate-500">
-                      {msg.timestamp.toLocaleTimeString()}
+                    <div className="mt-2 flex items-center gap-2 text-[0.6rem] text-slate-500">
+                      <span>{msg.timestamp.toLocaleTimeString()}</span>
+                      {msg.role === "assistant" && (
+                        <button
+                          onClick={() => copyToClipboard(msg.content, msg.id)}
+                          className="opacity-0 group-hover:opacity-100 transition-opacity text-slate-500 hover:text-slate-300"
+                          aria-label="Copy message"
+                        >
+                          {copiedId === msg.id ? <Check className="size-3 text-emerald-400" /> : <Copy className="size-3" />}
+                        </button>
+                      )}
                     </div>
                   </div>
                 </motion.div>
@@ -356,7 +397,7 @@ export function WorkspacePage() {
                   <div className="rounded-2xl bg-white/[0.05] px-4 py-3">
                     <div className="flex items-center gap-2 text-sm text-cyan-300">
                       <LoaderCircle className="size-4 animate-spin" />
-                      Thinking...
+                      Thinking<LoadingDots />
                     </div>
                   </div>
                 </div>
@@ -368,7 +409,7 @@ export function WorkspacePage() {
         </div>
 
         {/* Input with AIE suggestions */}
-        <div className="border-t border-white/5 p-4">
+        <div className="border-t border-white/5 p-3 sm:p-4">
           <div className="mx-auto max-w-3xl space-y-2">
             {aiSuggestions && aiSuggestions.understood && aiSuggestions.actions.length > 0 && (
               <div className="flex flex-wrap gap-1.5">
@@ -376,7 +417,7 @@ export function WorkspacePage() {
                   <button
                     key={action.id}
                     onClick={() => setInput(action.label)}
-                    className="flex items-center gap-1 rounded-full border border-cyan-400/15 bg-cyan-400/5 px-2.5 py-1 text-[0.65rem] text-cyan-300 transition-colors hover:bg-cyan-400/10"
+                    className="flex items-center gap-1 rounded-full border border-cyan-400/15 bg-cyan-400/5 px-2.5 py-1 text-[0.65rem] text-cyan-300 transition-colors hover:bg-cyan-400/10 min-h-[32px]"
                   >
                     <Zap className="size-2.5" />
                     {action.label}
@@ -384,8 +425,9 @@ export function WorkspacePage() {
                 ))}
               </div>
             )}
-            <div className="flex gap-3">
+            <div className="flex gap-2 sm:gap-3">
               <Input
+                data-workspace-input
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={(e) => {
@@ -396,7 +438,8 @@ export function WorkspacePage() {
                 }}
                 placeholder="Describe what you want to build..."
                 disabled={loading}
-                className="h-11 rounded-xl bg-white/5 font-mono text-sm"
+                className="h-11 sm:h-12 rounded-xl bg-white/5 font-mono text-sm"
+                aria-label="Chat input"
               />
               <Button
                 variant="primary"
@@ -404,6 +447,7 @@ export function WorkspacePage() {
                 onClick={() => void sendMessage()}
                 disabled={loading || !input.trim()}
                 className="shrink-0"
+                aria-label="Send message"
               >
                 {loading ? <LoaderCircle className="size-4 animate-spin" /> : <Send className="size-4" />}
               </Button>

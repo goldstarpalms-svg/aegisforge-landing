@@ -107,4 +107,47 @@
     background: rgba(125, 211, 252, 0.25);
     color: white;
   }
+
+  /* Accessibility: Focus visible */
+  :focus-visible {
+    outline: 2px solid oklch(0.76 0.15 244);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  /* Skip to content link */
+  .sr-only-focusable:focus {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 9999;
+    width: auto;
+    height: auto;
+    padding: 0.5rem 1rem;
+    margin: 0;
+    overflow: visible;
+    clip: auto;
+    white-space: normal;
+    background: oklch(0.76 0.15 244);
+    color: oklch(0.14 0.02 260);
+    font-weight: 600;
+    font-size: 0.875rem;
+    border-radius: 0 0 0.5rem 0;
+  }
+
+  /* Improve tap targets on mobile */
+  @media (max-width: 640px) {
+    button, a, [role="button"] {
+      min-height: 44px;
+    }
+  }
+
+  /* Reduce motion for users who prefer it */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
 }

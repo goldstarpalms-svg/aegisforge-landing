@@ -71,12 +71,15 @@ export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="en" className="dark" suppressHydrationWarning>
       <body>
+        <a href="#main-content" className="sr-only sr-only-focusable">
+          Skip to main content
+        </a>
         <AppProviders>
           <AnimatedBackground />
           <CommandPalette />
           <div className="relative flex min-h-screen flex-col">
             <Navbar />
-            <main className="flex-1 pt-24 sm:pt-28">{children}</main>
+            <main id="main-content" className="flex-1 pt-20 sm:pt-24 lg:pt-28">{children}</main>
             <Footer />
           </div>
         </AppProviders>

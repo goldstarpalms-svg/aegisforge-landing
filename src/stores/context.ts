@@ -1,6 +1,7 @@
 "use client";
 
 import { create } from "zustand";
+import { persist } from "zustand/middleware";
 import type { AIEContext, RecentAction, UserPreferences } from "@/lib/aie";
 
 interface ContextState {
@@ -11,53 +12,73 @@ interface ContextState {
   addRecentAction: (action: RecentAction) => void;
   updatePreferences: (prefs: Partial<UserPreferences>) => void;
   updateContext: (partial: Partial<AIEContext>) => void;
+  clearContext: () => void;
 }
 
-export const useAIEContext = create<ContextState>((set) => ({
-  context: {
-    currentPage: "",
-    currentProjectId: null,
-    currentConversationId: null,
-    openFileIds: [],
-    recentActions: [],
-    userPreferences: {
-      frequentModules: [],
-    },
+const defaultContext: AIEContext = {
+  currentPage: "",
+  currentProjectId: null,
+  currentConversationId: null,
+  openFileIds: [],
+  recentActions: [],
+  userPreferences: {
+    frequentModules: [],
   },
+};
 
-  setPage: (page) =>
-    set((state) => ({
-      context: { ...state.context, currentPage: page },
-    })),
+export const useAIEContext = create<ContextState>()(
+  persist(
+    (set) => ({
+      context: defaultContext,
 
-  setProject: (id) =>
-    set((state) => ({
-      context: { ...state.context, currentProjectId: id },
-    })),
+      setPage: (page) =>
+        set((state) => ({
+          context: { ...state.context, currentPage: page },
+        })),
 
-  setConversation: (id) =>
-    set((state) => ({
-      context: { ...state.context, currentConversationId: id },
-    })),
+      setProject: (id) =>
+        set((state) => ({
+          context: { ...state.context, currentProjectId: id },
+        })),
 
-  addRecentAction: (action) =>
-    set((state) => ({
-      context: {
-        ...state.context,
-        recentActions: [action, ...state.context.recentActions].slice(0, 50),
-      },
-    })),
+      setConversation: (id) =>
+        set((state) => ({
+          context: { ...state.context, currentConversationId: id },
+        })),
 
-  updatePreferences: (prefs) =>
-    set((state) => ({
-      context: {
-        ...state.context,
-        userPreferences: { ...state.context.userPreferences, ...prefs },
-      },
-    })),
+      addRecentAction: (action) =>
+        set((state) => ({
+          context: {
+            ...state.context,
+            recentActions: [action, ...state.context.recentActions].slice(0, 50),
+          },
+        })),
 
-  updateContext: (partial) =>
-    set((state) => ({
-      context: { ...state.context, ...partial },
-    })),
-}));
+      updatePreferences: (prefs) =>
+        set((state) => ({
+          context: {
+            ...state.context,
+            userPreferences: { ...state.context.userPreferences, ...prefs },
+          },
+        })),
+
+      updateContext: (partial) =>
+        set((state) => ({
+          context: { ...state.context, ...partial },
+        })),
+
+      clearContext: () =>
+        set({ context: defaultContext }),
+    }),
+    {
+      name: "aegisforge-context",
+      // Only persist these fields
+      partialize: (state) => ({
+        context: {
+          recentActions: state.context.recentActions.slice(0, 20),
+          userPreferences: state.context.userPreferences,
+        },
+      }),
+    }
+  )
+);
