@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import type { ReactNode } from "react";
 import { AnimatePresence } from "framer-motion";
 
@@ -32,7 +32,8 @@ function AuthInitializer() {
 }
 
 function OnboardingManager() {
-  const { showOnboarding, completeOnboarding, skipOnboarding } = useOnboarding();
+  const { showOnboarding, completeOnboarding, skipOnboarding } =
+    useOnboarding();
   const user = useAuth((s) => s.user);
 
   // Only show onboarding to new signed-in users
@@ -44,7 +45,10 @@ function OnboardingManager() {
   return (
     <AnimatePresence>
       {showOnboarding && user && (
-        <OnboardingFlow onComplete={completeOnboarding} onSkip={skipOnboarding} />
+        <OnboardingFlow
+          onComplete={completeOnboarding}
+          onSkip={skipOnboarding}
+        />
       )}
     </AnimatePresence>
   );

@@ -21,7 +21,17 @@ interface ProjectsState {
   projects: Project[];
   loading: boolean;
   error: string | null;
-  addProject: (project: Omit<Project, "id" | "createdAt" | "updatedAt" | "conversationIds" | "fileIds" | "scanIds">) => Promise<string>;
+  addProject: (
+    project: Omit<
+      Project,
+      | "id"
+      | "createdAt"
+      | "updatedAt"
+      | "conversationIds"
+      | "fileIds"
+      | "scanIds"
+    >,
+  ) => Promise<string>;
   updateProject: (id: string, updates: Partial<Project>) => Promise<void>;
   deleteProject: (id: string) => Promise<void>;
   addConversationToProject: (projectId: string, conversationId: string) => void;
@@ -67,7 +77,7 @@ const seedProjects: Project[] = [
   },
 ];
 
-export const useProjects = create<ProjectsState>((set, get) => ({
+export const useProjects = create<ProjectsState>((set) => ({
   projects: seedProjects,
   loading: false,
   error: null,
@@ -86,24 +96,29 @@ export const useProjects = create<ProjectsState>((set, get) => ({
       if (error) throw error;
 
       if (data && data.length > 0) {
-        const projects: Project[] = data.map((row: Record<string, unknown>) => ({
-          id: row.id as string,
-          name: row.name as string,
-          description: (row.description as string) || "",
-          domain: row.domain as string | undefined,
-          status: (row.status as Project["status"]) || "draft",
-          createdAt: new Date(row.created_at as string),
-          updatedAt: new Date(row.updated_at as string),
-          conversationIds: (row.conversation_ids as string[]) || [],
-          fileIds: (row.file_ids as string[]) || [],
-          scanIds: (row.scan_ids as string[]) || [],
-          blueprintId: row.blueprint_id as string | undefined,
-        }));
+        const projects: Project[] = data.map(
+          (row: Record<string, unknown>) => ({
+            id: row.id as string,
+            name: row.name as string,
+            description: (row.description as string) || "",
+            domain: row.domain as string | undefined,
+            status: (row.status as Project["status"]) || "draft",
+            createdAt: new Date(row.created_at as string),
+            updatedAt: new Date(row.updated_at as string),
+            conversationIds: (row.conversation_ids as string[]) || [],
+            fileIds: (row.file_ids as string[]) || [],
+            scanIds: (row.scan_ids as string[]) || [],
+            blueprintId: row.blueprint_id as string | undefined,
+          }),
+        );
         set({ projects, loading: false });
       }
     } catch (err) {
       // Silently fall back to seed data
-      set({ loading: false, error: err instanceof Error ? err.message : "Failed to load projects" });
+      set({
+        loading: false,
+        error: err instanceof Error ? err.message : "Failed to load projects",
+      });
     }
   },
 
@@ -124,7 +139,9 @@ export const useProjects = create<ProjectsState>((set, get) => ({
     // Persist to Supabase in background
     if (isSupabaseConfigured) {
       try {
-        const { data: { user } } = await supabase.auth.getUser();
+        const {
+          data: { user },
+        } = await supabase.auth.getUser();
         if (user) {
           await supabase.from("projects").insert({
             id,
@@ -152,9 +169,12 @@ export const useProjects = create<ProjectsState>((set, get) => ({
 
     if (isSupabaseConfigured) {
       try {
-        const row: Record<string, unknown> = { updated_at: new Date().toISOString() };
+        const row: Record<string, unknown> = {
+          updated_at: new Date().toISOString(),
+        };
         if (updates.name !== undefined) row.name = updates.name;
-        if (updates.description !== undefined) row.description = updates.description;
+        if (updates.description !== undefined)
+          row.description = updates.description;
         if (updates.status !== undefined) row.status = updates.status;
         if (updates.domain !== undefined) row.domain = updates.domain;
         await supabase.from("projects").update(row).eq("id", id);
@@ -182,7 +202,11 @@ export const useProjects = create<ProjectsState>((set, get) => ({
     set((state) => ({
       projects: state.projects.map((p) =>
         p.id === projectId
-          ? { ...p, conversationIds: [...p.conversationIds, conversationId], updatedAt: new Date() }
+          ? {
+              ...p,
+              conversationIds: [...p.conversationIds, conversationId],
+              updatedAt: new Date(),
+            }
           : p,
       ),
     })),

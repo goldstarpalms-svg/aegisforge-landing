@@ -16,18 +16,16 @@ import {
   Copy,
   Check,
 } from "lucide-react";
-import Link from "next/link";
-
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useAuth } from "@/stores/auth";
 import { useAIEContext } from "@/stores/context";
-import { useProjects } from "@/stores/projects";
 import { getAIE } from "@/lib/aie";
 import { LoadingDots, EmptyState } from "@/components/common/loading-states";
 
 const BACKEND_URL =
-  process.env.NEXT_PUBLIC_BACKEND_URL ?? "https://aegisforge-backend.onrender.com";
+  process.env.NEXT_PUBLIC_BACKEND_URL ??
+  "https://aegisforge-backend.onrender.com";
 
 interface Message {
   id: string;
@@ -95,7 +93,8 @@ export function WorkspacePage() {
         {
           id: crypto.randomUUID(),
           role: "system",
-          content: "You're using AegisForge AI Workspace. Describe what you want to build, and I'll help you plan, architect, and generate code. Ask me anything — from system design to debugging to deployment strategies.",
+          content:
+            "You're using AegisForge AI Workspace. Describe what you want to build, and I'll help you plan, architect, and generate code. Ask me anything — from system design to debugging to deployment strategies.",
           timestamp: new Date(),
         },
       ],
@@ -151,14 +150,22 @@ export function WorkspacePage() {
           ? {
               ...c,
               messages: [...c.messages, userMsg],
-              title: c.messages.length === 0 ? input.slice(0, 50) + (input.length > 50 ? "..." : "") : c.title,
+              title:
+                c.messages.length === 0
+                  ? input.slice(0, 50) + (input.length > 50 ? "..." : "")
+                  : c.title,
               updatedAt: new Date(),
             }
           : c,
       ),
     );
 
-    addRecentAction({ type: "build", label: input.slice(0, 60), timestamp: new Date(), href: "/workspace" });
+    addRecentAction({
+      type: "build",
+      label: input.slice(0, 60),
+      timestamp: new Date(),
+      href: "/workspace",
+    });
 
     setInput("");
     setLoading(true);
@@ -179,9 +186,7 @@ export function WorkspacePage() {
         id: crypto.randomUUID(),
         role: "assistant",
         content:
-          data.response ||
-          data.message ||
-          data.blueprint
+          data.response || data.message || data.blueprint
             ? JSON.stringify(data.blueprint, null, 2)
             : "I processed your request. Let me know if you'd like me to elaborate or try a different approach.",
         timestamp: new Date(),
@@ -190,7 +195,11 @@ export function WorkspacePage() {
       setConversations((prev) =>
         prev.map((c) =>
           c.id === convoId
-            ? { ...c, messages: [...c.messages, assistantMsg], updatedAt: new Date() }
+            ? {
+                ...c,
+                messages: [...c.messages, assistantMsg],
+                updatedAt: new Date(),
+              }
             : c,
         ),
       );
@@ -198,13 +207,18 @@ export function WorkspacePage() {
       const errorMsg: Message = {
         id: crypto.randomUUID(),
         role: "assistant",
-        content: "I'm having trouble connecting right now. Please try again in a moment — the server may be waking up from inactivity.",
+        content:
+          "I'm having trouble connecting right now. Please try again in a moment — the server may be waking up from inactivity.",
         timestamp: new Date(),
       };
       setConversations((prev) =>
         prev.map((c) =>
           c.id === convoId
-            ? { ...c, messages: [...c.messages, errorMsg], updatedAt: new Date() }
+            ? {
+                ...c,
+                messages: [...c.messages, errorMsg],
+                updatedAt: new Date(),
+              }
             : c,
         ),
       );
@@ -222,11 +236,13 @@ export function WorkspacePage() {
             initial={{ width: 0, opacity: 0 }}
             animate={{ width: 256, opacity: 1 }}
             exit={{ width: 0, opacity: 0 }}
-            className="hidden sm:flex shrink-0 overflow-hidden border-r border-white/5 bg-white/[0.02]"
+            className="hidden shrink-0 overflow-hidden border-r border-white/5 bg-white/[0.02] sm:flex"
           >
             <div className="flex h-full w-64 flex-col p-3">
-              <div className="flex items-center justify-between mb-4">
-                <h2 className="text-sm font-medium text-slate-300">Conversations</h2>
+              <div className="mb-4 flex items-center justify-between">
+                <h2 className="text-sm font-medium text-slate-300">
+                  Conversations
+                </h2>
                 <button
                   onClick={() => setSidebarOpen(false)}
                   className="rounded-lg p-1 text-slate-400 hover:bg-white/5 hover:text-white"
@@ -240,7 +256,7 @@ export function WorkspacePage() {
                 variant="secondary"
                 size="sm"
                 onClick={createConversation}
-                className="mb-3 gap-1.5 min-h-[40px]"
+                className="mb-3 min-h-[40px] gap-1.5"
               >
                 <Plus className="size-3.5" /> New Chat
               </Button>
@@ -250,7 +266,7 @@ export function WorkspacePage() {
                   conversations.map((c) => (
                     <div
                       key={c.id}
-                      className={`group flex items-center gap-2 rounded-lg px-2 py-2 text-sm transition-colors min-h-[40px] ${
+                      className={`group flex min-h-[40px] items-center gap-2 rounded-lg px-2 py-2 text-sm transition-colors ${
                         activeId === c.id
                           ? "bg-white/10 text-white"
                           : "text-slate-400 hover:bg-white/5 hover:text-white"
@@ -265,7 +281,7 @@ export function WorkspacePage() {
                       </button>
                       <button
                         onClick={() => deleteConversation(c.id)}
-                        className="shrink-0 rounded p-1 text-slate-600 opacity-0 transition-opacity hover:text-red-400 group-hover:opacity-100"
+                        className="shrink-0 rounded p-1 text-slate-600 opacity-0 transition-opacity group-hover:opacity-100 hover:text-red-400"
                         aria-label={`Delete conversation: ${c.title}`}
                       >
                         <Trash2 className="size-3" />
@@ -273,12 +289,15 @@ export function WorkspacePage() {
                     </div>
                   ))
                 ) : (
-                  <p className="px-2 py-4 text-xs text-slate-600">No conversations yet</p>
+                  <p className="px-2 py-4 text-xs text-slate-600">
+                    No conversations yet
+                  </p>
                 )}
               </div>
 
               <div className="mt-auto border-t border-white/5 pt-3 text-xs text-slate-500">
-                {conversations.length} conversation{conversations.length !== 1 ? "s" : ""}
+                {conversations.length} conversation
+                {conversations.length !== 1 ? "s" : ""}
               </div>
             </div>
           </motion.aside>
@@ -286,9 +305,9 @@ export function WorkspacePage() {
       </AnimatePresence>
 
       {/* Main chat area */}
-      <main className="flex flex-1 flex-col min-w-0">
+      <main className="flex min-w-0 flex-1 flex-col">
         {/* Header */}
-        <div className="flex items-center gap-2 sm:gap-3 border-b border-white/5 px-3 sm:px-4 py-2.5 sm:py-3">
+        <div className="flex items-center gap-2 border-b border-white/5 px-3 py-2.5 sm:gap-3 sm:px-4 sm:py-3">
           {!sidebarOpen && (
             <button
               onClick={() => setSidebarOpen(true)}
@@ -298,8 +317,8 @@ export function WorkspacePage() {
               <PanelLeft className="size-4" />
             </button>
           )}
-          <div className="flex-1 min-w-0">
-            <h1 className="text-sm font-medium text-white truncate">
+          <div className="min-w-0 flex-1">
+            <h1 className="truncate text-sm font-medium text-white">
               {activeConvo?.title ?? "AI Workspace"}
             </h1>
             <p className="text-xs text-slate-500">
@@ -308,7 +327,11 @@ export function WorkspacePage() {
                 : "Start a new conversation"}
             </p>
           </div>
-          <Button variant="ghost" size="sm" className="hidden sm:flex gap-1.5 text-xs text-slate-400">
+          <Button
+            variant="ghost"
+            size="sm"
+            className="hidden gap-1.5 text-xs text-slate-400 sm:flex"
+          >
             <Paperclip className="size-3.5" /> Upload
           </Button>
         </div>
@@ -316,19 +339,23 @@ export function WorkspacePage() {
         {/* Messages */}
         <div className="flex-1 overflow-y-auto p-3 sm:p-4 lg:p-6">
           {!activeConvo ? (
-            <div className="flex h-full flex-col items-center justify-center gap-4 text-center px-4">
+            <div className="flex h-full flex-col items-center justify-center gap-4 px-4 text-center">
               <Brain className="size-12 text-cyan-400/40" />
               <div>
                 <h2 className="text-lg font-medium text-white">AI Workspace</h2>
                 <p className="mt-1 max-w-sm text-sm text-slate-400">
-                  Describe what you want to build. Chat with AI, create projects,
-                  save conversations, and iterate on your ideas.
+                  Describe what you want to build. Chat with AI, create
+                  projects, save conversations, and iterate on your ideas.
                 </p>
               </div>
-              <Button variant="primary" onClick={createConversation} className="gap-2 min-h-[44px]">
+              <Button
+                variant="primary"
+                onClick={createConversation}
+                className="min-h-[44px] gap-2"
+              >
                 <Plus className="size-4" /> Start Conversation
               </Button>
-              <div className="mt-4 grid gap-2 sm:grid-cols-2 w-full max-w-lg">
+              <div className="mt-4 grid w-full max-w-lg gap-2 sm:grid-cols-2">
                 {[
                   "Build a SaaS landing page with auth and pricing",
                   "Design a database schema for an e-commerce app",
@@ -338,7 +365,7 @@ export function WorkspacePage() {
                   <button
                     key={suggestion}
                     onClick={() => setInput(suggestion)}
-                    className="rounded-xl border border-white/5 bg-white/[0.03] px-3 py-3 text-left text-xs text-slate-400 transition-colors hover:bg-white/[0.06] hover:text-white min-h-[44px]"
+                    className="min-h-[44px] rounded-xl border border-white/5 bg-white/[0.03] px-3 py-3 text-left text-xs text-slate-400 transition-colors hover:bg-white/[0.06] hover:text-white"
                   >
                     {suggestion}
                   </button>
@@ -350,7 +377,13 @@ export function WorkspacePage() {
               icon={MessageSquare}
               title="Start the conversation"
               description="Type your message below to begin chatting with AegisForge AI."
-              action={{ label: "Send a message", onClick: () => document.querySelector<HTMLInputElement>("[data-workspace-input]")?.focus() }}
+              action={{
+                label: "Send a message",
+                onClick: () =>
+                  document
+                    .querySelector<HTMLInputElement>("[data-workspace-input]")
+                    ?.focus(),
+              }}
             />
           ) : (
             <div className="mx-auto max-w-3xl space-y-4">
@@ -381,10 +414,14 @@ export function WorkspacePage() {
                       {msg.role === "assistant" && (
                         <button
                           onClick={() => copyToClipboard(msg.content, msg.id)}
-                          className="opacity-0 group-hover:opacity-100 transition-opacity text-slate-500 hover:text-slate-300"
+                          className="text-slate-500 opacity-0 transition-opacity group-hover:opacity-100 hover:text-slate-300"
                           aria-label="Copy message"
                         >
-                          {copiedId === msg.id ? <Check className="size-3 text-emerald-400" /> : <Copy className="size-3" />}
+                          {copiedId === msg.id ? (
+                            <Check className="size-3 text-emerald-400" />
+                          ) : (
+                            <Copy className="size-3" />
+                          )}
                         </button>
                       )}
                     </div>
@@ -397,7 +434,8 @@ export function WorkspacePage() {
                   <div className="rounded-2xl bg-white/[0.05] px-4 py-3">
                     <div className="flex items-center gap-2 text-sm text-cyan-300">
                       <LoaderCircle className="size-4 animate-spin" />
-                      Thinking<LoadingDots />
+                      Thinking
+                      <LoadingDots />
                     </div>
                   </div>
                 </div>
@@ -411,20 +449,22 @@ export function WorkspacePage() {
         {/* Input with AIE suggestions */}
         <div className="border-t border-white/5 p-3 sm:p-4">
           <div className="mx-auto max-w-3xl space-y-2">
-            {aiSuggestions && aiSuggestions.understood && aiSuggestions.actions.length > 0 && (
-              <div className="flex flex-wrap gap-1.5">
-                {aiSuggestions.actions.slice(0, 3).map((action) => (
-                  <button
-                    key={action.id}
-                    onClick={() => setInput(action.label)}
-                    className="flex items-center gap-1 rounded-full border border-cyan-400/15 bg-cyan-400/5 px-2.5 py-1 text-[0.65rem] text-cyan-300 transition-colors hover:bg-cyan-400/10 min-h-[32px]"
-                  >
-                    <Zap className="size-2.5" />
-                    {action.label}
-                  </button>
-                ))}
-              </div>
-            )}
+            {aiSuggestions &&
+              aiSuggestions.understood &&
+              aiSuggestions.actions.length > 0 && (
+                <div className="flex flex-wrap gap-1.5">
+                  {aiSuggestions.actions.slice(0, 3).map((action) => (
+                    <button
+                      key={action.id}
+                      onClick={() => setInput(action.label)}
+                      className="flex min-h-[32px] items-center gap-1 rounded-full border border-cyan-400/15 bg-cyan-400/5 px-2.5 py-1 text-[0.65rem] text-cyan-300 transition-colors hover:bg-cyan-400/10"
+                    >
+                      <Zap className="size-2.5" />
+                      {action.label}
+                    </button>
+                  ))}
+                </div>
+              )}
             <div className="flex gap-2 sm:gap-3">
               <Input
                 data-workspace-input
@@ -438,7 +478,7 @@ export function WorkspacePage() {
                 }}
                 placeholder="Describe what you want to build..."
                 disabled={loading}
-                className="h-11 sm:h-12 rounded-xl bg-white/5 font-mono text-sm"
+                className="h-11 rounded-xl bg-white/5 font-mono text-sm sm:h-12"
                 aria-label="Chat input"
               />
               <Button
@@ -449,7 +489,11 @@ export function WorkspacePage() {
                 className="shrink-0"
                 aria-label="Send message"
               >
-                {loading ? <LoaderCircle className="size-4 animate-spin" /> : <Send className="size-4" />}
+                {loading ? (
+                  <LoaderCircle className="size-4 animate-spin" />
+                ) : (
+                  <Send className="size-4" />
+                )}
               </Button>
             </div>
           </div>

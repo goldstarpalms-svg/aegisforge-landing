@@ -39,12 +39,7 @@ export interface SuggestedAction {
 }
 
 export type ModuleName =
-  | "workspace"
-  | "scanner"
-  | "blueprint"
-  | "nova"
-  | "dashboard"
-  | "deploy";
+  "workspace" | "scanner" | "blueprint" | "nova" | "dashboard" | "deploy";
 
 export interface AIEResponse {
   understood: boolean;
@@ -85,12 +80,25 @@ const intentPatterns: Array<{
   entities?: string[];
 }> = [
   {
-    patterns: [/build/i, /create/i, /make/i, /develop/i, /implement/i, /scaffold/i],
+    patterns: [
+      /build/i,
+      /create/i,
+      /make/i,
+      /develop/i,
+      /implement/i,
+      /scaffold/i,
+    ],
     category: "build",
     entities: ["app_type", "feature"],
   },
   {
-    patterns: [/scan/i, /security/i, /vuln/i, /check.*secur/i, /analyze.*secur/i],
+    patterns: [
+      /scan/i,
+      /security/i,
+      /vuln/i,
+      /check.*secur/i,
+      /analyze.*secur/i,
+    ],
     category: "scan",
     entities: ["domain"],
   },
@@ -110,7 +118,14 @@ const intentPatterns: Array<{
     entities: ["area"],
   },
   {
-    patterns: [/learn/i, /teach/i, /explain/i, /how do/i, /what is/i, /tutorial/i],
+    patterns: [
+      /learn/i,
+      /teach/i,
+      /explain/i,
+      /how do/i,
+      /what is/i,
+      /tutorial/i,
+    ],
     category: "learn",
     entities: ["topic"],
   },
@@ -139,13 +154,46 @@ const intentPatterns: Array<{
 // --- Industry/Domain Detection ---
 
 const domainKeywords: Record<string, string[]> = {
-  fintech: ["payment", "banking", "finance", "wallet", "transaction", "stripe", "plaid", "fintech"],
-  ecommerce: ["store", "shop", "cart", "checkout", "product", "catalog", "ecommerce", "e-commerce"],
-  saas: ["subscription", "pricing", "plan", "billing", "tenant", "saas", "multi-tenant"],
+  fintech: [
+    "payment",
+    "banking",
+    "finance",
+    "wallet",
+    "transaction",
+    "stripe",
+    "plaid",
+    "fintech",
+  ],
+  ecommerce: [
+    "store",
+    "shop",
+    "cart",
+    "checkout",
+    "product",
+    "catalog",
+    "ecommerce",
+    "e-commerce",
+  ],
+  saas: [
+    "subscription",
+    "pricing",
+    "plan",
+    "billing",
+    "tenant",
+    "saas",
+    "multi-tenant",
+  ],
   healthcare: ["patient", "medical", "health", "ehr", "hipaa", "healthcare"],
   education: ["course", "student", "learning", "lms", "quiz", "education"],
   social: ["feed", "post", "follow", "like", "comment", "profile", "social"],
-  productivity: ["task", "project", "kanban", "calendar", "todo", "collaboration"],
+  productivity: [
+    "task",
+    "project",
+    "kanban",
+    "calendar",
+    "todo",
+    "collaboration",
+  ],
   ai: ["ml", "model", "training", "inference", "ai", "neural", "prediction"],
 };
 
@@ -300,7 +348,9 @@ export class AegisIntelligenceEngine {
         actions.push({
           id: "scan",
           label: "Run Security Scan",
-          description: scanDomain ? `Scan ${scanDomain} now` : "Enter a domain to scan",
+          description: scanDomain
+            ? `Scan ${scanDomain} now`
+            : "Enter a domain to scan",
           href: scanDomain ? `/scanner?domain=${scanDomain}` : "/scanner",
           priority: 1,
           auto: !!scanDomain,
@@ -472,7 +522,7 @@ export class AegisIntelligenceEngine {
    */
   getDashboardSuggestions(): SuggestedAction[] {
     const suggestions: SuggestedAction[] = [];
-    const { recentActions, userPreferences } = this.context;
+    const { recentActions } = this.context;
 
     // Continue where left off
     if (recentActions.length > 0) {

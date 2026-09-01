@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { LoaderCircle, CheckCircle2, Eye, EyeOff } from "lucide-react";
@@ -50,24 +50,36 @@ export function SignUpPage() {
             >
               <CheckCircle2 className="mx-auto size-10 text-cyan-400" />
             </motion.div>
-            <h1 className="text-2xl font-semibold text-white">Check your email</h1>
+            <h1 className="text-2xl font-semibold text-white">
+              Check your email
+            </h1>
             <p className="text-sm text-slate-400">
-              We sent a verification link to <span className="text-white font-medium">{email}</span>.
-              Click it to confirm your account.
+              We sent a verification link to{" "}
+              <span className="font-medium text-white">{email}</span>. Click it
+              to confirm your account.
             </p>
             <Link href="/auth/sign-in">
-              <Button variant="primary" className="mt-4">Go to Sign In</Button>
+              <Button variant="primary" className="mt-4">
+                Go to Sign In
+              </Button>
             </Link>
           </div>
         ) : (
           <>
             <div className="space-y-2 text-center">
-              <h1 className="text-2xl font-semibold text-white">Create your account</h1>
-              <p className="text-sm text-slate-400">Start building with AegisForge</p>
+              <h1 className="text-2xl font-semibold text-white">
+                Create your account
+              </h1>
+              <p className="text-sm text-slate-400">
+                Start building with AegisForge
+              </p>
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-4" noValidate>
-              <label className="space-y-2 text-sm text-slate-200" htmlFor="signup-name">
+              <label
+                className="space-y-2 text-sm text-slate-200"
+                htmlFor="signup-name"
+              >
                 Full name
                 <Input
                   id="signup-name"
@@ -79,7 +91,10 @@ export function SignUpPage() {
                   className="h-11 rounded-xl bg-white/5"
                 />
               </label>
-              <label className="space-y-2 text-sm text-slate-200" htmlFor="signup-email">
+              <label
+                className="space-y-2 text-sm text-slate-200"
+                htmlFor="signup-email"
+              >
                 Email
                 <Input
                   id="signup-email"
@@ -92,7 +107,10 @@ export function SignUpPage() {
                   className="h-11 rounded-xl bg-white/5"
                 />
               </label>
-              <label className="space-y-2 text-sm text-slate-200" htmlFor="signup-password">
+              <label
+                className="space-y-2 text-sm text-slate-200"
+                htmlFor="signup-password"
+              >
                 Password
                 <div className="relative">
                   <Input
@@ -109,10 +127,16 @@ export function SignUpPage() {
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300"
-                    aria-label={showPassword ? "Hide password" : "Show password"}
+                    className="absolute top-1/2 right-3 -translate-y-1/2 text-slate-500 hover:text-slate-300"
+                    aria-label={
+                      showPassword ? "Hide password" : "Show password"
+                    }
                   >
-                    {showPassword ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
+                    {showPassword ? (
+                      <EyeOff className="size-4" />
+                    ) : (
+                      <Eye className="size-4" />
+                    )}
                   </button>
                 </div>
               </label>
@@ -123,7 +147,8 @@ export function SignUpPage() {
                     initial={{ opacity: 0, y: -5 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0 }}
-                    className="text-sm text-red-400" role="alert"
+                    className="text-sm text-red-400"
+                    role="alert"
                   >
                     {error}
                   </motion.p>
@@ -137,13 +162,20 @@ export function SignUpPage() {
                 disabled={loading}
                 className="w-full gap-2"
               >
-                {loading ? <LoaderCircle className="size-4 animate-spin" /> : "Create Account"}
+                {loading ? (
+                  <LoaderCircle className="size-4 animate-spin" />
+                ) : (
+                  "Create Account"
+                )}
               </Button>
             </form>
 
             <p className="text-center text-sm text-slate-400">
               Already have an account?{" "}
-              <Link href="/auth/sign-in" className="text-cyan-300 hover:underline">
+              <Link
+                href="/auth/sign-in"
+                className="text-cyan-300 hover:underline"
+              >
                 Sign in
               </Link>
             </p>

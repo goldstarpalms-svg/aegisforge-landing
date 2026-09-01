@@ -12,14 +12,13 @@ import {
   XCircle,
   Info,
   LoaderCircle,
-  ExternalLink,
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Container } from "@/components/ui/container";
 import { Input } from "@/components/ui/input";
-import { LoadingDots, ErrorState } from "@/components/common/loading-states";
+import { ErrorState } from "@/components/common/loading-states";
 
 const BACKEND_URL =
   process.env.NEXT_PUBLIC_BACKEND_URL ??
@@ -52,9 +51,13 @@ const gradeColor = (grade: string) => {
 const statusIcon = (status: string) => {
   switch (status) {
     case "pass":
-      return <CheckCircle2 className="size-4 text-emerald-400" aria-hidden="true" />;
+      return (
+        <CheckCircle2 className="size-4 text-emerald-400" aria-hidden="true" />
+      );
     case "warn":
-      return <AlertTriangle className="size-4 text-amber-400" aria-hidden="true" />;
+      return (
+        <AlertTriangle className="size-4 text-amber-400" aria-hidden="true" />
+      );
     case "fail":
       return <XCircle className="size-4 text-red-400" aria-hidden="true" />;
     default:
@@ -64,10 +67,14 @@ const statusIcon = (status: string) => {
 
 const statusLabel = (status: string) => {
   switch (status) {
-    case "pass": return "Passed";
-    case "warn": return "Warning";
-    case "fail": return "Failed";
-    default: return "Info";
+    case "pass":
+      return "Passed";
+    case "warn":
+      return "Warning";
+    case "fail":
+      return "Failed";
+    default:
+      return "Info";
   }
 };
 
@@ -80,7 +87,10 @@ const confidenceBadge = (c?: string) => {
         ? "bg-amber-400/10 text-amber-300"
         : "bg-slate-400/10 text-slate-300";
   return (
-    <span className={`ml-2 rounded-full px-2 py-0.5 text-[0.65rem] ${color}`} aria-label={`Confidence: ${c}`}>
+    <span
+      className={`ml-2 rounded-full px-2 py-0.5 text-[0.65rem] ${color}`}
+      aria-label={`Confidence: ${c}`}
+    >
       {c}
     </span>
   );
@@ -139,7 +149,8 @@ export function ScannerPage() {
             name,
             status: h.present ? "pass" : "warn",
             detail: h.present ? `Set: ${h.value || "Present"}` : "Missing",
-            confidence: (info as Record<string, unknown>).confidence as "high" | "medium" | "low" | undefined,
+            confidence: (info as Record<string, unknown>).confidence as
+              "high" | "medium" | "low" | undefined,
           });
         }
       }
@@ -289,17 +300,19 @@ export function ScannerPage() {
             <Shield className="size-4" aria-hidden="true" />
             Enterprise Security Scanner
           </div>
-          <h1 className="text-3xl sm:text-4xl font-semibold tracking-tight text-white sm:text-5xl">
+          <h1 className="text-3xl font-semibold tracking-tight text-white sm:text-4xl sm:text-5xl">
             Scan any domain
           </h1>
-          <p className="text-base sm:text-lg text-slate-400">
+          <p className="text-base text-slate-400 sm:text-lg">
             12 concurrent security checks · Weighted scoring · Confidence levels
             · PDF/JSON/CSV export
           </p>
         </div>
 
         <div className="flex gap-2 sm:gap-3">
-          <label htmlFor="scanner-domain" className="sr-only">Domain to scan</label>
+          <label htmlFor="scanner-domain" className="sr-only">
+            Domain to scan
+          </label>
           <Input
             id="scanner-domain"
             type="text"
@@ -314,12 +327,15 @@ export function ScannerPage() {
             size="lg"
             onClick={runScan}
             disabled={loading || !domain}
-            className="min-w-24 sm:min-w-32 shrink-0 rounded-full"
+            className="min-w-24 shrink-0 rounded-full sm:min-w-32"
             aria-label={loading ? "Scanning..." : "Scan domain"}
           >
             {loading ? (
               <>
-                <LoaderCircle className="size-4 animate-spin" aria-hidden="true" />
+                <LoaderCircle
+                  className="size-4 animate-spin"
+                  aria-hidden="true"
+                />
                 <span className="hidden sm:inline">Scanning...</span>
               </>
             ) : (
@@ -373,9 +389,15 @@ export function ScannerPage() {
                   }`}
                 >
                   {i <= activeCheck ? (
-                    <LoaderCircle className="size-4 animate-spin" aria-hidden="true" />
+                    <LoaderCircle
+                      className="size-4 animate-spin"
+                      aria-hidden="true"
+                    />
                   ) : (
-                    <div className="size-4 rounded-full border border-slate-600" aria-hidden="true" />
+                    <div
+                      className="size-4 rounded-full border border-slate-600"
+                      aria-hidden="true"
+                    />
                   )}
                   {step}
                 </motion.div>
@@ -391,9 +413,17 @@ export function ScannerPage() {
               animate={{ opacity: 1, y: 0 }}
               className="space-y-8"
             >
-              <Card className="flex flex-col sm:flex-row items-center gap-4 sm:gap-8 rounded-[2rem] bg-white/[0.05] p-6 sm:p-8">
-                <div className="relative shrink-0" aria-label={`Security grade: ${result.grade}, score: ${result.score} out of 100`}>
-                  <svg width="128" height="128" viewBox="0 0 128 128" aria-hidden="true">
+              <Card className="flex flex-col items-center gap-4 rounded-[2rem] bg-white/[0.05] p-6 sm:flex-row sm:gap-8 sm:p-8">
+                <div
+                  className="relative shrink-0"
+                  aria-label={`Security grade: ${result.grade}, score: ${result.score} out of 100`}
+                >
+                  <svg
+                    width="128"
+                    height="128"
+                    viewBox="0 0 128 128"
+                    aria-hidden="true"
+                  >
                     <circle
                       cx="64"
                       cy="64"
@@ -441,13 +471,16 @@ export function ScannerPage() {
                   </div>
                 </div>
                 <div className="space-y-2 text-center sm:text-left">
-                  <h2 className="text-xl sm:text-2xl font-semibold text-white">
+                  <h2 className="text-xl font-semibold text-white sm:text-2xl">
                     {result.domain}
                   </h2>
                   <p className="text-sm text-slate-400">
-                    {result.checks.filter((c) => c.status === "pass").length} passed ·{" "}
-                    {result.checks.filter((c) => c.status === "warn").length} warnings ·{" "}
-                    {result.checks.filter((c) => c.status === "fail").length} failures
+                    {result.checks.filter((c) => c.status === "pass").length}{" "}
+                    passed ·{" "}
+                    {result.checks.filter((c) => c.status === "warn").length}{" "}
+                    warnings ·{" "}
+                    {result.checks.filter((c) => c.status === "fail").length}{" "}
+                    failures
                   </p>
                   <p className="text-xs text-slate-500">
                     Scanned {new Date(result.timestamp).toLocaleString()}
@@ -489,7 +522,7 @@ export function ScannerPage() {
                   variant="secondary"
                   size="sm"
                   onClick={() => exportReport("pdf")}
-                  className="gap-2 min-h-[40px]"
+                  className="min-h-[40px] gap-2"
                   aria-label="Export as PDF"
                 >
                   <Download className="size-3.5" /> PDF
@@ -498,7 +531,7 @@ export function ScannerPage() {
                   variant="secondary"
                   size="sm"
                   onClick={() => exportReport("json")}
-                  className="gap-2 min-h-[40px]"
+                  className="min-h-[40px] gap-2"
                   aria-label="Export as JSON"
                 >
                   <Download className="size-3.5" /> JSON
@@ -507,7 +540,7 @@ export function ScannerPage() {
                   variant="secondary"
                   size="sm"
                   onClick={() => exportReport("csv")}
-                  className="gap-2 min-h-[40px]"
+                  className="min-h-[40px] gap-2"
                   aria-label="Export as CSV"
                 >
                   <Download className="size-3.5" /> CSV
@@ -515,7 +548,7 @@ export function ScannerPage() {
                 <Button
                   variant="secondary"
                   size="sm"
-                  className="gap-2 min-h-[40px]"
+                  className="min-h-[40px] gap-2"
                   aria-label="Share report"
                 >
                   <Share2 className="size-3.5" /> Share

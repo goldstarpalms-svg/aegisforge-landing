@@ -9,9 +9,7 @@ import {
   FolderKanban,
   ArrowRight,
   SkipForward,
-  CheckCircle2,
   Rocket,
-  MessageSquare,
 } from "lucide-react";
 import Link from "next/link";
 
@@ -23,7 +21,8 @@ const steps = [
     id: "welcome",
     icon: Rocket,
     title: "Welcome to AegisForge",
-    subtitle: "Your AI software company — let's get you set up in under 3 minutes.",
+    subtitle:
+      "Your AI software company — let's get you set up in under 3 minutes.",
     description:
       "AegisForge turns ideas into live applications. You'll learn the three core tools: AI Workspace, Security Scanner, and Blueprint Engine.",
   },
@@ -139,9 +138,15 @@ export function OnboardingFlow({ onComplete, onSkip }: OnboardingProps) {
 
                 {/* Content */}
                 <div className="space-y-2">
-                  <h2 className="text-2xl font-semibold text-white">{step.title}</h2>
-                  <p className="text-sm font-medium text-cyan-300">{step.subtitle}</p>
-                  <p className="text-sm leading-7 text-slate-400">{step.description}</p>
+                  <h2 className="text-2xl font-semibold text-white">
+                    {step.title}
+                  </h2>
+                  <p className="text-sm font-medium text-cyan-300">
+                    {step.subtitle}
+                  </p>
+                  <p className="text-sm leading-7 text-slate-400">
+                    {step.description}
+                  </p>
                 </div>
 
                 {/* Step dots */}
@@ -170,14 +175,24 @@ export function OnboardingFlow({ onComplete, onSkip }: OnboardingProps) {
                       </Button>
                     </Link>
                   ) : (
-                    <Button variant="primary" size="lg" onClick={next} className="gap-2">
+                    <Button
+                      variant="primary"
+                      size="lg"
+                      onClick={next}
+                      className="gap-2"
+                    >
                       Get Started
                       <ArrowRight className="size-4" />
                     </Button>
                   )}
 
                   {!isLast && (
-                    <Button variant="ghost" size="lg" onClick={next} className="text-slate-400">
+                    <Button
+                      variant="ghost"
+                      size="lg"
+                      onClick={next}
+                      className="text-slate-400"
+                    >
                       Next
                     </Button>
                   )}
@@ -222,5 +237,11 @@ export function useOnboarding() {
     setShowOnboarding(true);
   }
 
-  return { showOnboarding, completeOnboarding, skipOnboarding, resetOnboarding, dismissed };
+  return {
+    showOnboarding,
+    completeOnboarding,
+    skipOnboarding,
+    resetOnboarding,
+    dismissed,
+  };
 }
