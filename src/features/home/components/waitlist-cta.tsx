@@ -25,7 +25,7 @@ export function WaitlistCta() {
                   platform as we move from foundation to intelligence.
                 </p>
                 <div className="inline-flex rounded-full border border-white/10 bg-white/5 px-4 py-2 text-xs tracking-[0.26em] text-slate-300 uppercase">
-                  Referral system coming soon
+                  Early-access waitlist · positions tracked
                 </div>
               </div>
 

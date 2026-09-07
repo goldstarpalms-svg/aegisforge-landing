@@ -74,8 +74,9 @@ export function TrustSection() {
             Trust signals
           </p>
           <p className="mt-3 text-lg leading-8 text-balance text-slate-300">
-            Early numbers are placeholders for now — but the platform is being
-            designed to scale globally from the beginning.
+            Built to be measured — the platform ships with real, verifiable
+            capabilities across its modules, from a live security scanner to a
+            working AI blueprint engine.
           </p>
         </Reveal>
         <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">

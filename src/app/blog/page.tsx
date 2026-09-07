@@ -31,7 +31,7 @@ export default function BlogPage() {
         </div>
 
         <div className="grid gap-5 lg:grid-cols-2">
-          {blogPreviewCards.map((post) => {
+          {blogPreviewCards.map((post, i) => {
             const Icon = post.icon;
 
             return (
@@ -48,7 +48,7 @@ export default function BlogPage() {
                   </p>
                 </div>
                 <div className="text-xs tracking-[0.24em] text-slate-500 uppercase">
-                  Coming soon
+                  Launch note 0{i + 1} · soon
                 </div>
               </Card>
             );

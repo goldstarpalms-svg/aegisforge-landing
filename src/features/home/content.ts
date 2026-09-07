@@ -116,15 +116,15 @@ export const roadmapPhases: RoadmapPhase[] = [
     phase: "Phase One",
     title: "AI Platform",
     description:
-      "Ship Nova orchestrator with intent routing, agent system, memory, and multi-provider AI support.",
-    status: "Next",
+      "Nova orchestrator with intent routing, agent system, on-device memory, and multi-provider AI support.",
+    status: "Live now",
   },
   {
     phase: "Phase Two",
     title: "Workspace",
     description:
-      "Dashboard with project management, scan history, blueprint library, and deployment tracking.",
-    status: "Planned",
+      "Dashboard with project management, scan history, blueprint library, and conversation workspace.",
+    status: "Live now",
   },
   {
     phase: "Phase Three",
