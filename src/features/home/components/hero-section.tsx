@@ -85,6 +85,17 @@ export function HeroSection() {
             transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
             style={{ transformOrigin: "center" }}
           />
+          {/* floating energy core */}
+          <motion.div
+            aria-hidden="true"
+            className="absolute left-1/2 top-1/2 -z-10 h-[24rem] w-[24rem] -translate-x-1/2 -translate-y-1/2"
+            animate={{ scale: [1, 1.06, 1], opacity: [0.5, 0.8, 0.5] }}
+            transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+          >
+            <div className="absolute inset-0 rounded-full bg-[radial-gradient(circle,rgba(34,211,238,0.22),rgba(129,140,248,0.10)_45%,transparent_70%)] blur-2xl" />
+            <div className="absolute left-1/2 top-1/2 size-40 -translate-x-1/2 -translate-y-1/2 rounded-full border border-cyan-300/20" />
+            <div className="absolute left-1/2 top-1/2 size-56 -translate-x-1/2 -translate-y-1/2 rounded-full border border-violet-300/15" />
+          </motion.div>
           <EcosystemVisual />
         </Reveal>
       </Container>

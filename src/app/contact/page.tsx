@@ -36,7 +36,7 @@ export default function ContactPage() {
           <p className="text-sm tracking-[0.28em] text-cyan-200 uppercase">
             Contact
           </p>
-          <h1 className="text-4xl font-semibold tracking-tight text-balance text-white sm:text-6xl">
+          <h1 className="text-4xl font-semibold tracking-tight text-balance sm:text-6xl" style={{ backgroundImage:"linear-gradient(95deg,#fff 0%,#cbd5e1 35%,#22d3ee 62%,#a78bfa 100%)", WebkitBackgroundClip:"text", backgroundClip:"text", color:"transparent" }}>
             Talk to the team building AegisForge.
           </h1>
           <p className="text-lg leading-8 text-slate-300">
