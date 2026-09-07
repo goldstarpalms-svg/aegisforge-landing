@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Sparkles, Terminal } from "lucide-react";
 import { motion } from "framer-motion";
 
 import { Reveal } from "@/components/common/reveal";
@@ -19,6 +19,7 @@ export function HeroSection() {
         <div className="space-y-10">
           <Reveal>
             <Badge className="px-4 py-1.5 text-[0.7rem] tracking-[0.3em]">
+              <Sparkles className="mr-2 size-3.5" />
               AI Operating System · v3.0
             </Badge>
           </Reveal>
@@ -27,7 +28,7 @@ export function HeroSection() {
             <Reveal delay={0.05}>
               <h1 className="max-w-5xl text-5xl font-semibold tracking-[-0.04em] text-white sm:text-6xl lg:text-[5.6rem] lg:leading-[0.95]">
                 <span className="block">Turn One Sentence Into a</span>
-                <span className="mt-2 block bg-[linear-gradient(180deg,#ffffff_0%,#cbd5e1_100%)] bg-clip-text text-transparent">
+                <span className="mt-2 block bg-[linear-gradient(95deg,#22d3ee_0%,#a78bfa_45%,#f0abfc_100%)] bg-clip-text text-transparent drop-shadow-[0_0_28px_rgba(34,211,238,0.35)]">
                   Live Application.
                 </span>
               </h1>
@@ -56,13 +57,19 @@ export function HeroSection() {
 
           <Reveal delay={0.2}>
             <div className="grid gap-3 sm:grid-cols-3">
-              {heroSignals.map((signal) => (
+              {heroSignals.map((signal, i) => (
                 <motion.div
                   key={signal}
                   whileHover={{ y: -4 }}
-                  className="rounded-[1.5rem] border border-white/10 bg-white/[0.04] px-5 py-4 text-sm leading-6 text-slate-200 shadow-[0_20px_60px_-30px_rgba(15,23,42,0.95)] backdrop-blur-xl"
+                  className="group relative overflow-hidden rounded-[1.5rem] border border-white/10 bg-white/[0.04] px-5 py-4 text-sm leading-6 text-slate-200 shadow-[0_20px_60px_-30px_rgba(15,23,42,0.95)] backdrop-blur-xl"
                 >
-                  {signal}
+                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_100%_0%,rgba(34,211,238,0.12),transparent_55%)] opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+                  <div className="relative">
+                    <Terminal className="mb-2 size-4 text-cyan-300/80" />
+                    <span className="font-mono text-cyan-100/90">0{i + 1}</span>
+                    <span className="ml-2">{signal}</span>
+                  </div>
+                  <div className="absolute bottom-0 left-0 h-px w-0 bg-gradient-to-r from-cyan-400/70 to-transparent transition-all duration-500 group-hover:w-full" />
                 </motion.div>
               ))}
             </div>
@@ -70,7 +77,14 @@ export function HeroSection() {
         </div>
 
         <Reveal delay={0.18} className="relative">
-          <div className="absolute inset-0 rounded-[2.5rem] bg-[radial-gradient(circle_at_center,rgba(34,211,238,0.1),transparent_44%)] blur-3xl" />
+          <div className="absolute inset-0 rounded-[2.5rem] bg-[radial-gradient(circle_at_center,rgba(34,211,238,0.14),transparent_48%)] blur-3xl" />
+          {/* orbit ring decoration */}
+          <motion.div
+            className="absolute -inset-4 rounded-[2.5rem] border border-white/[0.06]"
+            animate={{ rotate: 360 }}
+            transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
+            style={{ transformOrigin: "center" }}
+          />
           <EcosystemVisual />
         </Reveal>
       </Container>

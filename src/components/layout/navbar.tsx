@@ -56,7 +56,7 @@ export function Navbar() {
           className={cn(
             "mx-auto flex h-14 sm:h-[4.5rem] items-center justify-between gap-3 sm:gap-4 rounded-2xl sm:rounded-full border border-transparent px-3 sm:px-5 transition duration-300",
             scrolled
-              ? "border-white/10 bg-slate-950/65 shadow-[0_20px_80px_-30px_rgba(2,8,23,0.95)] backdrop-blur-2xl"
+              ? "border-cyan-300/15 bg-slate-950/70 shadow-[0_20px_80px_-30px_rgba(2,8,23,0.95),0_0_40px_-20px_rgba(34,211,238,0.5)] backdrop-blur-2xl"
               : "bg-transparent",
           )}
         >
@@ -82,6 +82,16 @@ export function Navbar() {
           </nav>
 
           <div className="hidden items-center gap-2 lg:flex">
+            <div className="mr-1 flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-3 py-1.5">
+              <motion.span
+                className="size-1.5 rounded-full bg-emerald-400 shadow-[0_0_10px_rgba(52,211,153,0.9)]"
+                animate={{ opacity: [0.4, 1, 0.4] }}
+                transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
+              />
+              <span className="text-[0.62rem] font-medium uppercase tracking-[0.24em] text-slate-400">
+                System online
+              </span>
+            </div>
             <Button asChild variant="ghost" className="rounded-full px-4 text-sm text-slate-300">
               <Link href="/dashboard">Dashboard</Link>
             </Button>

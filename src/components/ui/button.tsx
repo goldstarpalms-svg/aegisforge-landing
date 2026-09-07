@@ -12,7 +12,7 @@ const buttonVariants = cva(
         default:
           "bg-white text-slate-950 shadow-lg shadow-white/10 hover:-translate-y-0.5 hover:bg-slate-100",
         primary:
-          "bg-primary text-primary-foreground shadow-lg shadow-cyan-500/20 hover:-translate-y-0.5 hover:brightness-110",
+          "relative overflow-hidden bg-[linear-gradient(95deg,#22d3ee,#818cf8_55%,#c084fc)] text-slate-950 shadow-lg shadow-cyan-500/25 hover:-translate-y-0.5 hover:brightness-110 hover:shadow-cyan-400/40",
         secondary:
           "glass-panel text-foreground hover:-translate-y-0.5 hover:bg-white/10",
         ghost: "text-foreground hover:bg-white/5",

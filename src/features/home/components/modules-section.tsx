@@ -34,14 +34,16 @@ export function ModulesSection() {
                 <motion.div whileHover={{ y: -8 }} className="group h-full">
                   <Link
                     href="/technology"
-                    className="relative flex h-full min-h-72 flex-col overflow-hidden rounded-[1.9rem] border border-white/10 bg-white/[0.045] p-6 shadow-[0_24px_80px_-36px_rgba(2,8,23,0.95)] backdrop-blur-2xl transition duration-300 hover:border-white/20"
+                    className="relative flex h-full min-h-72 flex-col overflow-hidden rounded-[1.9rem] border border-white/10 bg-white/[0.045] p-6 shadow-[0_24px_80px_-36px_rgba(2,8,23,0.95)] backdrop-blur-2xl transition duration-300 hover:border-cyan-300/30"
                   >
                     <div
                       className={`absolute inset-0 bg-gradient-to-br ${module.accent} opacity-0 transition duration-500 group-hover:opacity-100`}
                     />
                     <div className="absolute inset-px rounded-[1.8rem] bg-[linear-gradient(180deg,rgba(255,255,255,0.06),rgba(255,255,255,0.015))] opacity-80" />
+                    {/* animated aurora sheen on hover */}
+                    <div className="absolute -inset-x-20 -top-20 h-40 rotate-12 bg-gradient-to-r from-transparent via-cyan-300/20 to-transparent opacity-0 blur-2xl transition duration-700 group-hover:translate-x-40 group-hover:opacity-70" />
                     <div className="relative flex h-full flex-col">
-                      <div className="flex size-[3.25rem] items-center justify-center rounded-[1.3rem] border border-white/10 bg-slate-950/70 text-cyan-200 shadow-[0_0_28px_rgba(34,211,238,0.18)] transition duration-300 group-hover:scale-105 group-hover:shadow-[0_0_34px_rgba(129,140,248,0.28)]">
+                      <div className="flex size-[3.25rem] items-center justify-center rounded-[1.3rem] border border-white/10 bg-slate-950/70 text-cyan-200 shadow-[0_0_28px_rgba(34,211,238,0.18)] transition duration-300 group-hover:scale-105 group-hover:shadow-[0_0_38px_rgba(129,140,248,0.34)]">
                         <Icon className="size-5" />
                       </div>
                       <div className="mt-8 space-y-3">
@@ -53,7 +55,7 @@ export function ModulesSection() {
                         </p>
                       </div>
                       <div className="mt-auto flex items-center justify-between pt-8 text-sm font-medium text-slate-300">
-                        <span>Dedicated page later</span>
+                        <span>Explore module</span>
                         <ArrowUpRight className="size-4 transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-white" />
                       </div>
                     </div>
