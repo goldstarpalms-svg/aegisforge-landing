@@ -28,8 +28,8 @@ Tick items off as we complete them. **Status: ✅ done · 🔄 in progress · �
 ## 🔄 PHASE 1 — Make the *product* perfect (what users experience)
 
 ### Visual & motion (mostly done — remaining polish)
-- [ ] Apply glass/glow + gradient headings to **auth pages** (sign-in/sign-up/reset) so they match
-- [ ] Apply to **dashboard, workspace, scanner, blueprint, nova** (the app pages — the product core)
+- [x] Apply glass/glow + gradient headings to **auth pages** (sign-in/sign-up/reset) so they match
+- [x] Apply to **dashboard, workspace, scanner, blueprint, nova** (the app pages — the product core)
 - [ ] Consistent **page-load** animations across every route
 - [ ] Add a **favicon/OG image** that matches the new aurora brand (currently `/favicon.ico` + `/og-image.png`)
 - [ ] Add **subtle sound/haptic** on key actions (optional)
