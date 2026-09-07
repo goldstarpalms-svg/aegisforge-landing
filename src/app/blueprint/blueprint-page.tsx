@@ -115,7 +115,7 @@ export function BlueprintPage() {
             <Sparkles className="size-4" />
             AI Blueprint Engine
           </div>
-          <h1 className="text-4xl font-semibold tracking-tight text-white sm:text-5xl">
+          <h1 className="bg-[linear-gradient(95deg,#ffffff_0%,#cbd5e1_35%,#22d3ee_66%,#a78bfa_100%)] bg-clip-text text-transparent text-4xl font-semibold tracking-tight sm:text-5xl">
             Describe your idea. Get a blueprint.
           </h1>
           <p className="text-lg text-slate-400">

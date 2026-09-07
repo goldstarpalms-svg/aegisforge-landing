@@ -50,7 +50,7 @@ export function SignUpPage() {
             >
               <CheckCircle2 className="mx-auto size-10 text-cyan-400" />
             </motion.div>
-            <h1 className="text-2xl font-semibold text-white">
+            <h1 className="bg-[linear-gradient(95deg,#ffffff_0%,#cbd5e1_35%,#22d3ee_66%,#a78bfa_100%)] bg-clip-text text-transparent text-2xl font-semibold">
               Check your email
             </h1>
             <p className="text-sm text-slate-400">

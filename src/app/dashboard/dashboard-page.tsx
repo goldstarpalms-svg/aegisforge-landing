@@ -162,7 +162,7 @@ export function DashboardPage() {
         <div className="mx-auto max-w-4xl space-y-8">
           {/* Welcome */}
           <div>
-            <h1 className="text-2xl font-semibold text-white">
+            <h1 className="bg-[linear-gradient(95deg,#ffffff_0%,#cbd5e1_35%,#22d3ee_66%,#a78bfa_100%)] bg-clip-text text-transparent text-2xl font-semibold">
               {user
                 ? `Welcome, ${user.user_metadata?.full_name || "back"}`
                 : "Dashboard"}

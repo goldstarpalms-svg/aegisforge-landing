@@ -47,7 +47,7 @@ export function ResetPasswordPage() {
             >
               <CheckCircle2 className="mx-auto size-10 text-cyan-400" />
             </motion.div>
-            <h1 className="text-2xl font-semibold text-white">Check your email</h1>
+            <h1 className="bg-[linear-gradient(95deg,#ffffff_0%,#cbd5e1_35%,#22d3ee_66%,#a78bfa_100%)] bg-clip-text text-transparent text-2xl font-semibold">Check your email</h1>
             <p className="text-sm text-slate-400">
               We sent a password reset link to <span className="text-white font-medium">{email}</span>.
             </p>
@@ -58,7 +58,7 @@ export function ResetPasswordPage() {
         ) : (
           <>
             <div className="space-y-2 text-center">
-              <h1 className="text-2xl font-semibold text-white">Reset your password</h1>
+              <h1 className="bg-[linear-gradient(95deg,#ffffff_0%,#cbd5e1_35%,#22d3ee_66%,#a78bfa_100%)] bg-clip-text text-transparent text-2xl font-semibold">Reset your password</h1>
               <p className="text-sm text-slate-400">Enter your email and we&apos;ll send a reset link</p>
             </div>
 

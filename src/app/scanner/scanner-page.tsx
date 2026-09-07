@@ -300,7 +300,7 @@ export function ScannerPage() {
             <Shield className="size-4" aria-hidden="true" />
             Enterprise Security Scanner
           </div>
-          <h1 className="text-3xl font-semibold tracking-tight text-white sm:text-4xl sm:text-5xl">
+          <h1 className="bg-[linear-gradient(95deg,#ffffff_0%,#cbd5e1_35%,#22d3ee_66%,#a78bfa_100%)] bg-clip-text text-transparent text-3xl font-semibold tracking-tight sm:text-4xl sm:text-5xl">
             Scan any domain
           </h1>
           <p className="text-base text-slate-400 sm:text-lg">
