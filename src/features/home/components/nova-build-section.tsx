@@ -38,6 +38,29 @@ const steps = [
   { text: "✓ Build complete. Application ready.", agent: null },
 ];
 
+function TypedLine({ text, active }: { text: string; active: boolean }) {
+  const [n, setN] = useState(active ? 0 : text.length);
+  useEffect(() => {
+    if (!active) {
+      setN(text.length);
+      return;
+    }
+    setN(0);
+    const stepMs = 30;
+    const iv = setInterval(() => {
+      setN((v) => {
+        if (v >= text.length) {
+          clearInterval(iv);
+          return v;
+        }
+        return v + 2;
+      });
+    }, stepMs);
+    return () => clearInterval(iv);
+  }, [active, text.length]);
+  return <>{text.slice(0, n)}</>;
+}
+
 export function NovaBuildSection() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentStep, setCurrentStep] = useState(-1);
@@ -66,7 +89,7 @@ export function NovaBuildSection() {
       if (step.agent) {
         setActiveAgents((prev) => new Set([...prev, step.agent!]));
       }
-    }, 600);
+    }, 700);
 
     return () => clearTimeout(timer);
   }, [isPlaying, currentStep]);
@@ -82,6 +105,63 @@ export function NovaBuildSection() {
             <p className="mt-3 text-slate-400">
               You describe it. Nova routes, builds, secures, and deploys — automatically.
             </p>
+          </div>
+
+          {/* Holographic agent-network orbit */}
+          <div className="relative mx-auto flex h-52 max-w-xl items-center justify-center">
+            {/* rotating orbit rings */}
+            <motion.div
+              className="absolute h-40 w-40 rounded-full border border-cyan-300/15"
+              animate={{ rotate: 360 }}
+              transition={{ duration: 24, repeat: Infinity, ease: "linear" }}
+            />
+            <motion.div
+              className="absolute h-56 w-56 rounded-full border border-violet-300/12"
+              animate={{ rotate: -360 }}
+              transition={{ duration: 34, repeat: Infinity, ease: "linear" }}
+            />
+            {/* center core */}
+            <div className="relative z-10 grid size-20 place-items-center rounded-full border border-white/15 bg-slate-950/70 shadow-[0_0_40px_-8px_rgba(34,211,238,0.5)] backdrop-blur">
+              <Brain className="size-8 text-cyan-300" />
+            </div>
+            {/* orbiting agent nodes */}
+            {agents.map((agent, i) => {
+              const Icon = agent.icon;
+              const active = activeAgents.has(agent.id);
+              const angle = (i / agents.length) * Math.PI * 2;
+              const x = Math.cos(angle) * 96;
+              const y = Math.sin(angle) * 62;
+              // Note: we animate positions via CSS in a spinning parent for full orbit; here we place on an ellipse.
+              return (
+                <motion.div
+                  key={agent.id}
+                  className="absolute left-1/2 top-1/2 flex size-12 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border backdrop-blur"
+                  style={{
+                    // orbit via parent ring is simplified; place on ellipse and pulse
+                    x: x,
+                    y: y,
+                    borderColor: active ? "rgba(255,255,255,0.4)" : "rgba(255,255,255,0.08)",
+                    background: active
+                      ? "rgba(255,255,255,0.10)"
+                      : "rgba(2,6,23,0.5)",
+                    boxShadow: active ? "0 0 24px rgba(34,211,238,0.4)" : "none",
+                  }}
+                  animate={{ scale: active ? 1.15 : 1, opacity: active ? 1 : 0.5 }}
+                  transition={{ type: "spring", stiffness: 300 }}
+                >
+                  <Icon className={`size-5 ${active ? agent.color : "text-slate-600"}`} />
+                </motion.div>
+              );
+            })}
+            {/* orbiting dot */}
+            <motion.div
+              className="absolute h-3 w-3 rounded-full bg-cyan-300 shadow-[0_0_12px_rgba(34,211,238,0.9)]"
+              animate={{
+                x: [0, 96, 0, -96, 0],
+                y: [44, 0, -44, 0, 44],
+              }}
+              transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+            />
           </div>
 
           {/* Agent pills */}
@@ -174,7 +254,7 @@ export function NovaBuildSection() {
                       ) : (
                         <div className="size-3 shrink-0 rounded-full border border-slate-700" />
                       )}
-                      {step.text}
+                      <TypedLine text={step.text} active={isCurrent} />
                     </motion.div>
                   );
                 })}
