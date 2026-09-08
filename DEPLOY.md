@@ -46,11 +46,21 @@ REPORTS_TABLE=scan_reports
 # Admin
 ADMIN_API_KEY=choose_a_long_random_secret
 
-# AI (optional — offline fallback works without these)
-AI_PROVIDER=openai            # or "openrouter"
-OPENAI_API_KEY=sk-...         # only if using OpenAI
-OPENROUTER_API_KEY=sk-or-...  # only if using OpenRouter
-AI_MODEL=gpt-4o-mini
+# AI (optional — the app works offline, but adds real AI with a key)
+# Provider: openai | openrouter | gemini
+AI_PROVIDER=gemini
+# Google Gemini — get a free key at aistudio.google.com > Get API key (format: AIza...)
+GEMINI_API_KEY=your-gemini-key-here
+# Model used for the AI (gemini 3.x is the current line)
+AI_MODEL=gemini-3.6-flash
+
+# (alternative providers)
+# AI_PROVIDER=openai
+# OPENAI_API_KEY=sk-...
+# AI_MODEL=gpt-4o-mini
+# AI_PROVIDER=openrouter
+# OPENROUTER_API_KEY=sk-or-...
+# AI_MODEL=openai/gpt-4o-mini
 
 # Rate limits / limits (optional)
 RATE_LIMIT_WINDOW_SECONDS=3600
